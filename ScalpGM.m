@@ -3,7 +3,7 @@
 % - Calculate distance from scalp to each grey matter voxel in
 %   a structural MRI
 %
-% - 4 May 2014
+% - 5 June 2014
 %
 
 function ScalpGM (folder)
@@ -12,6 +12,7 @@ function ScalpGM (folder)
 % 1. Separate functions for each component
 % 2. Parent function scans a folder
 % 3. Some kind of output...
+% 4. More descriptive screen info
 
 dirin = cd();
 cd (folder);
@@ -27,8 +28,8 @@ for i=1:n
     %snfile = ScalpGM_getSN (T1file);
     % segment image
     [scalpfile, gmfile] = ScalpGM_segmentImage (T1file);
-    disp(['-- ' scalpfile])
-    disp(['-- ' gmfile])
+    disp(['-- Scalp file : ' scalpfile])
+    disp(['-- Grey matter: ' gmfile])
     % get convex hull
     scalp_points = ScalpGM_getCH (scalpfile); 
     % smooth convex hull
