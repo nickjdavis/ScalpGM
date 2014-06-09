@@ -32,9 +32,11 @@ for i=1:n
     disp(['-- Grey matter: ' gmfile])
     % get convex hull
     scalp_points = ScalpGM_getCH (scalpfile); 
+    %disp(['-- CH file    : ' scalp_points])
     % smooth convex hull
     % calculate scalp-GM distance
     distfile = ScalpGM_Distance (scalp_points,gmfile);
+    disp(['-- Dist file  : ' distfile])
     % warp file
     %mnifile = ScalpGM_warpMNI (distfile,snfile);
     
