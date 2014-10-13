@@ -3,7 +3,7 @@
 % - Calculate distance from scalp to each grey matter voxel in
 %   a structural MRI
 %
-% - 5 June 2014
+% - 13 Oct 2014
 %
 
 function ScalpGM (folder,benchmark)

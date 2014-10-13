@@ -18,8 +18,16 @@ matlabbatch{1}.spm.spatial.normalise.est.eoptions.fwhm = 0;
 matlabbatch{1}.spm.spatial.normalise.est.eoptions.samp = 3;
 spm_jobman('run',matlabbatch);
 
+disp('Done normest')
+
+%%% NB!!! Message in workspace...
+% Item normalise: No field(s) named
+% write
+%%% CHECK!!!
+
+
 % Step 2 - "Normalise: Write" to warp distimage into template
-yfile = ['y_' T1file];
+yfile = ['y_' T1file]; % CHECK!
 spm_jobman('initcfg');
 % matlabbatch{1}.spm.spatial.normalise.write.subj.def = {'H:\Documents\Git\ScalpGM\data\y_sHIVE4-0301-00003-000001-01.nii'};
 % matlabbatch{1}.spm.spatial.normalise.write.subj.resample = {'H:\Documents\Git\ScalpGM\data\dc1sHIVE4-0301-00003-000001-01.nii,1'};
@@ -32,8 +40,10 @@ matlabbatch{1}.spm.spatial.normalise.write.woptions.interp = 4;
 spm_jobman('run',matlabbatch);
 
 % TODO - this bit is worng - need to get fileparts.
-mnifile = ['w' distfile];
+[pathstr,name,ext] = fileparts(distfile);
+mnifile = [pathstr '\' 'w' name ext];
 
+disp('Done normwrite')
 
 
 
