@@ -1,4 +1,15 @@
+% function ScalpGM_warp_MNI.m
+%
+% Warps distfile into template space (MNI)
+%
+% TODO
+% 1. Tidy up!
+% 2. Save y_ file?
+% 3. Test goodness of warp
+
+
 function mnifile = ScalpGM_warpMNI (T1file,distfile)
+
 
 
 %% Step 1 - "Normalise: Est" T1 to template to get y_ file

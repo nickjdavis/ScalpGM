@@ -3,7 +3,7 @@
 % - Calculate distance from scalp to each grey matter voxel in
 %   a structural MRI
 %
-% - 13 Oct 2014
+% - 19 Oct 2014
 %
 
 function ScalpGM (folder,benchmark)
@@ -13,6 +13,7 @@ function ScalpGM (folder,benchmark)
 % 2. Parent function scans a folder
 % 3. Some kind of output...
 % 4. More descriptive screen info
+% 5. Tidy!
 
 if nargin<2
     benchmark=0;
@@ -46,12 +47,14 @@ for i=1:n
     toc3=toc;
     disp(['-- Dist file  : ' distfile])
     % warp file
-    %mnifile = ScalpGM_warpMNI (distfile,snfile);
+    mnifile = ScalpGM_warpMNI (T1file,distfile);
+    toc4=toc;
+    disp(['-- MNI file   : ' mnifile])
     
     % output???
     if benchmark==1
-        fprintf('Total elapsed time: %4.2f\nSegment  : %4.2f sec\nConvHull : %4.2f\nDistance : %4.2f\n\n',...
-            toc3,toc1,toc2-toc1,toc3-toc2)
+        fprintf('Total elapsed time: %4.2f\nSegment  : %4.2f sec\nConvHull : %4.2f\nDistance : %4.2f\nMNI warp : %4.2f\n\n',...
+            toc3,toc1,toc2-toc1,toc3-toc2,toc4-toc3)
     end
     %plot3 (scalp_points(:,1),scalp_points(:,2),scalp_points(:,3),'.')
 end
