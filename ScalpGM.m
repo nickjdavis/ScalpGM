@@ -43,7 +43,12 @@ for i=1:n
     %disp(['-- CH file    : ' scalp_points])
     % smooth convex hull
     % calculate scalp-GM distance
+    % TODO - check availability of parfor
+    % if (paralleltoolbox)
+    %distfile = ScalpGM_Distance_par (scalp_points,gmfile);
+    %else
     distfile = ScalpGM_Distance (scalp_points,gmfile);
+    %end
     toc3=toc;
     disp(['-- Dist file  : ' distfile])
     % warp file
