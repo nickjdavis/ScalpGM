@@ -5,6 +5,14 @@
 %
 % - 19 Oct 2014
 %
+% NO PARALLEL
+% Total elapsed time: 327.15
+% Segment  : 259.49 sec
+% ConvHull : 0.57
+% Distance : 67.09
+% MNI warp : 248.85
+% 
+% WITH PARALLEL
 
 function ScalpGM (folder,benchmark)
 
@@ -45,9 +53,9 @@ for i=1:n
     % calculate scalp-GM distance
     % TODO - check availability of parfor
     % if (paralleltoolbox)
-    %distfile = ScalpGM_Distance_par (scalp_points,gmfile);
+    distfile = ScalpGM_Distance_par (scalp_points,gmfile);
     %else
-    distfile = ScalpGM_Distance (scalp_points,gmfile);
+    %distfile = ScalpGM_Distance (scalp_points,gmfile);
     %end
     toc3=toc;
     disp(['-- Dist file  : ' distfile])
