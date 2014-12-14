@@ -53,9 +53,9 @@ for i=1:n
     % calculate scalp-GM distance
     % TODO - check availability of parfor
     % if (paralleltoolbox)
-    distfile = ScalpGM_Distance_par (scalp_points,gmfile);
+    % distfile = ScalpGM_Distance_par (scalp_points,gmfile);
     %else
-    %distfile = ScalpGM_Distance (scalp_points,gmfile);
+    distfile = ScalpGM_Distance (scalp_points,gmfile);
     %end
     toc3=toc;
     disp(['-- Dist file  : ' distfile])
@@ -69,6 +69,16 @@ for i=1:n
         fprintf('Total elapsed time: %4.2f\nSegment  : %4.2f sec\nConvHull : %4.2f\nDistance : %4.2f\nMNI warp : %4.2f\n\n',...
             toc3,toc1,toc2-toc1,toc3-toc2,toc4-toc3)
     end
+    
+    % write log file
+    % NB this is written in the target directory
+    logfile = 'ScalpGM_log.txt';
+    logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
+        T1file, scalpfile, gmfile, distfile, mnifile);
+    fid = fopen(logfile,'a');
+    fprintf(fid,'%s',logstr);
+    fclose(fid);
+    
     %plot3 (scalp_points(:,1),scalp_points(:,2),scalp_points(:,3),'.')
 end
 
