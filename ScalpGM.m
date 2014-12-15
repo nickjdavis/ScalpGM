@@ -33,6 +33,17 @@ cd (folder);
 d = dir ([folder '\*.img']);
 n = length(d);
 
+% check if parallel toolbox is present
+v = ver;
+[installedToolboxes{1:length(v)}] = deal(v.Name);
+isPar = all(ismember('Parallel Computing Toolbox',installedToolboxes));
+if (isPar==1)
+    pool=parpool
+else
+   	%
+end
+
+
 for i=1:n
     tic
     T1file = d(i).name;
@@ -49,14 +60,13 @@ for i=1:n
     scalp_points = ScalpGM_getCH (scalpfile); 
     toc2=toc;
     %disp(['-- CH file    : ' scalp_points])
-    % smooth convex hull
+    % TODO: smooth convex hull
     % calculate scalp-GM distance
-    % TODO - check availability of parfor
-    % if (paralleltoolbox)
-    % distfile = ScalpGM_Distance_par (scalp_points,gmfile);
-    %else
-    distfile = ScalpGM_Distance (scalp_points,gmfile);
-    %end
+    if (isPar)
+        distfile = ScalpGM_Distance_par (scalp_points,gmfile);
+    else
+        distfile = ScalpGM_Distance (scalp_points,gmfile);
+    end
     toc3=toc;
     disp(['-- Dist file  : ' distfile])
     % warp file
@@ -88,3 +98,6 @@ end
 
 % clean up and exit
 cd (dirin)
+if isPar
+    delete(pool);
+end

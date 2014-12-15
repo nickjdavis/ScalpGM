@@ -14,7 +14,7 @@ GMmask = GMimg>0.9;
 %% Set up Distance image for output
 % TODO - filename!; fname in private data
 Dvol = GMvol;
-Dimg = GMimg;
+Dimg = zeros(size(GMimg));
 [pth,nam,ext,vol] = spm_fileparts( deblank (gmfile));
 outName = fullfile(pth,['d', nam, ext]);
 Dvol.fname = outName;
@@ -22,25 +22,44 @@ distfile = outName;
 % Dvol.fname = 'distance.nii';
 % GMvol.dim
 % % Dvol.dim = [256 256 1]
-% size(Dimg)
+S = size(Dimg);
 
 %% Calculate distances
-% NB - parallel for!!!
-parfor z=1:GMvol.dim(3)
-    for y=1:GMvol.dim(2)
-        for x=1:GMvol.dim(1)
-            if GMmask(x,y,z)==1
-                % voxel==1 so get dist and write
-                %distvec = sqrt( (scalp_points(:,1)-GMmask(i,1)).^2 + (scalp_points(:,2)-GM(i,2)).^2 );
-                distvec = sqrt( (scalp_points(:,1)-x).^2 + (scalp_points(:,2)-y).^2 + (scalp_points(:,3)-z).^2);
-                [d,pos] = min( distvec );
-                Dimg(x,y,z) = d/100;
-            end
-        end
-    end
+I = find(GMimg>0.9);
+D = zeros(length(I),2);
+parfor i=1:length(I)
+ %for i=1:length(I)
+    % convert back to coordinate x,y,z
+    [x,y,z] = ind2sub(S,I(i));
+    % do distvec on it
+    distvec = sqrt( (scalp_points(:,1)-x).^2 + (scalp_points(:,2)-y).^2 + (scalp_points(:,3)-z).^2);
+    [d,pos] = min( distvec );
+    %Dimg(I(i)) = d/100;
+    D(i,:) = [I(i) d/100];
 end
 
-% hist(Dimg,100)
+Dimg(D(:,1))=D(:,2);
+
+% NB - parallel for!!!
+% % parpool
+% % for z=1:GMvol.dim(3)
+% %     for y=1:GMvol.dim(2)
+% %         parfor x=1:GMvol.dim(1)
+% %             if GMmask(x,y,z)==1
+% %                 % voxel==1 so get dist and write
+% %                 %distvec = sqrt( (scalp_points(:,1)-GMmask(i,1)).^2 + (scalp_points(:,2)-GM(i,2)).^2 );
+% %                 disp(['At GM ' num2str(x) ', ' num2str(y) ', ' num2str(z) '.'])
+% %                 distvec = sqrt( (scalp_points(:,1)-x).^2 + (scalp_points(:,2)-y).^2 + (scalp_points(:,3)-z).^2);
+% %                 [d,pos] = min( distvec );
+% %                 dd=d;
+% %                 Dimg(x,y,z) = dd/100;
+% %             end
+% %         end
+% %     end
+% % end
+% % matlabpool close;
+% hist(Dimg(I),100)
+
 
 
 %% Write output image
