@@ -38,7 +38,7 @@ v = ver;
 [installedToolboxes{1:length(v)}] = deal(v.Name);
 isPar = all(ismember('Parallel Computing Toolbox',installedToolboxes));
 if (isPar==1)
-    pool=parpool
+    pool=parpool;
 else
    	%
 end
@@ -70,21 +70,21 @@ for i=1:n
     toc3=toc;
     disp(['-- Dist file  : ' distfile])
     % warp file
-    mnifile = ScalpGM_warpMNI (T1file,distfile);
+    [mnifile,yfile] = ScalpGM_warpMNI (T1file,distfile);
     toc4=toc;
     disp(['-- MNI file   : ' mnifile])
     
     % output???
     if benchmark==1
         fprintf('Total elapsed time: %4.2f\nSegment  : %4.2f sec\nConvHull : %4.2f\nDistance : %4.2f\nMNI warp : %4.2f\n\n',...
-            toc3,toc1,toc2-toc1,toc3-toc2,toc4-toc3)
+            toc4,toc1,toc2-toc1,toc3-toc2,toc4-toc3)
     end
     
     % write log file
     % NB this is written in the target directory
     logfile = 'ScalpGM_log.txt';
-    logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
-        T1file, scalpfile, gmfile, distfile, mnifile);
+    logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
+        T1file, scalpfile, gmfile, distfile, mnifile,yfile);
     fid = fopen(logfile,'a');
     fprintf(fid,'%s',logstr);
     fclose(fid);

@@ -8,9 +8,37 @@
 % 3. Test goodness of warp
 
 
-function mnifile = ScalpGM_warpMNI (T1file,distfile)
+function [distMNI, yfile] = ScalpGM_warpMNI (T1file,distfile)
+
+% Use SPM's tissue probability map
+TPM = 'C:\Program Files\MATLAB\spm12b\tpm\TPM.nii';
+
+spm_jobman('initcfg');
+matlabbatch{1}.spm.spatial.normalise.estwrite.subj.vol = {T1file};
+matlabbatch{1}.spm.spatial.normalise.estwrite.subj.resample = {distfile};
+matlabbatch{1}.spm.spatial.normalise.estwrite.eoptions.biasreg = 0.0001;
+matlabbatch{1}.spm.spatial.normalise.estwrite.eoptions.biasfwhm = 60;
+matlabbatch{1}.spm.spatial.normalise.estwrite.eoptions.tpm = {TPM};
+matlabbatch{1}.spm.spatial.normalise.estwrite.eoptions.affreg = 'mni';
+matlabbatch{1}.spm.spatial.normalise.estwrite.eoptions.reg = [0 0.001 0.5 0.05 0.2];
+matlabbatch{1}.spm.spatial.normalise.estwrite.eoptions.fwhm = 0;
+matlabbatch{1}.spm.spatial.normalise.estwrite.eoptions.samp = 3;
+matlabbatch{1}.spm.spatial.normalise.estwrite.woptions.bb = [-78 -112 -70
+                                                             78 76 85];
+matlabbatch{1}.spm.spatial.normalise.estwrite.woptions.vox = [2 2 2];
+matlabbatch{1}.spm.spatial.normalise.estwrite.woptions.interp = 4;
+spm_jobman('run',matlabbatch);
+
+[pathstr,name,ext] = fileparts(distfile);
+distMNI = ['w' name ext];
+[pathstr,name,ext] = fileparts(T1file);
+yfile = ['y_' name '.nii'];
 
 
+
+
+%% OLD CODE BELOW HERE
+%{
 
 %% Step 1 - "Normalise: Est" T1 to template to get y_ file
 % spm_jobman('initcfg');
@@ -133,3 +161,4 @@ matlabbatch{1}.spm.spatial.normalise.estwrite.roptions.prefix = 'w';
 spm_jobman('run',matlabbatch);
 %}
 
+%}
