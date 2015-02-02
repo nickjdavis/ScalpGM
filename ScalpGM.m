@@ -16,13 +16,6 @@
 
 function ScalpGM (folder,benchmark)
 
-% TODO
-% 1. Separate functions for each component
-% 2. Parent function scans a folder
-% 3. Some kind of output...
-% 4. More descriptive screen info
-% 5. Tidy!
-
 if nargin<2
     benchmark=0;
 end
@@ -57,7 +50,8 @@ for i=1:n
     disp(['-- Grey matter: ' gmfile])
     toc1 = toc;
     % get convex hull
-    scalp_points = ScalpGM_getCH (scalpfile); 
+%     scalp_points = ScalpGM_getCH (scalpfile); 
+    scalp_points = ScalpGM_getCH3d (scalpfile); 
     toc2=toc;
     %disp(['-- CH file    : ' scalp_points])
     % TODO: smooth convex hull
