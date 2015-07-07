@@ -1,24 +1,24 @@
 function ScalpGM_MeanImage (filelist)
 
-nFiles = length(filelist)
+nFiles = length(filelist);
 
-Mden = zeros(79,95,79);
-Mnum = zeros(79,95,79);
+Msum = zeros(79,95,79); % Sum of valid voxel values
+Mvox = zeros(79,95,79); % No of valid voxels per division
 
 for i=1:nFiles
     % import file
     distfile = filelist{i}
-    Dvol = spm_vol(distfile)
+    Dvol = spm_vol(distfile);
     %Dimg = spm_read_vols (Dvol);
-    Dden = [];
-    Dnum = [];
+%     Dden = [];
+%     Dnum = [];
     for z=1:Dvol.dim(3)
         %i
         Dimg = spm_slice_vol(Dvol,spm_matrix([0 0 z]),Dvol(1).dim(1:2),0);
         [r,c] = find(Dimg>0.1);
         if length(r)>2
-            Mnum(r,c,z) = Mnum(r,c,z)+1;
-            Mden(r,c,z) = Mden(r,c,z)+Dimg(r,c);
+            Mvox(r,c,z) = Mvox(r,c,z)+1;
+            Msum(r,c,z) = Msum(r,c,z)+Dimg(r,c);
         end
         % %         CH = convhull(r,c);
         % %         %SCallpoints = [SCallpoints; r c i*ones(length(r),1)];
@@ -43,20 +43,24 @@ end
 % end
 
 % mean image is num./den
-M = Mnum./Mden;
+disp('Writing mean image')
+%%%M = Mnum./Msum;
+M = Msum ./ Mvox;
 % size(M)
 % plot3(M(:,1),M(:,2),M(:,3),'.')
 % save mean image
 Mvol = Dvol;
-outName = 'meanimage.nii';
+outName = 'meanimage_new.nii';
 Mvol.fname = outName;
-spm_write_vol(Dvol,M);
+spm_write_vol(Mvol,M);
 
 
+M(isinf(M))=NaN;
+M(M>5)=NaN;
+M(M<.1)=NaN;
+MM = M(~isnan(M));
+% MM(MM>255)=255;
+min(MM)
+max(MM)
 
-
-
-% filelist = cell(3,1)
-% filelist{1} = '.\data3\wdc1o20100630_173454IM-0001-0001AnatomySENSEHive02s301a1003.nii';
-% filelist{2} = '.\data3\wdc1sHIVE09-0301-00003-000001-01.nii';
-% filelist{3} = '.\data3\wdc1sHIVE10-0301-00003-000001-01.nii';
+hist(MM,100)
