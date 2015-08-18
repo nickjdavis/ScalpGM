@@ -1,24 +1,21 @@
 % TODO
 % 1. Tidy up
 % 2. Chase NaNs in output
+% 3. Add mask back in?
 
 function ScalpGM_MeanImage (filelist)
 
 nFiles = length(filelist);
 
-Msum = zeros(79,95,79); % Sum of valid voxel values
-Mvox = zeros(79,95,79); % No of valid voxels per division
+Msum = zeros(79,95,79);     % Sum of valid voxel values
+Mvox = zeros(79,95,79);     % No of valid voxels per division
 V = zeros(79,95,79,nFiles); % All voxels, ready for SD
 
 for i=1:nFiles
     % import file
     distfile = filelist{i}
     Dvol = spm_vol(distfile);
-    %Dimg = spm_read_vols (Dvol);
-%     Dden = [];
-%     Dnum = [];
     for z=1:Dvol.dim(3)
-        %i
         Dimg = spm_slice_vol(Dvol,spm_matrix([0 0 z]),Dvol(1).dim(1:2),0);
         [r,c] = find(Dimg>0.1);
         if length(r)>2
@@ -26,9 +23,6 @@ for i=1:nFiles
             Msum(r,c,z) = Msum(r,c,z)+Dimg(r,c);
             V(r,c,z,i)  = Dimg(r,c);
         end
-        % %         CH = convhull(r,c);
-        % %         %SCallpoints = [SCallpoints; r c i*ones(length(r),1)];
-        % %         Dallpoints = [SCallpoints; r(CH) c(CH) i*ones(length(CH),1)];
     end
 end
 
@@ -77,14 +71,16 @@ Mvol = Dvol;
 Mvol.fname = outName;
 spm_write_vol(Mvol,Sm);
 % Coefficient of variation image - SD/mean
+% Lots of NaNs here (no infs) - not in prev steps
 disp('CoV image')
 outName = 'meanimage_alt_cov.nii';
-%Cm = zeros(79,95,79);
+% Cm = zeros(79,95,79);
 Cm = Sm./Vm;
 Mvol = Dvol;
 Mvol.fname = outName;
 spm_write_vol(Mvol,Cm);
 N = size(find(isnan(Cm)==1))
+M = size(find(isinf(Cm)==1))
 
 
 % 
