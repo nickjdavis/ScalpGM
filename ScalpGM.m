@@ -11,7 +11,7 @@
 % ConvHull : 0.57
 % Distance : 67.09
 % MNI warp : 248.85
-% 
+%
 % WITH PARALLEL
 
 function ScalpGM (folder,benchmark)
@@ -23,8 +23,11 @@ end
 dirin = cd();
 cd (folder);
 % file mask for scans
-d = dir ([folder '\*.img']);
+% d = dir ([folder '\*.img']);
+d = dir ('*.img');
 n = length(d);
+
+disp (sprintf('Found %d files',n))
 
 % check if parallel toolbox is present
 v = ver;
@@ -33,7 +36,7 @@ isPar = all(ismember('Parallel Computing Toolbox',installedToolboxes));
 if (isPar==1)
     pool=parpool;
 else
-   	%
+    %
 end
 
 
@@ -45,44 +48,52 @@ for i=1:n
     %uT1file = nii_unity(T1file);
     %snfile = ScalpGM_getSN (T1file);
     % segment image
-    [scalpfile, gmfile] = ScalpGM_segmentImage (T1file);
-    disp(['-- Scalp file : ' scalpfile])
-    disp(['-- Grey matter: ' gmfile])
-    toc1 = toc;
-    % get convex hull
-%     scalp_points = ScalpGM_getCH (scalpfile); 
-    scalp_points = ScalpGM_getCH3d (scalpfile); 
-    toc2=toc;
-    %disp(['-- CH file    : ' scalp_points])
-    % TODO: smooth convex hull
-    % calculate scalp-GM distance
-    if (isPar)
-        distfile = ScalpGM_Distance_par (scalp_points,gmfile);
-    else
-        distfile = ScalpGM_Distance (scalp_points,gmfile);
+    try
+        [scalpfile, gmfile] = ScalpGM_segmentImage (T1file);
+        disp(['-- Scalp file : ' scalpfile])
+        disp(['-- Grey matter: ' gmfile])
+        toc1 = toc;
+        % get convex hull
+        %     scalp_points = ScalpGM_getCH (scalpfile);
+        scalp_points = ScalpGM_getCH3d (scalpfile);
+        toc2=toc;
+        %disp(['-- CH file    : ' scalp_points])
+        % TODO: smooth convex hull
+        % calculate scalp-GM distance
+        if (isPar)
+            distfile = ScalpGM_Distance_par (scalp_points,gmfile);
+        else
+            distfile = ScalpGM_Distance (scalp_points,gmfile);
+        end
+        toc3=toc;
+        disp(['-- Dist file  : ' distfile])
+        % warp file
+        [mnifile,yfile] = ScalpGM_warpMNI (T1file,distfile);
+        toc4=toc;
+        disp(['-- MNI file   : ' mnifile])
+        
+        % output???
+        if benchmark==1
+            fprintf('Total elapsed time: %4.2f\nSegment  : %4.2f sec\nConvHull : %4.2f\nDistance : %4.2f\nMNI warp : %4.2f\n\n',...
+                toc4,toc1,toc2-toc1,toc3-toc2,toc4-toc3)
+        end
+        
+        % write log file
+        % NB this is written in the target directory
+        logfile = 'ScalpGM_log.txt';
+        logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
+            T1file, scalpfile, gmfile, distfile, mnifile,yfile);
+        fid = fopen(logfile,'a');
+        fprintf(fid,'%s',logstr);
+        fclose(fid);
+    catch
+        logfile = 'ScalpGM_log.txt';
+        logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
+            T1file, 'fail', 'fail', 'fail', 'fail','fail');
+        fid = fopen(logfile,'a');
+        fprintf(fid,'%s',logstr);
+        fclose(fid);
     end
-    toc3=toc;
-    disp(['-- Dist file  : ' distfile])
-    % warp file
-    [mnifile,yfile] = ScalpGM_warpMNI (T1file,distfile);
-    toc4=toc;
-    disp(['-- MNI file   : ' mnifile])
-    
-    % output???
-    if benchmark==1
-        fprintf('Total elapsed time: %4.2f\nSegment  : %4.2f sec\nConvHull : %4.2f\nDistance : %4.2f\nMNI warp : %4.2f\n\n',...
-            toc4,toc1,toc2-toc1,toc3-toc2,toc4-toc3)
-    end
-    
-    % write log file
-    % NB this is written in the target directory
-    logfile = 'ScalpGM_log.txt';
-    logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
-        T1file, scalpfile, gmfile, distfile, mnifile,yfile);
-    fid = fopen(logfile,'a');
-    fprintf(fid,'%s',logstr);
-    fclose(fid);
-    
     %plot3 (scalp_points(:,1),scalp_points(:,2),scalp_points(:,3),'.')
 end
 
