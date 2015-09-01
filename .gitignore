@@ -1,2 +1,9 @@
 # temporary files #
 *.asv
+
+# mean images #
+meanimage*.nii
+
+# image data #
+*.img
+*.hdr
