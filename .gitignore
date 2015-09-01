@@ -3,6 +3,7 @@
 
 # mean images #
 meanimage*.nii
+meanimage*.*
 
 # image data #
 *.img
