@@ -30,15 +30,15 @@ n = length(d);
 disp (sprintf('Found %d files',n))
 
 % check if parallel toolbox is present
-v = ver;
-[installedToolboxes{1:length(v)}] = deal(v.Name);
-isPar = all(ismember('Parallel Computing Toolbox',installedToolboxes));
-if (isPar==1)
-    pool=parpool;
-else
-    %
-end
-
+% v = ver;
+% [installedToolboxes{1:length(v)}] = deal(v.Name);
+% isPar = all(ismember('Parallel Computing Toolbox',installedToolboxes));
+% if (isPar==1)
+%     pool=parpool;
+% else
+%     %
+% end
+isPar = 0;
 
 for i=1:n
     tic
@@ -60,11 +60,11 @@ for i=1:n
         %disp(['-- CH file    : ' scalp_points])
         % TODO: smooth convex hull
         % calculate scalp-GM distance
-        if (isPar)
-            distfile = ScalpGM_Distance_par (scalp_points,gmfile);
-        else
+        %if (isPar)
+        %    distfile = ScalpGM_Distance_par (scalp_points,gmfile);
+        %else
             distfile = ScalpGM_Distance (scalp_points,gmfile);
-        end
+        %end
         toc3=toc;
         disp(['-- Dist file  : ' distfile])
         % warp file
@@ -80,19 +80,23 @@ for i=1:n
         
         % write log file
         % NB this is written in the target directory
+        disp('-- writing log file')
         logfile = 'ScalpGM_log.txt';
         logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
             T1file, scalpfile, gmfile, distfile, mnifile,yfile);
         fid = fopen(logfile,'a');
         fprintf(fid,'%s',logstr);
         fclose(fid);
+        disp('-- closing log file')
     catch
+        disp('-- writing log file (fail)')
         logfile = 'ScalpGM_log.txt';
         logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
             T1file, 'fail', 'fail', 'fail', 'fail','fail');
         fid = fopen(logfile,'a');
         fprintf(fid,'%s',logstr);
         fclose(fid);
+        disp('-- closing log file (fail)')
     end
     %plot3 (scalp_points(:,1),scalp_points(:,2),scalp_points(:,3),'.')
 end
