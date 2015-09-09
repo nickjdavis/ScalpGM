@@ -3,16 +3,8 @@
 % - Calculate distance from scalp to each grey matter voxel in
 %   a structural MRI
 %
-% - 19 Oct 2014
+% - 9 September 2015
 %
-% NO PARALLEL
-% Total elapsed time: 327.15
-% Segment  : 259.49 sec
-% ConvHull : 0.57
-% Distance : 67.09
-% MNI warp : 248.85
-%
-% WITH PARALLEL
 
 function ScalpGM (folder,benchmark)
 
