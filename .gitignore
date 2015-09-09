@@ -8,3 +8,4 @@ meanimage*.*
 # image data #
 *.img
 *.hdr
+HIVE/
