@@ -17,13 +17,13 @@ Uses code from SPM12b to segment a T1 image, calculate scalp-GM distance, and to
 * Use real dimensions (not 10cm)
 * Diagram of processing stages
 * Warp back to native
-* Get last batch of library images
 * Add mask back to MeanImage - should clean up and reduce memory
 * Helper functions for OASIS data
   * Extract demographic data
   * Convert OASIS images for SPM
   * Go through folder structure and flatten
-
+* Smarter routine to identify outer scalp layer
+  * See Line 86 of getCH3d - re-add biggest region?
 
 
 

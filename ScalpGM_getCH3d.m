@@ -38,7 +38,7 @@ end
 
 SCallpoints = convhull(SC);
 
-size(SC)
+% size(SC)
 
 
 % imshow(SCimg)
