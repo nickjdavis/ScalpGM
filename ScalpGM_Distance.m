@@ -41,8 +41,8 @@ S = size(Dimg);
 
 I = find(GMimg>0.9);
 D = zeros(length(I),2);
-parfor i=1:length(I)
- %for i=1:length(I)
+%parfor i=1:length(I)
+ for i=1:length(I)
     % convert back to coordinate x,y,z
     [x,y,z] = ind2sub(S,I(i));
     % do distvec on it

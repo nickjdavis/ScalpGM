@@ -9,6 +9,9 @@ meanimage*.*
 *.img
 *.hdr
 HIVE/
+<<<<<<< HEAD
 Tools/
 
 # end #
+=======
+>>>>>>> develop
