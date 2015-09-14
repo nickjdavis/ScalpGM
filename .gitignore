@@ -1,0 +1,12 @@
+# temporary files #
+*.asv
+
+# mean images #
+meanimage*.nii
+meanimage*.*
+
+# image data #
+*.img
+*.hdr
+HIVE/
+Tools/
