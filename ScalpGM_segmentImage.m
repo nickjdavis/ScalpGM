@@ -8,7 +8,7 @@ end
 spm_jobman('initcfg');
 
 matlabbatch{1}.spm.spatial.preproc.channel.vols = {structuralimage};
-% matlabbatch{1}.spm.spatial.preproc.channel.vols = {'C:\Users\psdavinj\Dropbox\ScalpGM\sHIVE4-0301-00003-000001-01.img,1'};
+%  matlabbatch{1}.spm.spatial.preproc.channel.vols = {'C:\Users\psdavinj\Dropbox\ScalpGM\sHIVE4-0301-00003-000001-01.img,1'};
 matlabbatch{1}.spm.spatial.preproc.channel.biasreg = 0.001;
 matlabbatch{1}.spm.spatial.preproc.channel.biasfwhm = 60;
 matlabbatch{1}.spm.spatial.preproc.channel.write = [0 0];

@@ -25,7 +25,7 @@ Uses code from SPM12b to segment a T1 image, calculate scalp-GM distance, and to
 * Smarter routine to identify outer scalp layer
   * See Line 86 of getCH3d - re-add biggest region?
 * Use SPM environment variables to:
-  * set folders (e.g. TPM.nii)
+  * set folders  (e.g. TPM.nii)
   * check for presence of SPM
   * check SPM version?
 

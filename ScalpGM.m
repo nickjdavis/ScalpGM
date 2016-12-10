@@ -41,7 +41,7 @@ for i=1:n
     %snfile = ScalpGM_getSN (T1file);
     % segment image
     try
-        %[scalpfile, gmfile] = ScalpGM_segmentImage (T1file);
+        % [scalpfile, gmfile] = ScalpGM_segmentImage (T1file);
         [scalpfile, gmfile] = ScalpGM_segmentImage (T1file,'C:\SPM\spm12\spm12\tpm\tpm.nii');
         disp(['-- Scalp file : ' scalpfile])
         disp(['-- Grey matter: ' gmfile])
