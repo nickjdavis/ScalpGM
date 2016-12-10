@@ -41,7 +41,8 @@ for i=1:n
     %snfile = ScalpGM_getSN (T1file);
     % segment image
     try
-        [scalpfile, gmfile] = ScalpGM_segmentImage (T1file);
+        %[scalpfile, gmfile] = ScalpGM_segmentImage (T1file);
+        [scalpfile, gmfile] = ScalpGM_segmentImage (T1file,'C:\SPM\spm12\spm12\tpm\tpm.nii');
         disp(['-- Scalp file : ' scalpfile])
         disp(['-- Grey matter: ' gmfile])
         toc1 = toc;
@@ -89,6 +90,7 @@ for i=1:n
         fprintf(fid,'%s',logstr);
         fclose(fid);
         disp('-- closing log file (fail)')
+        disp(lasterr)
     end
     %plot3 (scalp_points(:,1),scalp_points(:,2),scalp_points(:,3),'.')
 end
