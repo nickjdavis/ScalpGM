@@ -8,10 +8,10 @@
 % 3. Test goodness of warp
 
 
-function [distMNI, yfile] = ScalpGM_warpMNI (T1file,distfile)
+function [distMNI, yfile] = ScalpGM_warpMNI (T1file,distfile,TPM)
 
 % Use SPM's tissue probability map
-TPM = 'C:\Program Files\MATLAB\spm12b\tpm\TPM.nii';
+% TPM = 'C:\Program Files\MATLAB\spm12b\tpm\TPM.nii';
 
 spm_jobman('initcfg');
 matlabbatch{1}.spm.spatial.normalise.estwrite.subj.vol = {T1file};

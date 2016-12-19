@@ -19,6 +19,10 @@ cd (folder);
 d = dir ('*.img');
 n = length(d);
 
+% Link to TPM file
+% TODO - get this rel to SPM path
+TPMfile = 'C:\SPM\spm12\spm12\tpm\tpm.nii';
+
 disp (sprintf('Found %d files',n))
 
 % check if parallel toolbox is present
@@ -42,7 +46,7 @@ for i=1:n
     % segment image
     try
         % [scalpfile, gmfile] = ScalpGM_segmentImage (T1file);
-        [scalpfile, gmfile] = ScalpGM_segmentImage (T1file,'C:\SPM\spm12\spm12\tpm\tpm.nii');
+        [scalpfile, gmfile] = ScalpGM_segmentImage (T1file,TPMfile);
         disp(['-- Scalp file : ' scalpfile])
         disp(['-- Grey matter: ' gmfile])
         toc1 = toc;
@@ -61,7 +65,8 @@ for i=1:n
         toc3=toc;
         disp(['-- Dist file  : ' distfile])
         % warp file
-        [mnifile,yfile] = ScalpGM_warpMNI (T1file,distfile);
+        % NB new - pass in TPM file
+        [mnifile,yfile] = ScalpGM_warpMNI (T1file,distfile,TPMfile);
         toc4=toc;
         disp(['-- MNI file   : ' mnifile])
         

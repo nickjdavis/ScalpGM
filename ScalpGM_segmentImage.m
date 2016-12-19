@@ -1,8 +1,8 @@
 function [scalpfile, gmfile] = ScalpGM_segmentImage (structuralimage,TPMfile)
 
-if nargin<2
-    TPMfile = 'C:\Program Files\MATLAB\spm12b\tpm\TPM.nii';
-end
+% if nargin<2
+%     TPMfile = 'C:\Program Files\MATLAB\spm12b\tpm\TPM.nii';
+% end
 
 %% from matlabbatch
 spm_jobman('initcfg');
