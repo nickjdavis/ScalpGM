@@ -9,6 +9,9 @@ meanimage*.*
 *.img
 *.hdr
 HIVE/
+data/
+data3/
+MNIdata/
 <<<<<<< HEAD
 Tools/
 

@@ -7,14 +7,20 @@ function ScalpGM_MeanImage (filelist)
 
 nFiles = length(filelist);
 
-Msum = zeros(79,95,79);     % Sum of valid voxel values
-Mvox = zeros(79,95,79);     % No of valid voxels per division
-V = zeros(79,95,79,nFiles); % All voxels, ready for SD
+% Where do these values come from?
+% Msum = zeros(79,95,79);     % Sum of valid voxel values
+% Mvox = zeros(79,95,79);     % No of valid voxels per division
+% V = zeros(79,95,79,nFiles); % All voxels, ready for SD
+mxX=256; mxY=256; mxZ=256;
+Msum = zeros(mxX,mxY,mxZ);     % Sum of valid voxel values
+Mvox = zeros(mxX,mxY,mxZ);     % No of valid voxels per division
+V = zeros(mxX,mxY,mxZ,nFiles); % All voxels, ready for SD
 
 for i=1:nFiles
     % import file
     distfile = filelist{i}
     Dvol = spm_vol(distfile);
+    Dvol.dim(3)
     for z=1:Dvol.dim(3)
         Dimg = spm_slice_vol(Dvol,spm_matrix([0 0 z]),Dvol(1).dim(1:2),0);
         [r,c] = find(Dimg>0.1);
@@ -26,6 +32,7 @@ for i=1:nFiles
     end
 end
 
+size(Dvol)
 
 
 
@@ -57,15 +64,16 @@ end
 % Alt version of mean image - use V
 disp('Alternative mean image')
 outName = 'meanimage_alt.nii';
-Vm = zeros(79,95,79);
+Vm = zeros(mxX,mxY,mxZ);
 Vm(:,:,:) = mean (V,4);
+size(Vm)
 Mvol = Dvol;
 Mvol.fname = outName;
 spm_write_vol(Mvol,Vm);
 % Standard deviation image - use V
 disp('Alternative SD image')
 outName = 'meanimage_alt_sd.nii';
-Sm = zeros(79,95,79);
+Sm = zeros(mxX,mxY,mxZ);
 Sm(:,:,:) = std (V,0,4);
 Mvol = Dvol;
 Mvol.fname = outName;
