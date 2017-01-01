@@ -5,6 +5,7 @@
 %
 % - 9 September 2015
 %
+% - Approx 20 mins per image (1 Jan 2017)
 
 function ScalpGM (folder,benchmark)
 

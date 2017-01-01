@@ -12,6 +12,21 @@ Uses code from SPM12b to segment a T1 image, calculate scalp-GM distance, and to
 * Need to think about collecting the warped images to apply group stats
 
 
+### Roadmap
+* Snowdon
+ * Pass unit tests on small sample
+ * Runs efficiently
+ * Communicates well
+* Tryfan
+ * Extract data from OASIS
+ * Robust across platforms/versions
+ * Shareable code
+* Elidir
+ * Later modifications/tweaks
+ * Parallel code
+ * Integrate with SPM
+
+
 ### TODO
 * MeanImage code works okay, but NaNs in CoV - do we need this?
 * Use real dimensions (not 10cm)
@@ -28,7 +43,7 @@ Uses code from SPM12b to segment a T1 image, calculate scalp-GM distance, and to
   * set folders  (e.g. TPM.nii)
   * check for presence of SPM
   * check SPM version?
-
+* Profile! 20 mins per image - must get this down.
 
 
 ### To think about
