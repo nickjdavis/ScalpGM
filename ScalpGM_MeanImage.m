@@ -2,16 +2,15 @@
 % 1. Tidy up
 % 2. Chase NaNs in output
 % 3. Add mask back in?
+% 4. Precalculate memory reqs?
 
 function ScalpGM_MeanImage (filelist)
 
 nFiles = length(filelist);
 
-% Where do these values come from?
-% Msum = zeros(79,95,79);     % Sum of valid voxel values
-% Mvox = zeros(79,95,79);     % No of valid voxels per division
-% V = zeros(79,95,79,nFiles); % All voxels, ready for SD
-mxX=256; mxY=256; mxZ=256;
+
+% These are standard sizes of MNI image in SPM
+mxX=79; mxY=95; mxZ=79;
 Msum = zeros(mxX,mxY,mxZ);     % Sum of valid voxel values
 Mvox = zeros(mxX,mxY,mxZ);     % No of valid voxels per division
 V = zeros(mxX,mxY,mxZ,nFiles); % All voxels, ready for SD
@@ -35,7 +34,7 @@ end
 size(Dvol)
 
 
-
+%{ HIDE
 % % get mask
 % Dmask = Dimg>0.01;
 % % add mask voxels to denominator img
@@ -60,6 +59,7 @@ size(Dvol)
 % outName = 'meanimage_new.nii';
 % Mvol.fname = outName;
 % spm_write_vol(Mvol,M);
+%} End HIDE
 
 % Alt version of mean image - use V
 disp('Alternative mean image')
