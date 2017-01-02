@@ -1,8 +1,16 @@
 function [scalpfile, gmfile] = ScalpGM_segmentImage (structuralimage,TPMfile)
+%ScalpGM_segmentImage - Use SPM to segment structural scan.
+%  
+% [scalpfile, gmfile] = ScalpGM_segmentImage (structuralimage,TPMfile)
+% 
+% Inputs
+%   structuralimage  : Original structural (T1) image
+%   TPMfile          : Link to SPM's tissue probability map
+% Outputs
+%   scalpfile        : Scalp layer from segmentation
+%   gmfile           : Grey matter from segmentation
 
-% if nargin<2
-%     TPMfile = 'C:\Program Files\MATLAB\spm12b\tpm\TPM.nii';
-% end
+% - 2 Jan 2017
 
 %% from matlabbatch
 spm_jobman('initcfg');

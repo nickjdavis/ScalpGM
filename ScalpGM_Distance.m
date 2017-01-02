@@ -1,7 +1,16 @@
-% get scalp-GM distance
-
 function distfile = ScalpGM_Distance (scalp_points,gmfile)
+%ScalpGM_Distance - Creates image in native space with scalp-GM
+% distance in GM voxels
+%  
+% distfile = ScalpGM_Distance(scalp_points,gmfile)
+% 
+% Inputs:
+%   scalp_points : Convex hull of scalp
+%   gmfile       : SPM-derived grey matter segment file
+% Outputs:
+%   distfile     : Image containing scalp-GM distances in native space
 
+% - 2 Jan 2017
 
 %% Read GM data
 GMvol = spm_vol(gmfile);

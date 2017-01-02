@@ -1,7 +1,14 @@
-% Returns points in convex hull of scalp.
-
 function SCallpoints = ScalpGM_getCH3d (scalpimage)
+%ScalpGM_getCH3d - Returns points in convex hull of scalp
+%  
+% SCallpoints = ScalpGM_getCH3d(scalpimage)
+% 
+% Inputs:
+%   scalpimage  : SPM-derived image of the scalp layer
+% Outputs:
+%   SCallpoints : 3d convex hull of scalp
 
+% - 2 Jan 2017
 
 %% New approach
 % 1. preprocess data

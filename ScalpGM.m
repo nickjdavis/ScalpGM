@@ -1,13 +1,17 @@
-% ScalpGM.m
-%
-% - Calculate distance from scalp to each grey matter voxel in
-%   a structural MRI
-%
-% - 9 September 2015
-%
-% - Approx 20 mins per image (1 Jan 2017)
 
 function ScalpGM (folder,benchmark)
+%ScalpGM - Calculate distance from scalp to each grey matter voxel in
+% a structural MRI
+%  
+% ScalpGM(folder, benchmark)
+% 
+% Inputs:
+%   folder    : Folder containing images for processing
+%   benchmark : 1=yes, 0=no
+
+% - 2 Jan 2017
+%
+% - Approx 20 mins per image (1 Jan 2017)
 
 if nargin<2
     benchmark=0;

@@ -1,6 +1,14 @@
-% Run unit tests for ScalpGM project
-
 function ScalpGM_UnitTest ()
+%ScalpGM_UnitTest - Runs unit tests for ScalpGM project.
+%  
+% ScalpGM_UnitTest()
+% 
+% Inputs:
+%   none
+% Outputs
+%   none
+
+% - 2 Jan 2017
 
 % Test 1: Process whole folder then calculate mean image
 

@@ -1,14 +1,18 @@
-% function ScalpGM_warp_MNI.m
-%
-% Warps distfile into template space (MNI)
-%
-% TODO
-% 1. Tidy up!
-% 2. Save y_ file?
-% 3. Test goodness of warp
-
-
 function [distMNI, yfile] = ScalpGM_warpMNI (T1file,distfile,TPM)
+%ScalpGM_warpMNI - Warps a native-space distance image into
+% an MNI-space image
+%  
+% [distMNI, yfile] = ScalpGM_warpMNI (T1file,distfile,TPM)
+% 
+% Inputs:
+%   T1file    : Participant's structural scan
+%   distfile  : Scalp-GM distance image
+%   TPM       : Link to SPM's tissue probability map
+% Outputs:
+%   distMNI   : Image containing scalp-GM distances in MNI space
+%   yfile     : SPM-derived transformation file
+
+% - 2 Jan 2017
 
 % Use SPM's tissue probability map
 % TPM = 'C:\Program Files\MATLAB\spm12b\tpm\TPM.nii';
