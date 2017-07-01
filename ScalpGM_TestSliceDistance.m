@@ -6,7 +6,7 @@ function ScalpGM_TestSliceDistance ()
 T1 = '.\data3\HIVEx.img';
 GM = '.\data3\c1HIVEx.nii';
 SC = '.\data3\c5HIVEx.nii';
-z  = 128;  % z-level for slice
+z  = 100;  % z-level for slice
 th = 0.95; % Threshold for scalp/GM mask
 
 % Get slice from files
@@ -22,12 +22,12 @@ SCmask = bwareafilt(imbinarize(SCslice,th),1);
 % plot for sanity
 % image(T1slice, 'CDataMapping','scaled'); colorbar
 % waitforbuttonpress
-% % image(GMslice, 'CDataMapping','scaled');  colorbar
+image(GMslice, 'CDataMapping','scaled');  colorbar
 % % waitforbuttonpress
 % image(SCslice, 'CDataMapping','scaled'); colorbar
 % waitforbuttonpress
-image(SCmask, 'CDataMapping','scaled'); colorbar
-waitforbuttonpress
+% image(SCmask, 'CDataMapping','scaled'); colorbar
+% waitforbuttonpress
 
 
 % get convex hull of SCslice
@@ -40,10 +40,14 @@ plot (SCboundary(:,2),SCboundary(:,1),'r','LineWidth',2)
 
 % get voxels from GM
 G = find(GMmask);
+
 for i=1:10
-    v = GMmask(ind2sub(GMmask,i))
-    distvec = sqrt( (SCboundary(:,1)-v(1)).^2 + (SCboundary(:,2)-v(2)).^2 ); % + (scalp_points(:,3)-z).^2);
-    [d,pos] = min( distvec )
+    [x,y] = ind2sub(size(GMmask),G(i))
+    distvec = sqrt( (SCboundary(:,1)-x).^2 + (SCboundary(:,2)-y).^2 ); % + (scalp_points(:,3)-z).^2);
+    [d,pos] = min( distvec );
+    disp(d)
+    % Get x,y of pos from CH
+    % draw line from GM point to point on CH
 end
 
 
