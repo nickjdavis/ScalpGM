@@ -18,7 +18,7 @@ SCdata = spm_read_vols (spm_vol(SC));
 SCslice = SCdata(:,:,z);
 GMmask = imbinarize(GMslice,th);
 SCmask = bwareafilt(imbinarize(SCslice,th),1);
-
+distslice = zeros(size(T1slice));
 % plot for sanity
 % image(T1slice, 'CDataMapping','scaled'); colorbar
 % waitforbuttonpress
@@ -41,15 +41,16 @@ plot (SCboundary(:,2),SCboundary(:,1),'r','LineWidth',2)
 % get voxels from GM
 G = find(GMmask);
 
-for i=1:10
-    [x,y] = ind2sub(size(GMmask),G(i))
+for i=1:length(G)
+    [x,y] = ind2sub(size(GMmask),G(i));
     distvec = sqrt( (SCboundary(:,1)-x).^2 + (SCboundary(:,2)-y).^2 ); % + (scalp_points(:,3)-z).^2);
     [d,pos] = min( distvec );
-    disp(d)
+    %disp(d)
+    distslice(x,y)=d;
     % Get x,y of pos from CH
+    P = [SCboundary(pos,1) SCboundary(pos,2)];
     % draw line from GM point to point on CH
+    line ([P(2) y],[P(1) x])
 end
 
-
-% Step through voxels, getting nearest point on CH
-% Draw line between GM voxel and CH point
+figure; image(distslice, 'CDataMapping','scaled');  colorbar
