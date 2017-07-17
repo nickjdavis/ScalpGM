@@ -75,6 +75,11 @@ end
 figure; image(DistVol(:,:,100), 'CDataMapping','scaled');  colorbar
 
 %% Save
+% NB - doesn't work! .mat save is okay, but NIFTI output seems to be in
+% range [0,1]. Could use scale info below? Or keep everything in .mat?
+% Latter might be better for later averaging, but still need to figure
+% out transforming to MNI space!
+
 % V - a structure array containing image volume information
 %     The elements of the structures are:
 %       V.fname - the filename of the image.
@@ -92,6 +97,8 @@ figure; image(DistVol(:,:,100), 'CDataMapping','scaled');  colorbar
 %                 If the size of pinfo is 3x1, then the volume is assumed
 %                 to be contiguous and each plane has the same scalefactor
 %                 and offset.
+
+save('distvol_temp','DistVol')
 V = spm_vol_nifti(GM);
 V.fname = 'distvol_Jul17.nii';
 V.descrip = 'Scalp-GM distance';
