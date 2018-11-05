@@ -23,3 +23,10 @@ for i=1:2
     M{i} = mnifile
     
 end
+
+% HOORAY!!!!
+% The two images prooduced afetr warping overlay beautifully!
+% So the 'mnifile' truly is in MNI space.
+% TODO: Now work out what the source image is - colours/values
+% don't look right for Scamlp-GM distance, so may need to use 
+% the y-file to warp the image at the next stage.
