@@ -1,4 +1,4 @@
-function SCallpoints = ScalpGM_getCH3d (scalpimage)
+function SCpoints = ScalpGM_getCH3d (scalpimage)
 %ScalpGM_getCH3d - Returns points in convex hull of scalp
 %  
 % SCallpoints = ScalpGM_getCH3d(scalpimage)
@@ -6,7 +6,7 @@ function SCallpoints = ScalpGM_getCH3d (scalpimage)
 % Inputs:
 %   scalpimage  : SPM-derived image of the scalp layer
 % Outputs:
-%   SCallpoints : 3d convex hull of scalp
+%   SCpoints : points that lie on 3d convex hull of scalp
 
 % - 2 Jan 2017
 
@@ -43,9 +43,30 @@ for i=10:SCvol.dim(3)
 %     end
 end
 
+% K = convhull(X,Y,Z) returns the 3-D convex hull of the points (X,Y,Z),
+% where X, Y, and Z are column vectors. K is a triangulation representing 
+% the boundary of the convex hull. K is of size mtri-by-3, where mtri is 
+% the number of triangular facets. That is, each row of K is a triangle 
+% defined in terms of the point indices.
 SCallpoints = convhull(SC);
 
 % size(SC)
+s = size(SCallpoints);
+
+% trimesh(SCallpoints,SC(:,1),SC(:,2),SC(:,3))
+
+
+% This is ugly, but...
+R = reshape(SCallpoints,[s(1)*s(2) 1]);
+U = unique(R);
+size(U);
+SCpoints = SC(U,:);
+
+
+
+% for i=1:size(SCpoints,1)
+%     SCpoints(i,:) = SC(
+
 
 
 % imshow(SCimg)
