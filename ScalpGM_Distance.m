@@ -15,8 +15,6 @@ function distfile = ScalpGM_Distance (scalp_points,gmfile)
 %% Read GM data
 GMvol = spm_vol(gmfile);
 GMimg = spm_read_vols (GMvol);
-% GMimg = spm_slice_vol(GMvol,spm_matrix([0 0 100]),GMvol(1).dim(1:2),0);
-% GMimg = spm_slice_vol(GMvol,spm_matrix([256 256 175]),GMvol(1).dim(1:2),0);
 GMmask = GMimg>0.9;
 
 
@@ -50,7 +48,6 @@ S = size(Dimg);
 
 I = find(GMimg>0.9);
 D = zeros(length(I),2);
-%parfor i=1:length(I)
  for i=1:length(I)
     % convert back to coordinate x,y,z
     [x,y,z] = ind2sub(S,I(i));
@@ -71,65 +68,4 @@ Dimg(D(:,1))=D(:,2);
 spm_write_vol(Dvol,Dimg);
 % matname = fullfile(pth,['d', nam, '.mat']); %'d'istance
 % save (matname, 'gmfile','Dimg')
-%%
 
-
-
-
-
-%{
-% get biggest region
-stats = regionprops (GMmask, 'Area','PixelList','ConvexHull');
-nblobs = length(stats);
-mx = [0 0];
-for i=1:nblobs
-    if stats(i).Area > mx(2)
-        mx = [i stats(i).Area];
-    end
-end
-GM = stats(mx(1)).PixelList;
-
-
-%% Distance from GM points to scalp
-
-Dimg = GMimg;
-Dvol = GMvol;
-D = zeros(size(GM,1),1);
-for i=1:size(GM,1)
-    distvec = sqrt( (scalp_points(:,1)-GM(i,1)).^2 + (scalp_points(:,2)-GM(i,2)).^2 );
-    [val,pos] = min( distvec );
-    D(i) = val;
-    line ([GM(i,1) scalp_points(pos,1)] , [GM(i,2) scalp_points(pos,2)])
-end
-
-D = D ./ (max(D));
-
-
-%% Plots
-%
-% if doplot==1
-%     plot (CH(:,1),CH(:,2),'k-')
-%     hold on
-%     for i=1:length(D)
-%         plot (GM(i,1),GM(i,2),'.','Color',[D(i) .5 .5]);
-%     end
-%     colormap(jet)
-% end
-
-%% Write image
-Vgm = spm_vol(gmfile);
-
-fprintf('Vgm size %d', Vgm.dim);
-fprintf('D size   %d', size(D));
-
-V.fname = ['d' Vgm.fname];
-V.dim = Vgm.dim; %size (D);
-V.dt = Vgm.dt;
-V.mat = Vgm.mat;
-V.pinfo = Vgm.pinfo;
-spm_write_vol(V,D);
-
-
-%%
-
-%}
