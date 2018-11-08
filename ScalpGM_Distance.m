@@ -38,11 +38,11 @@ S = size(Dimg);
 %     for y=1:GMvol.dim(2)
 %         for x=1:GMvol.dim(1)
 %             if GMmask(x,y,z)==1
-%                 % voxel==1 so get dist and write
-%                 %distvec = sqrt( (scalp_points(:,1)-GMmask(i,1)).^2 + (scalp_points(:,2)-GM(i,2)).^2 );
+%                 voxel==1 so get dist and write
+%                 distvec = sqrt( (scalp_points(:,1)-GMmask(i,1)).^2 + (scalp_points(:,2)-GM(i,2)).^2 );
 %                 distvec = sqrt( (scalp_points(:,1)-x).^2 + (scalp_points(:,2)-y).^2 + (scalp_points(:,3)-z).^2);
 %                 [d,pos] = min( distvec );
-%                 Dimg(x,y,z) = d/100;
+%                 Dimg(x,y,z) = d;
 %             end
 %         end
 %     end
@@ -58,7 +58,7 @@ D = zeros(length(I),2);
     distvec = sqrt( (scalp_points(:,1)-x).^2 + (scalp_points(:,2)-y).^2 + (scalp_points(:,3)-z).^2);
     [d,pos] = min( distvec );
     %Dimg(I(i)) = d/100;
-    D(i,:) = [I(i) d/100];
+    D(i,:) = [I(i) d/100]; 
 end
 
 Dimg(D(:,1))=D(:,2);
