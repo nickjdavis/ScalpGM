@@ -16,7 +16,7 @@ SCvol = spm_vol(scalpimage);
 SCallpoints = [];
 SC = [];
 
-for i=10:SCvol.dim(3)
+for i=1:SCvol.dim(3)
     %i
     SCimg = spm_slice_vol(SCvol,spm_matrix([0 0 i]),SCvol(1).dim(1:2),0);
     [r,c] = find(SCimg>0.9);
@@ -33,6 +33,9 @@ end
 % the boundary of the convex hull. K is of size mtri-by-3, where mtri is 
 % the number of triangular facets. That is, each row of K is a triangle 
 % defined in terms of the point indices.
+% NB: K = convhull(...,'simplify', logicalvar) returns a smaller number of
+% points, which are only the ones that contribute to the area/volume of 
+% the shape - not used here but may help performance.
 SCallpoints = convhull(SC);
 
 % size(SC)
