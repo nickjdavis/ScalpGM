@@ -19,8 +19,9 @@ for i=1:n
     % https://brainder.org/2011/08/13/converting-oasis-brains-to-nifti/
     % fslorient -setsform  0 0 -1.25 0  1 0 0 0  0 1 0 0  0 0 0 1
     V.mat = [0 0 -1.25 0 ; 1 0 0 0 ; 0 1 0 0 ; 0 0 0 1];
-    newname = strrep(f,'.img','.nii');
-    V.fname=newname;
+    V.private.mat =  [0 0 -1.25 0 ; 1 0 0 0 ; 0 1 0 0 ; 0 0 0 1];
+    V.private.mat0 = [0 0 -1.25 0 ; 1 0 0 0 ; 0 1 0 0 ; 0 0 0 1];
+    V.fname=strrep(f,'.img','.nii');;
     spm_write_vol(V,ima);
 
 end
