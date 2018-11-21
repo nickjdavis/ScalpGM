@@ -12,19 +12,27 @@ n = length(d);
 for i=1:n
     % open hdr
     f = d(i).name;
-    % See Jose Vicente Manjon Herrera in this thread:
-    % https://www.jiscmail.ac.uk/cgi-bin/webadmin?A2=spm;3671aad3.1110
-    % NB: John Ashburner's answer leads to errors
+    disp(f)
     V=spm_vol(f);
     ima=spm_read_vols(V);
-    V.fname='filename_new.nii';
+    % Rotate images, OASIS are in an odd orientation...
+    % https://brainder.org/2011/08/13/converting-oasis-brains-to-nifti/
+    % fslorient -setsform  0 0 -1.25 0  1 0 0 0  0 1 0 0  0 0 0 1
+    V.mat = [0 0 -1.25 0 ; 1 0 0 0 ; 0 1 0 0 ; 0 0 0 1];
+    newname = strrep(f,'.img','.nii');
+    V.fname=newname;
     spm_write_vol(V,ima);
 
 end
 
 % Create new subfolders for OASIS and for NII
-mkdir('NII');
-mkdir('OASIS');
+try
+    mkdir('NII');
+    mkdir('OASIS');
+catch
+    % issues a warning if dirs exist
+    % todo - suppress warning, or check for dir
+end
 % Move files
 s = movefile('*.nii','NII');
 if s~=1

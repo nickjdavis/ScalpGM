@@ -21,12 +21,14 @@ dirin = cd();
 cd (folder);
 % file mask for scans
 % d = dir ([folder '\*.img']);
-d = dir ('*.img');
+%d = dir ('*.img');
+d = dir('*.nii');
 n = length(d);
 
 % Link to TPM file
 % TODO - get this rel to SPM path
-TPMfile = 'C:\SPM\spm12\spm12\tpm\tpm.nii';
+%TPMfile = 'C:\SPM\spm12\spm12\tpm\tpm.nii';
+TPMfile = 'C:\Program Files\MATLAB\spm12b\tpm\tpm.nii';
 
 disp (sprintf('Found %d files',n))
 

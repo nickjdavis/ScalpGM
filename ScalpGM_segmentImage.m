@@ -57,6 +57,8 @@ spm_jobman('run',matlabbatch);
 
 [pth,nam,ext] = spm_fileparts(structuralimage);
 disp (['----- ' pth])
-scalpfile = [pth '\' 'c5' nam '.nii'];
-gmfile = [pth '\' 'c1' nam '.nii'];
+% scalpfile = [pth '\' 'c5' nam '.nii'];
+% gmfile = [pth '\' 'c1' nam '.nii'];
+scalpfile = ['c5' nam '.nii'];
+gmfile = ['c1' nam '.nii'];
 
