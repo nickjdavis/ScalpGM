@@ -13,7 +13,17 @@ function ScalpGM_MeanImage (filelist)
 
 % - 2 Jan 2017
 
-nFiles = length(filelist);
+if iscell(filelist)
+    % this is what we expect
+    flist = filelist;
+else
+    % assume log file
+    fid = fopen(filelist);
+    R = textscan(fid,'%D%s%s%s%s%s%s','Delimiter','\t');
+    flist = R{6};
+end
+
+nFiles = length(flist);
 
 % These are standard sizes of MNI image in SPM
 mxX=79; mxY=95; mxZ=79;
@@ -23,7 +33,7 @@ V = zeros(mxX,mxY,mxZ,nFiles); % All voxels, ready for SD
 
 for i=1:nFiles
     % import file
-    distfile = filelist{i}
+    distfile = flist{i}
     Dvol = spm_vol(distfile);
     Dvol.dim(3)
     for z=1:Dvol.dim(3)
