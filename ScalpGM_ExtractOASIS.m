@@ -16,11 +16,18 @@ n = length(d);
 F = []; for i=1:n
     F = [F; d(i).name];
 end
-reorient_oasis(F);
+oasis_reorient(F);
 
 
 if ~strcmp(copyto, '')
     % copy file(s) to new folder
+    mkdir(copyto);
+    % Move files
+    % todo - F contains .img so need .hdr as well
+    s = movefile(F,copyto);
+    if s~=1
+        disp('Move error');
+    end
 end
 
 %{
