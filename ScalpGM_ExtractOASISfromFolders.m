@@ -11,30 +11,43 @@ cd (folder)
 d = dir;
 n = length(d);
 
-dirlist = []; 
-for i=1:n
-    if d(i).isdir == true
-        dirlist = [dirlist; d(i).name];
-    end
-end
+dirlist = {};
+% for i=1:n
+%     if d(i).isdir == true
+%         dirlist = {dirlist; d(i).name};
+%     end
+% end
 
 
 % For each folder, make new ScalpGM folder, then find data files, move to
 % folder and reorient.
 
-n = length (dirlist);
+
 for i=1:n
-    basedir = d(i).name;
-    mkdir ([basedir '\ScalpGM']);
-    % copy data file to new folder
-    oasisfile = ''; %% figure this out
-    copyfile (src,dest)
-    % reorient the data
-    %%%oasis_reorient(newoasisfile);
+    if d(i).isdir==true
+        basedir = d(i).name
+        if ~(strcmp(basedir,'.')||strcmp(basedir,'..'))
+            %basedir = dirlist{i}
+            SGMdir = strcat(basedir,'\ScalpGM');
+            mkdir (SGMdir);
+            % copy data file to new folder
+            srcfolder = strcat(basedir,'\PROCESSED\MPRAGE\SUBJ_111');
+            filelist = dir(strcat(srcfolder,'\*.img'));
+            if ~isempty(filelist)
+                imgfile = filelist.name
+                hdrfile = strrep(imgfile,'.img','.hdr')
+                copyfile (strcat(srcfolder,'\',imgfile),SGMdir)
+                copyfile (strcat(srcfolder,'\',hdrfile),SGMdir)
+            end
+            
+            % reorient the data
+            %%%oasis_reorient(newoasisfile);
+        end
+    end
 end
 
 
-
+cd (dirin)
 
 %{
 % OLD - trying to manually reorient
@@ -78,5 +91,3 @@ end
 %     disp('Move error: IMG');
 % end
 
-
-cd(dirin)
