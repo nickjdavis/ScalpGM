@@ -1,12 +1,12 @@
 
-function ScalpGM (folder,benchmark)
+function ScalpGM (logfile,benchmark)
 %ScalpGM - Calculate distance from scalp to each grey matter voxel in
 % a structural MRI
 %  
-% ScalpGM(folder, benchmark)
+% ScalpGM(filetable, benchmark)
 % 
 % Inputs:
-%   folder    : Folder containing images for processing
+%   filetable : CSV file (opened as table) with images for processing
 %   benchmark : 1=yes, 0=no
 
 % - 2 Jan 2017
@@ -17,13 +17,19 @@ if nargin<2
     benchmark=0;
 end
 
-dirin = cd();
-cd (folder);
-% file mask for scans
-% d = dir ([folder '\*.img']);
-%d = dir ('*.img');
-d = dir('*.nii');
-n = length(d);
+% dirin = cd();
+% cd (folder);
+% % file mask for scans
+% % d = dir ([folder '\*.img']);
+% %d = dir ('*.img');
+% d = dir('*.nii');
+% n = length(d);
+
+% readtable
+T = readtable(logfile);
+I = T.imgfile;
+n = length(I);
+
 
 % Link to TPM file
 % TODO - get this rel to SPM path
@@ -41,12 +47,13 @@ disp (sprintf('Found %d files',n))
 % else
 %     %
 % end
-isPar = 0;
+% isPar = 0;
 
 for i=1:n
     tic
-    T1file = d(i).name;
-    fprintf('Processing file %d of %d : %s',i,n,T1file)
+    T1file = I{i}; %d(i).name;
+    [pathstr,fname,ext] = fileparts(T1file);
+    fprintf('Processing file %d of %d : %s',i,n,fname)
     % OASIS brains need to be be rescaled
     %uT1file = nii_unity(T1file);
     %snfile = ScalpGM_getSN (T1file);
@@ -59,7 +66,7 @@ for i=1:n
         toc1 = toc;
         % get convex hull
         %     scalp_points = ScalpGM_getCH (scalpfile);
-        scalp_points = ScalpGM_getCH3d (scalpfile);
+        scalp_points = ScalpGM_getCH3d (strcat(pathstr,'\',scalpfile));
         toc2=toc;
         %disp(['-- CH file    : ' scalp_points])
         % TODO: smooth convex hull
@@ -67,7 +74,7 @@ for i=1:n
         %if (isPar)
         %    distfile = ScalpGM_Distance_par (scalp_points,gmfile);
         %else
-            distfile = ScalpGM_Distance (scalp_points,gmfile);
+            distfile = ScalpGM_Distance (scalp_points,strcat(pathstr,'\',gmfile));
         %end
         toc3=toc;
         disp(['-- Dist file  : ' distfile])
@@ -112,7 +119,7 @@ end
 
 
 % clean up and exit
-cd (dirin)
-if isPar
-    delete(pool);
-end
+% cd (dirin)
+% if isPar
+%     delete(pool);
+% end
