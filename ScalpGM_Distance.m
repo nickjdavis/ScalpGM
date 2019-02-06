@@ -23,10 +23,10 @@ GMmask = GMimg>0.9;
 Dvol = GMvol;
 Dimg = GMimg;
 [pth,nam,ext,vol] = spm_fileparts( deblank (gmfile));
-% outName = fullfile(pth,['d', nam, ext]);
-outName = strcat('d',nam,ext);
+outName = fullfile(pth,['d', nam, ext]);
+% outName = strcat('d',nam,ext);
 Dvol.fname = outName;
-distfile = outName;
+distfile = strcat('d',nam,ext);;
 % Dvol.fname = 'distance.nii';
 % GMvol.dim
 % % Dvol.dim = [256 256 1]
