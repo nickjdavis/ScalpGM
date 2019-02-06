@@ -67,7 +67,7 @@ for i=1:n
         disp(['-- Dist file  : ' distfile])
         % warp file
         % NB new - pass in TPM file
-        [mnifile,yfile] = ScalpGM_warpMNI (T1file,distfile,TPMfile);
+        [mnifile,yfile] = ScalpGM_warpMNI (T1file,strcat(pathstr,'\',distfile),TPMfile);
         toc4=toc;
         disp(['-- MNI file   : ' mnifile])
         
@@ -119,5 +119,5 @@ end
 % TODO - writetable
 
 imgfile = I;
-outTable = table(imgfile, scalp, GMfile, dist, MNI);
+outTable = table(imgfile, scalp, GM, dist, MNI);
 writetable (outTable,logfile); % NB default behaviour is to overwrite file
