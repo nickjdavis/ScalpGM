@@ -2,9 +2,9 @@
 function ScalpGM (logfile,benchmark)
 %ScalpGM - Calculate distance from scalp to each grey matter voxel in
 % a structural MRI
-%  
+%
 % ScalpGM(filetable, benchmark)
-% 
+%
 % Inputs:
 %   filetable : CSV file (opened as table) with images for processing
 %   benchmark : 1=yes, 0=no
@@ -24,6 +24,10 @@ I = T.imgfile;
 n = length(I);
 
 % TODO - new table columns, and create new table
+scalp = {};
+GM = {};
+dist = {};
+MNI = {};
 
 % Link to TPM file
 % TODO - get this rel to SPM path
@@ -57,7 +61,7 @@ for i=1:n
         %     scalp_points = ScalpGM_getCH (scalpfile);
         scalp_points = ScalpGM_getCH3d (strcat(pathstr,'\',scalpfile));
         toc2=toc;
-            distfile = ScalpGM_Distance (scalp_points,strcat(pathstr,'\',gmfile));
+        distfile = ScalpGM_Distance (scalp_points,strcat(pathstr,'\',gmfile));
         %end
         toc3=toc;
         disp(['-- Dist file  : ' distfile])
@@ -68,6 +72,10 @@ for i=1:n
         disp(['-- MNI file   : ' mnifile])
         
         % TODO - compile filenames into new table
+        scalp = [scalp; scalpfile];
+        GM = [GM; gmfile];
+        dist = [dist; distfile];
+        MNI = [MNI; mnifile];
         
         % output???
         if benchmark==1
@@ -77,27 +85,31 @@ for i=1:n
         
         % write log file
         % NB this is written in the target directory
-%         disp('-- writing log file')
-%         logfile = 'ScalpGM_log.txt';
-%         logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
-%             T1file, scalpfile, gmfile, distfile, mnifile,yfile);
-%         fid = fopen(logfile,'a');
-%         fprintf(fid,'%s',logstr);
-%         fclose(fid);
-%         disp('-- closing log file')
-
-
+        %         disp('-- writing log file')
+        %         logfile = 'ScalpGM_log.txt';
+        %         logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
+        %             T1file, scalpfile, gmfile, distfile, mnifile,yfile);
+        %         fid = fopen(logfile,'a');
+        %         fprintf(fid,'%s',logstr);
+        %         fclose(fid);
+        %         disp('-- closing log file')
+        
+        
     catch
         % TODO - add 'fail' to table for output
-       
-%         disp('-- writing log file (fail)')
-%         logfile = 'ScalpGM_log.txt';
-%         logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
-%             T1file, 'fail', 'fail', 'fail', 'fail','fail');
-%         fid = fopen(logfile,'a');
-%         fprintf(fid,'%s',logstr);
-%         fclose(fid);
-%         disp('-- closing log file (fail)')
+        scalp = [scalp; 'FAIL'];
+        GM = [GM; 'FAIL'];
+        dist = [dist; 'FAIL'];
+        MNI = [MNI; 'FAIL'];
+        
+        %         disp('-- writing log file (fail)')
+        %         logfile = 'ScalpGM_log.txt';
+        %         logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
+        %             T1file, 'fail', 'fail', 'fail', 'fail','fail');
+        %         fid = fopen(logfile,'a');
+        %         fprintf(fid,'%s',logstr);
+        %         fclose(fid);
+        %         disp('-- closing log file (fail)')
         disp(lasterr)
     end
     %plot3 (scalp_points(:,1),scalp_points(:,2),scalp_points(:,3),'.')
@@ -106,4 +118,6 @@ end
 
 % TODO - writetable
 
-
+imgfile = I;
+outTable = table(imgfile, scalp, GMfile, dist, MNI);
+writetable (outTable,logfile); % NB default behaviour is to overwrite file
