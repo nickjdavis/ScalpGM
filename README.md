@@ -13,6 +13,19 @@ ScalpGM requires SPM to be installed. The code was developed with SPM12b, but ea
 ScalpGM needs data to work with. The data for testing this package came from the [Open Access Series of Imaging Studies, or OASIS](https://www.oasis-brains.org/). The images of non-demented participants from OASIS-1 was used in development.
 
 
+### Running ScalpGM
+
+ScalpGM takes as input a CSV-format file with a single column labelled 'imgfile', containing a list of T1 images. For example...
+
+```Matlab
+>> type T1files.txt
+
+XXX
+
+>> ScalpGM('T1files.txt')
+```
+The output from this is a series of extra columns in the input file, with the names of the processed files.
+
 
 ### Current state:
 
@@ -23,18 +36,18 @@ ScalpGM needs data to work with. The data for testing this package came from the
 
 ### Branches
 * Master
- * Latest version that passes tests
- * Not guaranteed to be robust across platforms
- * Not guaranteed to produce accurate data
+  * Latest version that passes tests
+  * Not guaranteed to be robust across platforms
+  * Not guaranteed to produce accurate data
 * CribGoch
- * Working version
- * Extract data from OASIS
- * Runs cleanly and efficiently
- * Shareable code
+  * Working version
+  * Extract data from OASIS
+  * Runs cleanly and efficiently
+  * Shareable code
 * Elidir
- * Later modifications/tweaks
- * Parallel code
- * Integrate with SPM
+  * Later modifications/tweaks
+  * Parallel code
+  * Integrate with SPM
 
 
 ### TODO
