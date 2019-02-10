@@ -29,7 +29,7 @@ nFiles = length(flist);
 mxX=79; mxY=95; mxZ=79;
 Msum = zeros(mxX,mxY,mxZ);     % Sum of valid voxel values
 Mvox = zeros(mxX,mxY,mxZ);     % No of valid voxels per division
-V = zeros(mxX,mxY,mxZ,nFiles); % All voxels, ready for SD
+% V = zeros(mxX,mxY,mxZ,nFiles); % All voxels, ready for SD
 
 for i=1:nFiles
     % import file
@@ -42,7 +42,7 @@ for i=1:nFiles
         if length(r)>2
             Mvox(r,c,z) = Mvox(r,c,z)+1;
             Msum(r,c,z) = Msum(r,c,z)+Dimg(r,c);
-            V(r,c,z,i)  = Dimg(r,c);
+%             V(r,c,z,i)  = Dimg(r,c);
         end
     end
 end
@@ -63,48 +63,48 @@ size(Dvol)
 %     Mnum(Dmask) = Mnum(Dmask)+Dimg(Dmask);
 % end
 % end
-
-% % mean image is num./den
-% disp('Writing mean image')
-% %%%M = Mnum./Msum;
-% M = Msum ./ Mvox;
-% % size(M)
-% % plot3(M(:,1),M(:,2),M(:,3),'.')
-% % save mean image
-% Mvol = Dvol;
-% outName = 'meanimage_new.nii';
-% Mvol.fname = outName;
-% spm_write_vol(Mvol,M);
 %} End HIDE
+% mean image is num./den
+disp('Writing mean image')
+%%%M = Mnum./Msum;
+M = Msum ./ Mvox;
+% size(M)
+% plot3(M(:,1),M(:,2),M(:,3),'.')
+% save mean image
+Mvol = Dvol;
+outName = 'meanimage_new.nii';
+Mvol.fname = outName;
+spm_write_vol(Mvol,M);
+
 
 % Alt version of mean image - use V
-disp('Alternative mean image')
-outName = 'meanimage_alt.nii';
-Vm = zeros(mxX,mxY,mxZ);
-Vm(:,:,:) = mean (V,4);
-size(Vm)
-Mvol = Dvol;
-Mvol.fname = outName;
-spm_write_vol(Mvol,Vm);
+% disp('Alternative mean image')
+% outName = 'meanimage_alt.nii';
+% Vm = zeros(mxX,mxY,mxZ);
+% Vm(:,:,:) = mean (V,4);
+% size(Vm)
+% Mvol = Dvol;
+% Mvol.fname = outName;
+% spm_write_vol(Mvol,Vm);
 % Standard deviation image - use V
-disp('Alternative SD image')
-outName = 'meanimage_alt_sd.nii';
-Sm = zeros(mxX,mxY,mxZ);
-Sm(:,:,:) = std (V,0,4);
-Mvol = Dvol;
-Mvol.fname = outName;
-spm_write_vol(Mvol,Sm);
-% Coefficient of variation image - SD/mean
-% Lots of NaNs here (no infs) - not in prev steps
-disp('CoV image')
-outName = 'meanimage_alt_cov.nii';
-% Cm = zeros(79,95,79);
-Cm = Sm./Vm;
-Mvol = Dvol;
-Mvol.fname = outName;
-spm_write_vol(Mvol,Cm);
-N = size(find(isnan(Cm)==1))
-M = size(find(isinf(Cm)==1))
+% disp('Alternative SD image')
+% outName = 'meanimage_alt_sd.nii';
+% Sm = zeros(mxX,mxY,mxZ);
+% Sm(:,:,:) = std (V,0,4);
+% Mvol = Dvol;
+% Mvol.fname = outName;
+% spm_write_vol(Mvol,Sm);
+% % Coefficient of variation image - SD/mean
+% % Lots of NaNs here (no infs) - not in prev steps
+% disp('CoV image')
+% outName = 'meanimage_alt_cov.nii';
+% % Cm = zeros(79,95,79);
+% Cm = Sm./Vm;
+% Mvol = Dvol;
+% Mvol.fname = outName;
+% spm_write_vol(Mvol,Cm);
+% N = size(find(isnan(Cm)==1));
+% M = size(find(isinf(Cm)==1));
 
 
 % 
