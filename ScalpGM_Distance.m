@@ -55,8 +55,8 @@ D = zeros(length(I),2);
     % do distvec on it
     distvec = sqrt( (scalp_points(:,1)-x).^2 + (scalp_points(:,2)-y).^2 + (scalp_points(:,3)-z).^2);
     [d,pos] = min( distvec );
-    %Dimg(I(i)) = d/100;
-    D(i,:) = [I(i) d/100]; 
+    %D(i,:) = [I(i) d/100]; 
+    D(i,:) = [I(i) d/10]; 
 end
 
 Dimg(D(:,1))=D(:,2);
