@@ -3,6 +3,12 @@ function ScalpGM_TestGMSc (filelist)
 T = readtable(filelist);
 nfiles = size(T,1)
 
+% cmap1 = colormap('gray');
+% cmap2 = jet(size(cmap1,1));
+% cmap = [cmap1;cmap2];
+% colormap(cmap)
+
+
 figure;
 
 for i=1:nfiles
@@ -19,10 +25,10 @@ for i=1:nfiles
     X = gm.private.dat;
     Y = di.private.dat;
     subplot(1,2,1)
-    imagesc(X(:,:,100)); colormap(gca,'gray');
+    imagesc(X(:,:,100)); %colormap(gca,'gray'); freezeColors;
     nn = strrep(t.GM{:},'_','\_'); title(nn)
     subplot(1,2,2)
-    imagesc(Y(:,:,100)); colormap(gca,'jet');
+    imagesc(Y(:,:,100)); %colormap(gca,'jet'); freezeColors;
     nn = strrep(t.dist{:},'_','\_'); title(nn)
     waitforbuttonpress
 end
