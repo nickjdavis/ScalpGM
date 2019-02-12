@@ -40,7 +40,7 @@ end
 mxX=79; mxY=95; mxZ=79;
 Msum = zeros(mxX,mxY,mxZ);     % Sum of valid voxel values
 Mvox = zeros(mxX,mxY,mxZ);     % No of valid voxels per division
-% V = zeros(mxX,mxY,mxZ,nFiles); % All voxels, ready for SD
+V = zeros(mxX,mxY,mxZ,nFiles); % All voxels, ready for SD
 
 for i=1:nFiles
     % import file
@@ -58,8 +58,6 @@ for i=1:nFiles
         end
     end
 end
-
-size(Dvol)
 
 
 % % % %{ HIDE
@@ -92,8 +90,14 @@ size(Dvol)
 % Alt version of mean image - use V
 disp('Alternative mean image')
 outName = 'meanimage_alt.nii';
-Vm = zeros(mxX,mxY,mxZ);
-Vm(:,:,:) = mean (V,4);
+% Vm = zeros(mxX,mxY,mxZ);
+% Vm(:,:,:) = mean (V,4);
+Vm = ones(mxX,mxY,mxZ);
+mV4 = mean(V,4); 
+disp('-Size mV4')
+size(mV4)
+Vm = Vm.*mean(V,4);
+disp('-Size Vm')
 size(Vm)
 Mvol = Dvol;
 Mvol.fname = outName;
@@ -115,6 +119,7 @@ Cm = Sm./Vm;
 Mvol = Dvol;
 Mvol.fname = outName;
 spm_write_vol(Mvol,Cm);
-N = size(find(isnan(Cm)==1));
-M = size(find(isinf(Cm)==1));
+% disp('-Count NaNs')
+% N = size(find(isnan(Cm)==1))
+% M = size(find(isinf(Cm)==1))
 
