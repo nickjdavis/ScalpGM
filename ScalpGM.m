@@ -53,7 +53,7 @@ for i=1:n
     T1folder=D{i};
     T1file = I{i}; %d(i).name;
     %[pathstr,fname,ext] = fileparts(T1file);
-    fprintf('Processing file %d of %d : %s',i,n,fname)
+    fprintf('Processing file %d of %d : %s',i,n,T1file)
     try
         [scalpfile, gmfile] = ScalpGM_segmentImage (strcat(T1folder,'\',T1file),TPMfile);
         disp(['-- Scalp file : ' scalpfile])
