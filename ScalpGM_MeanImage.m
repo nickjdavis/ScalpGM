@@ -22,11 +22,13 @@ else
     T = readtable(filelist);
     nFiles = size(T,1);
     F = {};
+    D = T.imgfolder;
     I = T.imgfile;
     M = T.MNI;
     for i=1:nFiles
         % get folder
-        [p,n,e]=fileparts(I{i});
+        %[p,n,e]=fileparts(I{i});
+        p = D{i};
         % get MNI file
         f=strcat(p,'\',M{i});
         % add folder+mni to F

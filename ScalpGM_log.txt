@@ -1,2 +1,9 @@
 14-Dec-2014 14:10:34	xxx.yyy
 14-Dec-2014 14:11:16	xxx.zzz
+05-Feb-2019 14:44:45	C:\Users\psdavinj\Desktop\Oasis\test\OAS1_0002_MR1\ScalpGM\OAS1_0002_MR1_mpr_n4_anon_sbj_111.img	fail	fail	fail	fail	fail
+05-Feb-2019 14:51:32	C:\Users\psdavinj\Desktop\Oasis\test\OAS1_0004_MR1\ScalpGM\OAS1_0004_MR1_mpr_n4_anon_sbj_111.img	fail	fail	fail	fail	fail
+05-Feb-2019 14:58:05	C:\Users\psdavinj\Desktop\Oasis\test\OAS1_0011_MR1\ScalpGM\OAS1_0011_MR1_mpr_n4_anon_sbj_111.img	fail	fail	fail	fail	fail
+05-Feb-2019 16:25:49	C:\Users\psdavinj\Desktop\Oasis\test\OAS1_0002_MR1\ScalpGM\OAS1_0002_MR1_mpr_n4_anon_sbj_111.img	fail	fail	fail	fail	fail
+05-Feb-2019 16:40:26	C:\Users\psdavinj\Desktop\Oasis\test\OAS1_0002_MR1\ScalpGM\OAS1_0002_MR1_mpr_n4_anon_sbj_111.img	c5OAS1_0002_MR1_mpr_n4_anon_sbj_111.nii	c1OAS1_0002_MR1_mpr_n4_anon_sbj_111.nii	C:\Users\psdavinj\Desktop\Oasis\test\OAS1_0002_MR1\ScalpGM\dc1OAS1_0002_MR1_mpr_n4_anon_sbj_111.nii	wdc1OAS1_0002_MR1_mpr_n4_anon_sbj_111.nii	y_OAS1_0002_MR1_mpr_n4_anon_sbj_111.nii
+05-Feb-2019 16:55:46	C:\Users\psdavinj\Desktop\Oasis\test\OAS1_0004_MR1\ScalpGM\OAS1_0004_MR1_mpr_n4_anon_sbj_111.img	c5OAS1_0004_MR1_mpr_n4_anon_sbj_111.nii	c1OAS1_0004_MR1_mpr_n4_anon_sbj_111.nii	C:\Users\psdavinj\Desktop\Oasis\test\OAS1_0004_MR1\ScalpGM\dc1OAS1_0004_MR1_mpr_n4_anon_sbj_111.nii	wdc1OAS1_0004_MR1_mpr_n4_anon_sbj_111.nii	y_OAS1_0004_MR1_mpr_n4_anon_sbj_111.nii
+05-Feb-2019 17:10:43	C:\Users\psdavinj\Desktop\Oasis\test\OAS1_0011_MR1\ScalpGM\OAS1_0011_MR1_mpr_n4_anon_sbj_111.img	c5OAS1_0011_MR1_mpr_n4_anon_sbj_111.nii	c1OAS1_0011_MR1_mpr_n4_anon_sbj_111.nii	C:\Users\psdavinj\Desktop\Oasis\test\OAS1_0011_MR1\ScalpGM\dc1OAS1_0011_MR1_mpr_n4_anon_sbj_111.nii	wdc1OAS1_0011_MR1_mpr_n4_anon_sbj_111.nii	y_OAS1_0011_MR1_mpr_n4_anon_sbj_111.nii

@@ -13,7 +13,8 @@ figure;
 
 for i=1:nfiles
     t = T(i,:);
-    [p,n,e] = fileparts(t.imgfile{:});
+    %%%[p,n,e] = fileparts(t.imgfile{:});
+    p = t.imgfolder{:};
     % open scalp file
     %sc = ScalpGM_getCH3d (strcat(p,'\',t.scalp{:}));
     % open GM file

@@ -20,6 +20,7 @@ end
 
 % readtable
 T = readtable(logfile);
+D = T.imgfolder;
 I = T.imgfile;
 n = length(I);
 
@@ -49,25 +50,26 @@ disp (sprintf('Found %d files',n))
 
 for i=1:n
     tic
+    T1folder=D{i};
     T1file = I{i}; %d(i).name;
-    [pathstr,fname,ext] = fileparts(T1file);
+    %[pathstr,fname,ext] = fileparts(T1file);
     fprintf('Processing file %d of %d : %s',i,n,fname)
     try
-        [scalpfile, gmfile] = ScalpGM_segmentImage (T1file,TPMfile);
+        [scalpfile, gmfile] = ScalpGM_segmentImage (strcat(T1folder,'\',T1file),TPMfile);
         disp(['-- Scalp file : ' scalpfile])
         disp(['-- Grey matter: ' gmfile])
         toc1 = toc;
         % get convex hull
         %     scalp_points = ScalpGM_getCH (scalpfile);
-        scalp_points = ScalpGM_getCH3d (strcat(pathstr,'\',scalpfile));
+        scalp_points = ScalpGM_getCH3d (strcat(T1folder,'\',scalpfile));
         toc2=toc;
-        distfile = ScalpGM_Distance (scalp_points,strcat(pathstr,'\',gmfile));
+        distfile = ScalpGM_Distance (scalp_points,strcat(T1folder,'\',gmfile));
         %end
         toc3=toc;
         disp(['-- Dist file  : ' distfile])
         % warp file
         % NB new - pass in TPM file
-        [mnifile,yfile] = ScalpGM_warpMNI (T1file,strcat(pathstr,'\',distfile),TPMfile);
+        [mnifile,yfile] = ScalpGM_warpMNI (strcat(T1folder,'\',T1file),strcat(T1folder,'\',distfile),TPMfile);
         toc4=toc;
         disp(['-- MNI file   : ' mnifile])
         
@@ -117,7 +119,7 @@ end
 
 
 % TODO - writetable
-
+imgfolder = D;
 imgfile = I;
-outTable = table(imgfile, scalp, GM, dist, MNI);
+outTable = table(imgfolder, imgfile, scalp, GM, dist, MNI);
 writetable (outTable,logfile); % NB default behaviour is to overwrite file

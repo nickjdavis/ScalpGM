@@ -3,7 +3,7 @@
 % - transforms files to SPM-aligned space then returns list
 % folder is directory where subject data can be found
 
-function filelist = ScalpGM_ExtractOASISfromFolders (folder)
+function filetable = ScalpGM_ExtractOASISfromFolders (folder)
 
 
 dirin = cd;
@@ -11,6 +11,7 @@ cd (folder)
 d = dir;
 n = length(d);
 
+dirlist = {};
 filelist = {};
 % for i=1:n
 %     if d(i).isdir == true
@@ -41,10 +42,14 @@ for i=1:n
             end
             % reorient the data
             oasis_reorient(strcat(SGMdir,'\',imgfile));
-            filelist = [filelist; strcat(folder,'\',SGMdir,'\',imgfile)];
+            dirlist = [dirlist; strcat(folder,'\',SGMdir)]; 
+            filelist= [filelist; imgfile];
         end
     end
 end
 
-
+% This bit is ugly - to maintain naming consistency across files...
+imgfolder = dirlist;
+imgfile = filelist;
+filetable = table(imgfolder,imgfile);
 cd (dirin)
