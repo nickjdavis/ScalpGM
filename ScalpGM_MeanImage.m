@@ -39,7 +39,8 @@ end
 
 
 % These are standard sizes of MNI image in SPM
-mxX=79; mxY=95; mxZ=79;
+% mxX=79; mxY=95; mxZ=79;
+mxX=182; mxY=218; mxZ=182;
 Msum = zeros(mxX,mxY,mxZ);     % Sum of valid voxel values
 Mvox = zeros(mxX,mxY,mxZ);     % No of valid voxels per division
 V = zeros(mxX,mxY,mxZ,nFiles); % All voxels, ready for SD
