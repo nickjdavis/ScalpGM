@@ -41,88 +41,43 @@ end
 % These are standard sizes of MNI image in SPM
 % mxX=79; mxY=95; mxZ=79;
 mxX=182; mxY=218; mxZ=182;
-Msum = zeros(mxX,mxY,mxZ);     % Sum of valid voxel values
-Mvox = zeros(mxX,mxY,mxZ);     % No of valid voxels per division
-V = zeros(mxX,mxY,mxZ,nFiles); % All voxels, ready for SD
+ImageArray = zeros (mxX,mxY,mxZ,nFiles);
 
+disp('Adding image files...')
 for i=1:nFiles
     % import file
     distfile = F{i};
     disp(distfile)
     Dvol = spm_vol(distfile);
-    %Dvol.dim(3)
-    for z=1:Dvol.dim(3)
-        Dimg = spm_slice_vol(Dvol,spm_matrix([0 0 z]),Dvol(1).dim(1:2),0);
-        [r,c] = find(Dimg>0.1);
-        if length(r)>2
-            Mvox(r,c,z) = Mvox(r,c,z)+1;
-            Msum(r,c,z) = Msum(r,c,z)+Dimg(r,c);
-            V(r,c,z,i)  = Dimg(r,c);
-        end
-    end
+    ImageArray(:,:,:,i) = Dvol.private.dat;
 end
 
 
-% % % %{ HIDE
-% % % % % get mask
-% % % % Dmask = Dimg>0.01;
-% % % % % add mask voxels to denominator img
-% % % % % add values to numerator image
-% % % % if isempty(Mden)
-% % % %     Mden(Dmask) = 1;
-% % % %     Mnum(Dmask) = Dimg(Dmask);
-% % % % else
-% % % %     Mden(Dmask) = Mden(Dmask)+1;
-% % % %     Mnum(Dmask) = Mnum(Dmask)+Dimg(Dmask);
-% % % % end
-% % % % end
-% % % %} End HIDE
-% % % % mean image is num./den
-% % % disp('Writing mean image')
-% % % %%%M = Mnum./Msum;
-% % % M = Msum ./ Mvox;
-% % % % size(M)
-% % % % plot3(M(:,1),M(:,2),M(:,3),'.')
-% % % % save mean image
-% % % Mvol = Dvol;
-% % % outName = 'meanimage_new.nii';
-% % % Mvol.fname = outName;
-% % % spm_write_vol(Mvol,M);
+
+% Mean of ImageArray...
+M = mean(ImageArray,4);
+Mvol = Dvol;
+Mfname = 'new_new_new_mean.nii';
+Mvol.fname = Mfname;
+spm_write_vol(Mvol,M);
+disp (strcat('Mean image    : ', Mfname));
+
+% ...and standard deviation...
+S = std(ImageArray,0,4);
+Svol = Dvol;
+Sfname = 'new_new_new_std.nii';
+Svol.fname = Sfname;
+spm_write_vol(Svol,S);
+disp (strcat('Std dev image : ', Sfname));
+
+% ...and finally coefficient of variation
+C = S./M;
+Cvol = Dvol;
+Cfname = 'new_new_new_cov.nii';
+Cvol.fname = Cfname;
+spm_write_vol(Cvol,C);
+disp (strcat('CoV image     : ', Cfname));
+ 
 
 
-% Alt version of mean image - use V
-disp('Alternative mean image')
-outName = 'meanimage_alt.nii';
-% Vm = zeros(mxX,mxY,mxZ);
-% Vm(:,:,:) = mean (V,4);
-Vm = ones(mxX,mxY,mxZ);
-mV4 = mean(V,4); 
-disp('-Size mV4')
-size(mV4)
-Vm = Vm.*mean(V,4);
-disp('-Size Vm')
-size(Vm)
-Mvol = Dvol;
-Mvol.fname = outName;
-spm_write_vol(Mvol,Vm);
-% Standard deviation image - use V
-disp('Alternative SD image')
-outName = 'meanimage_alt_sd.nii';
-Sm = zeros(mxX,mxY,mxZ);
-Sm(:,:,:) = std (V,0,4);
-Mvol = Dvol;
-Mvol.fname = outName;
-spm_write_vol(Mvol,Sm);
-% Coefficient of variation image - SD/mean
-% Lots of NaNs here (no infs) - not in prev steps
-disp('CoV image')
-outName = 'meanimage_alt_cov.nii';
-% Cm = zeros(79,95,79);
-Cm = Sm./Vm;
-Mvol = Dvol;
-Mvol.fname = outName;
-spm_write_vol(Mvol,Cm);
-% disp('-Count NaNs')
-% N = size(find(isnan(Cm)==1))
-% M = size(find(isinf(Cm)==1))
 
