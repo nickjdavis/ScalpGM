@@ -11,7 +11,7 @@ function ScalpGM (logfile,benchmark)
 
 % - 20 Feb 2019
 %
-% - Approx 20 mins per image (1 Jan 2017)
+% - Approx 13 mins per image (26 Feb 2019)
 
 if nargin<2
     benchmark=0;
