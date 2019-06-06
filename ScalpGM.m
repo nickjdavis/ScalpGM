@@ -9,7 +9,7 @@ function ScalpGM (logfile,benchmark)
 %   filetable : CSV file (opened as table) with images for processing
 %   benchmark : 1=yes, 0=no
 
-% - 20 Feb 2019
+% - 6 June 2019
 %
 % - Approx 13 mins per image (26 Feb 2019)
 
