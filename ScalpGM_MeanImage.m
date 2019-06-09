@@ -17,6 +17,7 @@ if iscell(filelist)
     % this is what we expect
     F = filelist;
     nFiles = length(F);
+    disp(strcat('Found ',nFiles,' files.'))
 else
     % assume table file
     T = readtable(filelist);

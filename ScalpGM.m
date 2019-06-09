@@ -98,23 +98,13 @@ for i=1:n
         
         
     catch
-        % TODO - add 'fail' to table for output
+        % Writes 'fail' to table for output
         scalp = [scalp; 'FAIL'];
         GM = [GM; 'FAIL'];
         dist = [dist; 'FAIL'];
         MNI = [MNI; 'FAIL'];
-        
-        %         disp('-- writing log file (fail)')
-        %         logfile = 'ScalpGM_log.txt';
-        %         logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
-        %             T1file, 'fail', 'fail', 'fail', 'fail','fail');
-        %         fid = fopen(logfile,'a');
-        %         fprintf(fid,'%s',logstr);
-        %         fclose(fid);
-        %         disp('-- closing log file (fail)')
         disp(lasterr)
     end
-    %plot3 (scalp_points(:,1),scalp_points(:,2),scalp_points(:,3),'.')
 end
 
 

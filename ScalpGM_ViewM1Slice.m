@@ -14,7 +14,7 @@ imdata = im.private.dat;
 size(imdata)
 
 % select slice
-X = squeeze(imdata(:,120,:));
+X = squeeze(imdata(:,140,:));
 size(X)
 
 % display
