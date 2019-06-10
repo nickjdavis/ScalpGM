@@ -15,7 +15,7 @@ function distfile = ScalpGM_Distance (scalp_points,gmfile)
 %% Read GM data
 GMvol = spm_vol(gmfile);
 GMimg = spm_read_vols (GMvol);
-GMmask = GMimg>0.9;
+% GMmask = GMimg>0.9;
 
 
 %% Set up Distance image for output
@@ -56,12 +56,13 @@ D = zeros(length(I),2);
     distvec = sqrt( (scalp_points(:,1)-x).^2 + (scalp_points(:,2)-y).^2 + (scalp_points(:,3)-z).^2);
     [d,pos] = min( distvec );
     D(i,:) = [I(i) d/100]; % NB: Not sure if div by 100 is needed, but seems to prevent saturation
+    D(i,:) = [I(i) d]; % NB: Not sure if div by 100 is needed, but seems to prevent saturation
 end
 
 Dimg(D(:,1))=D(:,2);
 
 
-% hist(Dimg,100)
+figure; hist(Dimg(I),100)
 
 
 %% Write output image
