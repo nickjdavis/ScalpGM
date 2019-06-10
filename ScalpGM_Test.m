@@ -18,13 +18,15 @@ ScalpGM_MeanImage(txtfile)
 t2 = toc;
 
 
-str1 = strcat('Total elapsed time : ', num2str(t2),'\n');
+str1 = strcat('Total elapsed time : ', num2str(t2));
 str2 = strcat('ScalpGM time : ', num2str(t1), ' (or ', ...
     num2str(t1/nFiles), ' per file).');
+disp(str1)
+disp(str2)
 
 % txt = strcat('Elapsed time after ScalpGM: ', num2str(t1));
 % txt = strcat(txt, '. Then after MeanImage: ', num2str(t2), '.');
 
-txt = strcat(str1,str2);
+% txt = strcat(str1,str2);
 
-disp(txt)
+% disp(txt)

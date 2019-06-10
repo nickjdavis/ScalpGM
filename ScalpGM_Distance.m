@@ -55,7 +55,7 @@ D = zeros(length(I),2);
     % do distvec on it
     distvec = sqrt( (scalp_points(:,1)-x).^2 + (scalp_points(:,2)-y).^2 + (scalp_points(:,3)-z).^2);
     [d,pos] = min( distvec );
-    D(i,:) = [I(i) d/100]; % NB: Not sure if div by 100 is needed, but seems to prevent saturation
+    %D(i,:) = [I(i) d/100]; % NB: Not sure if div by 100 is needed, but seems to prevent saturation
     D(i,:) = [I(i) d]; % NB: Not sure if div by 100 is needed, but seems to prevent saturation
 end
 
@@ -66,7 +66,13 @@ figure; hist(Dimg(I),100)
 
 
 %% Write output image
+% Hacky - spm_write_vol seems to only save values as [0..1]
+rmfield(Dvol,'pinfo'); %%% VERY HACKY!!! Relies on SPM figuring out scale.
+Dvol.pinfo = [1; 0; 352];
 spm_write_vol(Dvol,Dimg);
+savefilename = strrep(outName,'.nii','.mat');
+save ('outName','Dimg','I');
+Dvol.pinfo
 % matname = fullfile(pth,['d', nam, '.mat']); %'d'istance
 % save (matname, 'gmfile','Dimg')
 
