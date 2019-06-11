@@ -7,9 +7,9 @@ function ScalpGM_MeanImage (filelist)
 %   filelist  : Cell array of images in MNI space
 % Outputs
 %   Creates three files in home diectory:
-%      meanimage_alt.nii     : Voxelwise mean of scalp-GM distance
-%      meanimage_alt_sd.nii  : SD of voxelwise means
-%      meanimage_alt_cov.nii : Coefficient of variation
+%      XXX_mean.nii : Voxelwise mean of scalp-GM distance
+%      XXX_sd.nii   : SD of voxelwise means
+%      XXX_cov.nii  : Coefficient of variation
 
 % - 2 Jan 2017
 
