@@ -85,18 +85,6 @@ for i=1:n
                 toc4,toc1,toc2-toc1,toc3-toc2,toc4-toc3)
         end
         
-        % write log file
-        % NB this is written in the target directory
-        %         disp('-- writing log file')
-        %         logfile = 'ScalpGM_log.txt';
-        %         logstr = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%s\n',datestr(now),...
-        %             T1file, scalpfile, gmfile, distfile, mnifile,yfile);
-        %         fid = fopen(logfile,'a');
-        %         fprintf(fid,'%s',logstr);
-        %         fclose(fid);
-        %         disp('-- closing log file')
-        
-        
     catch
         % Writes 'fail' to table for output
         scalp = [scalp; 'FAIL'];
@@ -108,7 +96,6 @@ for i=1:n
 end
 
 
-% TODO - writetable
 imgfolder = D;
 imgfile = I;
 outTable = table(imgfolder, imgfile, scalp, GM, dist, MNI);

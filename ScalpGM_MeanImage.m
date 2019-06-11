@@ -54,11 +54,13 @@ for i=1:nFiles
 end
 
 
+fname = filelist(1:strfind(filelist,'.txt')-1);
 
 % Mean of ImageArray...
 M = mean(ImageArray,4);
 Mvol = Dvol;
-Mfname = 'new_new_new_mean.nii';
+%Mfname = 'new_new_new_mean.nii';
+Mfname = strcat(fname,'_mean.nii');
 Mvol.fname = Mfname;
 spm_write_vol(Mvol,M);
 disp (strcat('Mean image    : ', Mfname));
@@ -66,7 +68,8 @@ disp (strcat('Mean image    : ', Mfname));
 % ...and standard deviation...
 S = std(ImageArray,0,4);
 Svol = Dvol;
-Sfname = 'new_new_new_std.nii';
+%Sfname = 'new_new_new_std.nii';
+Sfname = strcat(fname,'_std.nii');
 Svol.fname = Sfname;
 spm_write_vol(Svol,S);
 disp (strcat('Std dev image : ', Sfname));
@@ -74,7 +77,8 @@ disp (strcat('Std dev image : ', Sfname));
 % ...and finally coefficient of variation
 C = S./M;
 Cvol = Dvol;
-Cfname = 'new_new_new_cov.nii';
+%Cfname = 'new_new_new_cov.nii';
+Cfname = strcat(fname,'_cov.nii');
 Cvol.fname = Cfname;
 spm_write_vol(Cvol,C);
 disp (strcat('CoV image     : ', Cfname));

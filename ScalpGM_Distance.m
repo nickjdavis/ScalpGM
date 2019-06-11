@@ -15,7 +15,6 @@ function distfile = ScalpGM_Distance (scalp_points,gmfile)
 %% Read GM data
 GMvol = spm_vol(gmfile);
 GMimg = spm_read_vols (GMvol);
-% GMmask = GMimg>0.9;
 
 
 %% Set up Distance image for output
@@ -33,20 +32,6 @@ distfile = strcat('d',nam,ext);
 S = size(Dimg);
 
 %% Calculate distances
-% for z=1:GMvol.dim(3)
-%     for y=1:GMvol.dim(2)
-%         for x=1:GMvol.dim(1)
-%             if GMmask(x,y,z)==1
-%                 voxel==1 so get dist and write
-%                 distvec = sqrt( (scalp_points(:,1)-GMmask(i,1)).^2 + (scalp_points(:,2)-GM(i,2)).^2 );
-%                 distvec = sqrt( (scalp_points(:,1)-x).^2 + (scalp_points(:,2)-y).^2 + (scalp_points(:,3)-z).^2);
-%                 [d,pos] = min( distvec );
-%                 Dimg(x,y,z) = d;
-%             end
-%         end
-%     end
-% end
-
 I = find(GMimg>0.9);
 D = zeros(length(I),2);
  for i=1:length(I)
@@ -55,24 +40,23 @@ D = zeros(length(I),2);
     % do distvec on it
     distvec = sqrt( (scalp_points(:,1)-x).^2 + (scalp_points(:,2)-y).^2 + (scalp_points(:,3)-z).^2);
     [d,pos] = min( distvec );
-    %D(i,:) = [I(i) d/100]; % NB: Not sure if div by 100 is needed, but seems to prevent saturation
     D(i,:) = [I(i) d]; % NB: Not sure if div by 100 is needed, but seems to prevent saturation
 end
 
 Dimg(D(:,1))=D(:,2);
 
 
-figure; hist(Dimg(I),100)
+% figure; hist(Dimg(I),100)
 
 
 %% Write output image
-% Hacky - spm_write_vol seems to only save values as [0..1]
-rmfield(Dvol,'pinfo'); %%% VERY HACKY!!! Relies on SPM figuring out scale.
+% % Hacky - spm_write_vol seems to only save values as [0..1]
+% rmfield(Dvol,'pinfo'); %%% VERY HACKY!!! Relies on SPM figuring out scale.
 Dvol.pinfo = [1; 0; 352];
 spm_write_vol(Dvol,Dimg);
-savefilename = strrep(outName,'.nii','.mat');
-save ('outName','Dimg','I');
-Dvol.pinfo
+% savefilename = strrep(outName,'.nii','.mat');
+% save ('outName','Dimg','I');
+% Dvol.pinfo
 % matname = fullfile(pth,['d', nam, '.mat']); %'d'istance
 % save (matname, 'gmfile','Dimg')
 

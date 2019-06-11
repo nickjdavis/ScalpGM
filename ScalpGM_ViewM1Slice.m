@@ -11,11 +11,11 @@ function ScalpGM_ViewM1Slice (imagefile)
 % open file
 im = spm_vol(imagefile);
 imdata = im.private.dat;
-size(imdata)
+% size(imdata)
 
 % select slice
 X = squeeze(imdata(:,140,:));
-size(X)
+% size(X)
 
 % display
 imagesc(rot90(X)); colorbar;
