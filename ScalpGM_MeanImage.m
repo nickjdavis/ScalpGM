@@ -56,6 +56,8 @@ end
 
 fname = filelist(1:strfind(filelist,'.txt')-1);
 
+% TODO - mask here to prevent mean involving background
+
 % Mean of ImageArray...
 M = mean(ImageArray,4);
 Mvol = Dvol;
