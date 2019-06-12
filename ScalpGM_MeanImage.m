@@ -11,7 +11,7 @@ function ScalpGM_MeanImage (filelist)
 %      XXX_sd.nii   : SD of voxelwise means
 %      XXX_cov.nii  : Coefficient of variation
 
-% - 2 Jan 2017
+% - 12 Jun 2019
 
 if iscell(filelist)
     % this is what we expect
