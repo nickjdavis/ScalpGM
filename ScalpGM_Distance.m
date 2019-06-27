@@ -25,6 +25,7 @@ Dimg = GMimg;
 outName = fullfile(pth,['d', nam, ext]);
 % outName = strcat('d',nam,ext);
 Dvol.fname = outName;
+Dvol.dt = [16 0]; % Default data type is uint8 ([2 0]). This makes it float32.
 distfile = strcat('d',nam,ext);
 % Dvol.fname = 'distance.nii';
 % GMvol.dim

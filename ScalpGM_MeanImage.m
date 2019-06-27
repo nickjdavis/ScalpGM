@@ -64,6 +64,7 @@ Mvol = Dvol;
 %Mfname = 'new_new_new_mean.nii';
 Mfname = strcat(fname,'_mean.nii');
 Mvol.fname = Mfname;
+Mvol.pinfo = [1; 0; 352]; %%% AAAARGH!!! This is a hack, as I don't understand it
 spm_write_vol(Mvol,M);
 disp (strcat('Mean image    : ', Mfname));
 
@@ -73,6 +74,7 @@ Svol = Dvol;
 %Sfname = 'new_new_new_std.nii';
 Sfname = strcat(fname,'_std.nii');
 Svol.fname = Sfname;
+Svol.pinfo = [1; 0; 352]; %%% AAAARGH!!! This is a hack, as I don't understand it
 spm_write_vol(Svol,S);
 disp (strcat('Std dev image : ', Sfname));
 
@@ -82,6 +84,7 @@ Cvol = Dvol;
 %Cfname = 'new_new_new_cov.nii';
 Cfname = strcat(fname,'_cov.nii');
 Cvol.fname = Cfname;
+Cvol.pinfo = [1; 0; 352]; %%% AAAARGH!!! This is a hack, as I don't understand it
 spm_write_vol(Cvol,C);
 disp (strcat('CoV image     : ', Cfname));
  
