@@ -50,7 +50,19 @@ for i=1:nFiles
     distfile = F{i};
     disp(distfile)
     Dvol = spm_vol(distfile);
-    ImageArray(:,:,:,i) = Dvol.private.dat;
+    % Bit hacky...
+%     pd = Dvol.private.dat;
+%     S = size(pd);
+%     TMP = reshape (pd, [S(1)*S(2)*S(3) 1]);
+%     size(TMP)
+%     X = find(TMP<0.05);
+%     TMP(X) = NaN;
+%     pd = reshape(TMP, S);
+%     ImageArray(:,:,:,i) = pd;
+    IMGDATA = spm_read_vols(Dvol);
+    X = find(IMGDATA<0.05); IMGDATA(X)=NaN; %%%
+
+    ImageArray(:,:,:,i) = IMGDATA;
 end
 
 
@@ -59,7 +71,8 @@ fname = filelist(1:strfind(filelist,'.txt')-1);
 % TODO - mask here to prevent mean involving background
 
 % Mean of ImageArray...
-M = mean(ImageArray,4);
+%M = mean(ImageArray,4);
+M = nanmean(ImageArray,4); % Avoid non-brain areas
 Mvol = Dvol;
 %Mfname = 'new_new_new_mean.nii';
 Mfname = strcat(fname,'_mean.nii');
@@ -69,7 +82,8 @@ spm_write_vol(Mvol,M);
 disp (strcat('Mean image    : ', Mfname));
 
 % ...and standard deviation...
-S = std(ImageArray,0,4);
+%S = std(ImageArray,0,4);
+S = nanstd(ImageArray,0,4);
 Svol = Dvol;
 %Sfname = 'new_new_new_std.nii';
 Sfname = strcat(fname,'_std.nii');
