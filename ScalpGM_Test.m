@@ -2,7 +2,8 @@
 
 function ScalpGM_Test ()
 
-txtfile = 'OASIS-JuneTest.txt';
+% txtfile = 'OASIS-JuneTest.txt';
+txtfile = 'OASIS-Disc11-Test.txt';
 % txtfile = 'OASIS-Test11.txt';
 t = readtable(txtfile);
 nFiles = size(t,1);

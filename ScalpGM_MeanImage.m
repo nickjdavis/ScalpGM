@@ -62,19 +62,18 @@ for i=1:nFiles
     IMGDATA = spm_read_vols(Dvol);
     X = find(IMGDATA<0.05); IMGDATA(X)=NaN; %%%
 
-    ImageArray(:,:,:,i) = IMGDATA;
+    % Smooth data before adding to array
+    sigma = 3; % width of gaussian (assume isotropic smoothing)
+    ImageArray(:,:,:,i) = smooth3(IMGDATA,'gaussian',[sigma sigma sigma]);
 end
 
 
 fname = filelist(1:strfind(filelist,'.txt')-1);
 
-% TODO - mask here to prevent mean involving background
 
 % Mean of ImageArray...
-%M = mean(ImageArray,4);
 M = nanmean(ImageArray,4); % Avoid non-brain areas
 Mvol = Dvol;
-%Mfname = 'new_new_new_mean.nii';
 Mfname = strcat(fname,'_mean.nii');
 Mvol.fname = Mfname;
 Mvol.pinfo = [1; 0; 352]; %%% AAAARGH!!! This is a hack, as I don't understand it
@@ -82,7 +81,6 @@ spm_write_vol(Mvol,M);
 disp (strcat('Mean image    : ', Mfname));
 
 % ...and standard deviation...
-%S = std(ImageArray,0,4);
 S = nanstd(ImageArray,0,4);
 Svol = Dvol;
 %Sfname = 'new_new_new_std.nii';
@@ -92,10 +90,12 @@ Svol.pinfo = [1; 0; 352]; %%% AAAARGH!!! This is a hack, as I don't understand i
 spm_write_vol(Svol,S);
 disp (strcat('Std dev image : ', Sfname));
 
+% quick tidy-up to preserve memory
+clear ImageArray Mvol Svol
+
 % ...and finally coefficient of variation
 C = S./M;
 Cvol = Dvol;
-%Cfname = 'new_new_new_cov.nii';
 Cfname = strcat(fname,'_cov.nii');
 Cvol.fname = Cfname;
 Cvol.pinfo = [1; 0; 352]; %%% AAAARGH!!! This is a hack, as I don't understand it
