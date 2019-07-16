@@ -24,11 +24,12 @@ if iscell(filelist)
     % this is what we expect
     F = filelist;
     nFiles = length(F);
-    disp(strcat('Found ',nFiles,' files.'))
+    disp(strcat('Found  ',num2str(nFiles),' files.'))
 else
     % assume table file
     T = readtable(filelist);
     nFiles = size(T,1);
+    disp(strcat('Found ',num2str(nFiles),' files.'))
     F = {};
     D = T.imgfolder;
     I = T.imgfile;
