@@ -7,16 +7,17 @@ mxX=182; mxY=218; mxZ=182;
 ImageArray = zeros (mxX,mxY,mxZ);%;,nFiles);
 
 v = [];
-v.fname = strrep(outFileName,'.nii','_M.nii');
 v.dim = [mxX mxY mxZ];
 %v.mat = eye(4); 
 v.mat = [1 0 0 1; 0 1 0 1; 0 0 1 1; 0 0 0 1];
 v.pinfo = [1; 0; 352]; %%% AAAUGH HACK!!!!
 v.dt = [16 0]; % float32
+v.fname = strrep(outFileName,'.nii','_M.nii');
 outFileM = spm_create_vol(v);
-% outFileM = spm_write_vol(outFileM,ImageArray);
-% spm_vol();
-% outFileM = 
+v.fname = strrep(outFileName,'.nii','_SD.nii');
+outFileSD = spm_create_vol(v);
+v.fname = strrep(outFileName,'.nii','_CoV.nii');
+outFileCoV = spm_create_vol(v);
 
 % read fileslist
 if iscell(filelist)
@@ -58,16 +59,19 @@ for plane=1:mxZ
         mnifile = spm_vol(mnifilename);
         % read slice plane from file
         P = spm_slice_vol(mnifile,spm_matrix([0 0 plane]),mnifile.dim(1:2),0);
-        % stack with others
-        % HERE - SET VALUES LESS THAN THRESHOLD TO NAN
+        % stack with others, setting values less than 0.05 to NaN
         X = find(P<0.05); P(X)=NaN; %%%
         Pstack(:,:,imgFile) = P;
     end
     % average / sd / cov
     SliceMean = nanmean(Pstack,3);
+    SliceSD = nanstd(Pstack,[],3);
+    SliceCoV= SliceSD./SliceMean;
     %size(SliceMean)
     % write to outfile
-    outFileM = spm_write_plane(outFileM,SliceMean,plane);
+    outFileM  = spm_write_plane(outFileM,SliceMean,plane);
+    outFileSD = spm_write_plane(outFileSD,SliceSD,plane);
+    outFileCoV= spm_write_plane(outFileCoV,SliceCoV,plane);
     % update waitbar
     waitbar(plane*wbstep,wb);
 end
