@@ -79,5 +79,3 @@ end
 close(wb)
 
 
-% create outfile
-% outfile = [];
