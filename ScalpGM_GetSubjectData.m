@@ -7,8 +7,10 @@ end
 
 
 % load subjectInfo (comes with OASIS)
-% Check this - compatibility worry? Also, check on warnings
+% Check this - compatibility worry? Turning off warnings is Bad Form
+warning('off','MATLAB:table:ModifiedVarnames')
 infotable = readtable(subjectInfo);%,'text','Delimiter',',');
+warning('on','MATLAB:table:ModifiedVarnames')
 
 % load ScalpGMinfo (from previous processing steps)
     T = readtable(ScalpGMinfo);
