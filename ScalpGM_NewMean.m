@@ -8,9 +8,9 @@ ImageArray = zeros (mxX,mxY,mxZ);%;,nFiles);
 
 v = [];
 v.dim = [mxX mxY mxZ];
-%v.mat = eye(4); 
-v.mat = [1 0 0 1; 0 1 0 1; 0 0 1 1; 0 0 0 1];
-v.pinfo = [1; 0; 352]; %%% AAAUGH HACK!!!!
+% v.mat = [1 0 0 1; 0 1 0 1; 0 0 1 1; 0 0 0 1];
+v.mat = [1 0 0 -90; 0 1 0 -125; 0 0 1 -71; 0 0 0 1];
+v.pinfo = [1; 0; 0];
 v.dt = [16 0]; % float32
 v.fname = strrep(outFileName,'.nii','_M.nii');
 outFileM = spm_create_vol(v);
