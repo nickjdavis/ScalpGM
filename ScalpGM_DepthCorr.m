@@ -24,12 +24,24 @@ end
 % Open ROIfile
 ROIs = spm_read_vols(spm_vol(ROIfile));
 
+% Create outfile
+corrV = [];
+corrV.dim = [mxX mxY mxZ];
+% v.mat = [1 0 0 1; 0 1 0 1; 0 0 1 1; 0 0 0 1];
+corrV.mat = [1 0 0 -90; 0 1 0 -125; 0 0 1 -71; 0 0 0 1];
+corrV.pinfo = [1; 0; 0];
+corrV.dt = [16 0]; % float32
+corrV.fname = strrep(outFileName,'.nii','_r.nii');
+outFileV = spm_create_vol(corrV);
+
+
+
 %% Get M1 depth
 disp ('Calculating depth of target region...')
 M1all = zeros(nFiles,1);
 
 wbstep = 1/nFiles; % step once per plane
-wb = waitbar(0,'Estimating target depth...');
+wb = waitbar(0,'(1) Estimating target depth...');
 
 %V = ismember(ROIfile,1);
 V = ismember(ROIs,1); % 1 for M1
@@ -65,14 +77,15 @@ close(wb)
 %% Correlate all depths with M1 depth
 disp ('Correlating whole brain with target area...')
 wbstep = 1/mxZ; % step once per plane
-wb = waitbar(0,'Reading image planes...');
+wb = waitbar(0,'(2) Reading image planes...');
 
 for plane=1:mxZ
     Pstack = zeros (mxX,mxY,nFiles);
     for imgFile = 1:nFiles
         % open file
-        d = D{imgFile}
-        m = M{imgFile}
+        d = D{imgFile};
+        m = M{imgFile};
+        disp(m)
         %mnifilename = strcat(D{imgFile},'\',M{imgFile});
         mnifilename = strcat(d,'\',m);
         mnifile = spm_vol(mnifilename);
@@ -82,15 +95,20 @@ for plane=1:mxZ
         X = find(P<0.05); P(X)=NaN; %%%
         Pstack(:,:,imgFile) = P;
     end
-    % average / sd / cov
     % DO CORR HERE
-%     SliceMean = nanmean(Pstack,3);
-%     SliceSD = nanstd(Pstack,[],3);
-%     SliceCoV= SliceSD./SliceMean;
+    sliceCorr = zeros(mxX,mxY);
+    for x=1:mxX
+        for y=1:mxY
+            %size(M1all)
+            z = Pstack(x,y,:);
+            %size(reshape(z,size(z,3),1))
+            [r,p] = corr(M1all,reshape(z,size(z,3),1));
+            % SAVE r INTO PLANE
+            sliceCorr(x,y) = r;
+        end
+    end
     % write to outfile
-    outFileM  = spm_write_plane(outFileM,SliceMean,plane);
-    outFileSD = spm_write_plane(outFileSD,SliceSD,plane);
-    outFileCoV= spm_write_plane(outFileCoV,SliceCoV,plane);
+    outFileV  = spm_write_plane(outFileV,sliceCorr,plane);
     % update waitbar
     waitbar(plane*wbstep,wb);
 end
