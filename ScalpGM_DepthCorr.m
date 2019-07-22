@@ -89,10 +89,16 @@ for plane=1:mxZ
         %mnifilename = strcat(D{imgFile},'\',M{imgFile});
         mnifilename = strcat(d,'\',m);
         mnifile = spm_vol(mnifilename);
+
         % read slice plane from file
         P = spm_slice_vol(mnifile,spm_matrix([0 0 plane]),mnifile.dim(1:2),0);
-        % stack with others, setting values less than 0.05 to NaN
-        X = find(P<0.05); P(X)=NaN; %%%
+% stack with others, setting values less than 0.05 to NaN
+        %X = find(P<0.05); P(X)=NaN; %%%
+        % TRY SMOOTHING...
+        %k = [.05 .05 .05; .05 .6 .05; .05 .05 .05];
+        k = .125*ones(3);
+        P = conv2(P,k,'same');% find(P<0.05); P(X)=NaN; %%%
+        %size(P)
         Pstack(:,:,imgFile) = P;
     end
     % DO CORR HERE

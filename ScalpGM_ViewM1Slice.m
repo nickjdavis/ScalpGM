@@ -18,6 +18,10 @@ X = squeeze(imdata(:,140,:));
 % size(X)
 
 % display
-imagesc(rot90(X)); colorbar;
+imagesc(rot90(X)); 
+cm = get(gcf,'Colormap');
+cm(1:3,:) = 0;
+set (gcf,'Colormap',cm);
+colorbar;
 
 
