@@ -54,7 +54,7 @@ ROI.vol = V;
 
 for i=1:nFiles
     mnifile = F{i};
-    disp(mnifile)
+    %Sdisp(mnifile)
     V = spm_vol(mnifile);
     IMGDATA = spm_read_vols(V);
     X = find(IMGDATA<0.05); IMGDATA(X)=NaN; %%%
@@ -85,7 +85,7 @@ for plane=1:mxZ
         % open file
         d = D{imgFile};
         m = M{imgFile};
-        disp(m)
+        %disp(m)
         %mnifilename = strcat(D{imgFile},'\',M{imgFile});
         mnifilename = strcat(d,'\',m);
         mnifile = spm_vol(mnifilename);
@@ -98,14 +98,20 @@ for plane=1:mxZ
     % DO CORR HERE
     sliceCorr = zeros(mxX,mxY);
     for x=1:mxX
-        for y=1:mxY
-            %size(M1all)
-            z = Pstack(x,y,:);
-            %size(reshape(z,size(z,3),1))
-            [r,p] = corr(M1all,reshape(z,size(z,3),1));
-            % SAVE r INTO PLANE
-            sliceCorr(x,y) = r;
-        end
+        %         for y=1:mxY
+        %             %size(M1all)
+        %             z = Pstack(x,y,:);
+        %             %size(reshape(z,size(z,3),1))
+        %             [r,p] = corr(M1all,reshape(z,size(z,3),1));
+        %             % SAVE r INTO PLANE
+        %             sliceCorr(x,y) = r;
+        %         end
+        z = Pstack(x,:,:);
+        z = squeeze(z);
+        %size(z)
+        %size(M1all)
+        [r,p] = corr(M1all,z');
+        sliceCorr(x,:)=r;
     end
     % write to outfile
     outFileV  = spm_write_plane(outFileV,sliceCorr,plane);
