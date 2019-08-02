@@ -13,9 +13,6 @@ function SCpoints = ScalpGM_getCH3d (scalpimage)
 SCvol = spm_vol(scalpimage);
 
 
-SCallpoints = [];
-SC = [];
-
 % older - slicewise
 % for i=1:SCvol.dim(3)
 %     %i
@@ -26,8 +23,7 @@ SC = [];
 
 % newer - volume (non-brain to NaN)
 SCimg = spm_read_vols(SCvol);
-X = find(SCimg>0.9);
-[x,y,z] = ind2sub(size(SCimg),find(SCimg>0.9););
+[x,y,z] = ind2sub(size(SCimg),find(SCimg>0.9));
 SC = [x,y,z];
     
 

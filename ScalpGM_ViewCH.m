@@ -26,9 +26,12 @@ G = T.GM;
 
 for i=1:nFiles
     f = strcat(D{i},'\',S{i});
-    scalp_points = ScalpGM_getCH3d (f);
-    plot3(scalp_points(:,1),scalp_points(:,2),scalp_points(:,3),'.')
-    %trisurf([scalp_points; scalp_points(1,:)])
-    %waitforbuttonpress
+    SCvol = spm_vol(f);
+    SCimg = spm_read_vols(SCvol);
+    [x,y,z] = ind2sub(size(SCimg),find(SCimg>0.9));
+    SC = [x,y,z];
+    SCch = convhull (SC);
+    trimesh(SCch,SC(:,1),SC(:,2),SC(:,3))
+    waitforbuttonpress
 end
 
