@@ -28,10 +28,13 @@ for i=1:nFiles
     f = strcat(D{i},'\',S{i});
     SCvol = spm_vol(f);
     SCimg = spm_read_vols(SCvol);
-    [x,y,z] = ind2sub(size(SCimg),find(SCimg>0.9));
+    [x,y,z] = ind2sub(size(SCimg),find(SCimg>0.1)); %%%
     SC = [x,y,z];
     SCch = convhull (SC);
+    plot3 (x,y,z,'k.'); 
+    hold on;
+    title (strrep(S{i},'_','-'))
     trimesh(SCch,SC(:,1),SC(:,2),SC(:,3))
-    waitforbuttonpress
+    waitforbuttonpress; hold off
 end
 
