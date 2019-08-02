@@ -16,17 +16,21 @@ SCvol = spm_vol(scalpimage);
 SCallpoints = [];
 SC = [];
 
-for i=1:SCvol.dim(3)
-    %i
-    SCimg = spm_slice_vol(SCvol,spm_matrix([0 0 i]),SCvol(1).dim(1:2),0);
-    [r,c] = find(SCimg>0.9);
-    SC = [SC; r c i*ones(length(r),1)];
-%     if length(r)>2
-%         CH = convhull(r,c);
-%         %SCallpoints = [SCallpoints; r c i*ones(length(r),1)];
-%         SCallpoints = [SCallpoints; r(CH) c(CH) i*ones(length(CH),1)];
-%     end
-end
+% older - slicewise
+% for i=1:SCvol.dim(3)
+%     %i
+%     SCimg = spm_slice_vol(SCvol,spm_matrix([0 0 i]),SCvol(1).dim(1:2),0);
+%     [r,c] = find(SCimg>0.9);
+%     SC = [SC; r c i*ones(length(r),1)];
+% end
+
+% newer - volume (non-brain to NaN)
+SCimg = spm_read_vols(SCvol);
+X = find(SCimg>0.9);
+[x,y,z] = ind2sub(size(SCimg),find(SCimg>0.9););
+SC = [x,y,z];
+    
+
 
 % K = convhull(X,Y,Z) returns the 3-D convex hull of the points (X,Y,Z),
 % where X, Y, and Z are column vectors. K is a triangulation representing 
