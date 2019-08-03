@@ -1,4 +1,4 @@
-function DistbyArea = ScalpGM_TestBA (filelist)
+function DistByArea = ScalpGM_TestBA (filelist)
 
 
 %% Read file information
@@ -35,23 +35,6 @@ end
 
 
 %% Load atlas
-% Need a more effcicient way to do this!
-% Atlas = spm_read_vols(spm_vol('brodmann.nii'));
-% BA1 = 4;  % primary motor cortex
-% BA2 = 17; % primary visual cortex
-% BA3 = 27; % piriform cortex
-% BA4 = 46; % dlpfc
-% % Extract Left M1, Left V1, Left PC
-% % NB L hemi has x<92
-% BAmask1 = ismember(Atlas,BA1); BAmask1(92:end,:,:)=false;
-% BAmask2 = ismember(Atlas,BA2); BAmask2(92:end,:,:)=false;
-% BAmask3 = ismember(Atlas,BA3); BAmask3(92:end,:,:)=false;
-% BAmask4 = ismember(Atlas,BA4); BAmask4(92:end,:,:)=false;
-% Atlas = spm_read_vols(spm_vol('rhandnew.nii'));
-% H = 255; % left hand area mask
-% BAmask5 = ismember(Atlas,H);
-
-
 Atlas = spm_read_vols(spm_vol('rROI_MNI_V4.nii')); % resliced version
 fid = fopen('ROI_MNI_V4.txt');
 Labels = textscan(fid,'%s\t%s\t%d');
@@ -60,20 +43,17 @@ nLabels = length(Labels{1})
 
 
 % Array for output
-DistbyArea = zeros (nFiles,nLabels);
+DistByArea = zeros (nFiles,nLabels);
 
 
-%% Load files and smooth
+%% Load files (and smooth?)
 mxX=182; mxY=218; mxZ=182;
-% mxX=91; mxY=109; mxZ=91;
-% ImageArray = zeros (mxX,mxY,mxZ,nFiles);
 disp('Adding image files...')
 for i=1:nFiles
     mnifile = F{i};
     disp(mnifile)
     V = spm_vol(mnifile);
     IMGDATA = spm_read_vols(V);
-    %mean(mean(mean(IMGDATA)))
     %X = find(IMGDATA<0.05); IMGDATA(X)=0; %%% was NaN
     %%size(find(isnan(IMGDATA)))
     % Smooth data before adding to array
@@ -82,39 +62,33 @@ for i=1:nFiles
     %ImageArray(:,:,:,i) = smooth3(IMGDATA,'gaussian',[sigma sigma sigma]);
 %     img = sIMG(2:end,2:end,2:end);
     img = IMGDATA;
-    %mean(mean(mean(img)))
-    %size(isnan(img))
     img(find(isnan(img)))=0;
-    %mean(mean(mean(img)))
     meanDepths = zeros(nLabels,1);
     for m=1:nLabels
-        %l = Labels{3}(m)
-        Mask = ismember(Atlas,Labels{3}(m));
-        %size(Mask)
-        BrainInMask = Mask & img;
-        %disp(length(find(BrainInMask)))
-        meanDepths(m) = mean(img(BrainInMask))
+        Mask = ismember(Atlas,Labels{3}(m)); 
+        BrainInMask = Mask & img; 
+        B = img(find(BrainInMask));
+        meanDepths(m) = mean(B);
     end
     DistByArea(i,:) = meanDepths;
 end
 
-%
-% %% Get mean dist for each BA
-%
-%
-% for i=1:nFiles
-% img = ImageArray(:,:,:,i); %spm_read_vols(spm_vol(imgfile));
-% img = img(2:end,2:end,2:end);
-% img(isnan(img))=0;
-% BAinIMG1 = BAmask1 & img;
-% BAinIMG2 = BAmask2 & img;
-% DistbyBA(:,i) = [mean(img(BAinIMG1)) mean(img(BAinIMG2))];
-% end
-% % size(BAinIMG1)
-% %M = [mean(img(BAmask1)) mean(img(BAmask2))];
-%
-%
 
+%% plot key depths
+Areas = [2001 2002; 7001 7002; 5011 5012];
+Indices = [1 2; 71 72; 45 46]; % AAAUGGHH
+m = [];
+s = [];
+for i=1:3
+    m = [m; mean(DistByArea(:,Indices(i,1))) mean(DistByArea(:,Indices(i,2)))];
+    s = [s; std(DistByArea(:,Indices(i,1))) std(DistByArea(:,Indices(i,2)))];
+end
+Labels= {'Precentral','Caudate','Cuneus'};
+barweb(m, s, [], Labels, 'Depth by area', 'Area', 'Mean/std Depth (mm)', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
+ 
+
+
+%% Shameful junk
 
 %{
 
