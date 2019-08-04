@@ -75,16 +75,21 @@ end
 
 
 %% plot key depths
-Areas = [2001 2002; 7001 7002; 5011 5012];
-Indices = [1 2; 71 72; 45 46]; % AAAUGGHH
+Areas = [2001 2002; 7001 7002; 5011 5012; 2101 2102];
+Indices = [1 2; 71 72; 45 46; 3 4]; % AAAUGGHH
 m = [];
 s = [];
-for i=1:3
+c = [];
+for i=1:4
     m = [m; mean(DistByArea(:,Indices(i,1))) mean(DistByArea(:,Indices(i,2)))];
     s = [s; std(DistByArea(:,Indices(i,1))) std(DistByArea(:,Indices(i,2)))];
+    c = [c; s(end,1)/m(end,1) s(end,2)/m(end,2)];
 end
-Labels= {'Precentral','Caudate','Cuneus'};
+Labels= {'Precentral','Caudate','Cuneus','DLPFC'};
 barweb(m, s, [], Labels, 'Depth by area', 'Area', 'Mean/std Depth (mm)', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
+figure
+barweb(c, zeros(size(c)), [], Labels, 'CoV by area', 'Area', 'CoV', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
+
  
 
 
