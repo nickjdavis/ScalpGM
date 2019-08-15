@@ -23,7 +23,7 @@ end
 nFiles = size(T,1);
 F = {};
 D = T.imgfolder;
-I = T.imgfile;
+%I = T.imgfile;
 M = T.MNI;
 for i=1:nFiles
     p = D{i};
@@ -47,7 +47,7 @@ DistByArea = zeros (nFiles,nLabels);
 
 
 %% Load files (and smooth?)
-mxX=182; mxY=218; mxZ=182;
+%mxX=182; mxY=218; mxZ=182;
 disp('Adding image files...')
 for i=1:nFiles
     mnifile = F{i};
@@ -68,30 +68,40 @@ for i=1:nFiles
         Mask = ismember(Atlas,Labels{3}(m)); 
         BrainInMask = Mask & img; 
         B = img(find(BrainInMask));
-        meanDepths(m) = mean(B);
+        B(find(B<5))=nan;
+        meanDepths(m) = nanmean(B);
     end
     DistByArea(i,:) = meanDepths;
 end
 
 
 %% plot key depths
-Areas = [2001 2002; 7001 7002; 5011 5012; 2101 2102];
-Indices = [1 2; 71 72; 45 46; 3 4]; % AAAUGGHH
-m = [];
+% Areas = [2001 2002; 7001 7002; 5011 5012; 2101 2102];
+%Indices = [1 2; 71 72; 45 46; 3 4; 81 82]; % AAAUGGHH
+Indices = [1 2; 45 46; 3 4; 81 82; 71 72];
+m = []; % todo - preallocate with zeros
 s = [];
 c = [];
-for i=1:4
+for i=1:5
     m = [m; mean(DistByArea(:,Indices(i,1))) mean(DistByArea(:,Indices(i,2)))];
     s = [s; std(DistByArea(:,Indices(i,1))) std(DistByArea(:,Indices(i,2)))];
     c = [c; s(end,1)/m(end,1) s(end,2)/m(end,2)];
 end
-Labels= {'Precentral','Caudate','Cuneus','DLPFC'};
+Labels= {'Precentral','Cuneus','DLPFC','Sup temp','Caudate'};
 barweb(m, s, [], Labels, 'Depth by area', 'Area', 'Mean/std Depth (mm)', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
 figure
 barweb(c, zeros(size(c)), [], Labels, 'CoV by area', 'Area', 'CoV', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
 
  
-
+%% Correlations
+M1ave = (DistByArea (:,1)+DistByArea (:,2))./2;
+CDave = (DistByArea(:,71)+DistByArea(:,72))./2;
+V1ave = (DistByArea(:,45)+DistByArea(:,46))./2;
+PFave = (DistByArea (:,3)+DistByArea (:,4))./2;
+STave = (DistByArea(:,81)+DistByArea(:,82))./2;
+[RHO,PVAL] = corr([M1ave V1ave PFave STave CDave]);
+L = {'M1','V1','PFC','STG','CDN'};
+tmpcorrtbl(RHO,PVAL,L); % TEMP - make prettier and incorporate
 
 %% Shameful junk
 
