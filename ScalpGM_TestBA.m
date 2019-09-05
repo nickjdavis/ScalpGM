@@ -44,6 +44,7 @@ nLabels = length(Labels{1})
 
 % Array for output
 DistByArea = zeros (nFiles,nLabels);
+ROIsizes = zeros (nFiles,nLabels);
 
 
 %% Load files (and smooth?)
@@ -64,15 +65,19 @@ for i=1:nFiles
     img = IMGDATA;
     img(find(isnan(img)))=0;
     meanDepths = zeros(nLabels,1);
+    nvoxels = zeros(nLabels,1);
     for m=1:nLabels
         Mask = ismember(Atlas,Labels{3}(m)); 
         BrainInMask = Mask & img; 
         B = img(find(BrainInMask));
         B(find(B<5))=nan;
         meanDepths(m) = nanmean(B);
+        nvoxels(m) = length(find(~isnan(B)));
     end
     DistByArea(i,:) = meanDepths;
+    ROIsizes(i,:) = nvoxels;
 end
+
 
 
 %% plot key depths
@@ -82,15 +87,21 @@ Indices = [1 2; 45 46; 3 4; 81 82; 71 72];
 m = []; % todo - preallocate with zeros
 s = [];
 c = [];
+mv= [];
+sv= [];
 for i=1:5
     m = [m; mean(DistByArea(:,Indices(i,1))) mean(DistByArea(:,Indices(i,2)))];
     s = [s; std(DistByArea(:,Indices(i,1))) std(DistByArea(:,Indices(i,2)))];
     c = [c; s(end,1)/m(end,1) s(end,2)/m(end,2)];
+    mv= [mv; mean(ROIsizes(:,Indices(i,1))) mean(ROIsizes(:,Indices(i,2)))];
+    sv= [sv; std(ROIsizes(:,Indices(i,1))) std(ROIsizes(:,Indices(i,2)))];
 end
 Labels= {'Precentral','Cuneus','DLPFC','Sup temp','Caudate'};
 barweb(m, s, [], Labels, 'Depth by area', 'Area', 'Mean/std Depth (mm)', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
 figure
 barweb(c, zeros(size(c)), [], Labels, 'CoV by area', 'Area', 'CoV', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
+figure
+barweb(mv, sv, [], Labels, 'N voxels by area', 'Area', 'nVoxels', 'gray', [], {'Left','Right'});
 
  
 %% Correlations
