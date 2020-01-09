@@ -31,7 +31,6 @@ The output from this is a series of extra columns in the input file, with the na
 
 * Segment and warp use SPM's job manager, which may be too slow
 * Finding the convex hull of the scalp is very slow (60sec) and uses the image processing toolbox
-* Need to think about collecting the warped images to apply group stats
 
 
 ### Branches
