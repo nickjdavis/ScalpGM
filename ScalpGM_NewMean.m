@@ -27,7 +27,7 @@ if iscell(filelist)
     disp(strcat('Found  ',num2str(nFiles),' files.'))
 else
     % assume table file
-    T = readtable(filelist);
+    T = readtable(filelist,'Delimiter',',')
     nFiles = size(T,1);
     disp(strcat('Found ',num2str(nFiles),' files.'))
     F = {};
