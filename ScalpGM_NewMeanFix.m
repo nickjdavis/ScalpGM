@@ -1,0 +1,1 @@
+% adapt _NewMean but fix small values
