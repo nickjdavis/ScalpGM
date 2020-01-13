@@ -1,6 +1,13 @@
 function ScalpGM_NewMean (filelist,outFileName)
 
 
+pathstring = path();
+if isempty(strfind(pathstring,'spm'))
+    % No SPM in path. Need to add
+    disp('Adding SPM to path')
+    addpath('\\staffhome\staff_home0\55121576\Documents\MATLAB\spm12');
+end
+
 % These are standard sizes of MNI image in SPM
 % HACKY!!!
 mxX=182; mxY=218; mxZ=182;
