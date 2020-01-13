@@ -68,7 +68,7 @@ for plane=1:mxZ
         % read slice plane from file
         P = spm_slice_vol(mnifile,spm_matrix([0 0 plane]),mnifile.dim(1:2),0);
         % stack with others, setting values less than 0.05 to NaN
-        X = find(P<0.05); P(X)=NaN; %%%
+        X = find(P<10); P(X)=NaN; %%%
         Pstack(:,:,imgFile) = P;
     end
     % average / sd / cov
