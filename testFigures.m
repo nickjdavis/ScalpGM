@@ -3,7 +3,8 @@ function testFigures(f)
 
 % toolboxpath = 'C:\Users\psdavinj\Documents\MATLAB\mni2fs';
 % addpath(genpath(toolboxpath)) % will add all subfolders and dependencies
-sgmdir = 'C:\Users\psdavinj\Documents\MATLAB\ScalpGM\ScalpGM';
+% sgmdir = 'C:\Users\psdavinj\Documents\MATLAB\ScalpGM\ScalpGM';
+sgmdir = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM';
 
 
 % CoV image
@@ -16,9 +17,10 @@ if any(f==1)
     S.decimation = 0;
     S.plotsurf = 'inflated'; % options: 'inflated', 'pial', 'mid' or 'smoothwm'
     S.lookupsurf = 'pial'; % options: 'pial', 'mid' or 'smoothwm'
+    S.surfacecolorspec = 0;
     S = mni2fs_brain(S);
     % Add overlay, theshold to 98th percentile
-    NIFTI = load_nii(fullfile(sgmdir,'All-OASIS_CoV.nii'));
+    NIFTI = mni2fs_load_nii(fullfile(sgmdir,'AllPOSTFIX_COV.nii'));
     S.mnivol = NIFTI;
     S.clims_perc = 0.8; % overlay masking below 98th percentile
     S.overlayalpha = 1;
@@ -38,9 +40,10 @@ if any(f==2)
     S.decimation = 0;
     S.plotsurf = 'inflated'; % options: 'inflated', 'pial', 'mid' or 'smoothwm'
     S.lookupsurf = 'pial'; % options: 'pial', 'mid' or 'smoothwm'
+    S.surfacecolorspec = 0;
     S = mni2fs_brain(S);
     % Add overlay, theshold to 98th percentile
-    NIFTI = load_nii(fullfile(sgmdir,'All-OASIS_M.nii'));
+    NIFTI = mni2fs_load_nii(fullfile(sgmdir,'AllPOSTFIX_M.nii'));
     S.mnivol = NIFTI;
     S.clims_perc = 0; % overlay masking below 98th percentile
     S.overlayalpha = 1;
@@ -60,9 +63,10 @@ if any(f==3)
     S.decimation = 0;
     S.plotsurf = 'inflated'; % options: 'inflated', 'pial', 'mid' or 'smoothwm'
     S.lookupsurf = 'pial'; % options: 'pial', 'mid' or 'smoothwm'
+    S.surfacecolorspec = 0;
     S = mni2fs_brain(S);
     % Add overlay, theshold to 98th percentile
-    NIFTI = load_nii(fullfile(sgmdir,'All-OASIS_SD.nii'));
+    NIFTI = mni2fs_load_nii(fullfile(sgmdir,'AllPOSTFIX_SD.nii'));
     S.mnivol = NIFTI;
     S.clims_perc = 0; % overlay masking below 98th percentile
     S.overlayalpha = 1;

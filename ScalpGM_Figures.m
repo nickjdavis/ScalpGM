@@ -24,6 +24,30 @@ Sfile = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ALLPOSTFIX_SD
 Cfile = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ALLPOSTFIX_COV.nii';
 
 
+
+% CoV image
+if any(F==1)
+    figure('Color','k','position',[200 72 600 400])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 6; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated'; % options: 'inflated', 'pial', 'mid' or 'smoothwm'
+    S.lookupsurf = 'pial'; % options: 'pial', 'mid' or 'smoothwm'
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(fullfile(sgmdir,Cfile.nii));
+    S.mnivol = NIFTI;
+    S.clims_perc = 0.8; % overlay masking below 98th percentile
+    S.overlayalpha = 1;
+    S = mni2fs_overlay(S);
+    view([-90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+end
+
+
+
 % Draw one
 % mni2fs_auto('\\staffhome\staff_home0\55121576\Documents\MATLAB\mni2fs\examples/AudMean.nii','lh')
 if any(F==1)
@@ -73,6 +97,26 @@ end
 
 
 
+% CV figure - copied from other laptop
+if any(F==4)
+    figure('Color','k','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'rh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(Cfile); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    %S.clims_perc = 0.95; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([-90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+    S
+end
 
 
 %{

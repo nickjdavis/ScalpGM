@@ -4,7 +4,7 @@ function TestCoVstats ()
 
 
 % load cov image
-covfile = 'All-OASIS_CoV.nii';
+covfile = 'AllPOSTFIX_M.nii';
 covimg = spm_read_vols(spm_vol(covfile));
 
 S=size(covimg);
@@ -16,6 +16,7 @@ n = length(Y)
 % histogram
 lc = round(.025*n)
 uc = round(.975*n)
+figure
 hist(Y,100)
 hold on;
 axlim = get(gca,'YLim');
