@@ -9,7 +9,7 @@ T.Properties.VariableNames = {'imgfolder','imgfile','MNI'};
 if iscell(filelist)
     nLists = length(filelist);
     for i=1:nLists
-        t = readtable(filelist{i});
+        t = readtable(filelist{i},'delimiter',',');
         tt = table(t.imgfolder,t.imgfile,t.MNI,'VariableNames',{'imgfolder','imgfile','MNI'});
         if isempty(T)
             T = tt;
@@ -18,8 +18,9 @@ if iscell(filelist)
         end
     end
 else
-    T = readtable(filelist);
+    T = readtable(filelist,'delimiter',',');
 end
+T
 nFiles = size(T,1);
 F = {};
 D = T.imgfolder;
@@ -97,11 +98,16 @@ for i=1:5
     sv= [sv; std(ROIsizes(:,Indices(i,1))) std(ROIsizes(:,Indices(i,2)))];
 end
 Labels= {'Precentral','Cuneus','DLPFC','Sup temp','Caudate'};
-barweb(m, s, [], Labels, 'Depth by area', 'Area', 'Mean/std Depth (mm)', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
+% barweb(m, s, [], Labels, 'Depth by area', 'Area', 'Mean/std Depth (mm)', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
+% figure
+% barweb(c, zeros(size(c)), [], Labels, 'CoV by area', 'Area', 'CoV', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
+% figure
+% barweb(mv, sv, [], Labels, 'N voxels by area', 'Area', 'nVoxels', 'gray', [], {'Left','Right'});
+bar(m); title('Depth');%, s, [], Labels, 'Depth by area', 'Area', 'Mean/std Depth (mm)', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
 figure
-barweb(c, zeros(size(c)), [], Labels, 'CoV by area', 'Area', 'CoV', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
+bar(c); title('CoV');%, zeros(size(c)), [], Labels, 'CoV by area', 'Area', 'CoV', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
 figure
-barweb(mv, sv, [], Labels, 'N voxels by area', 'Area', 'nVoxels', 'gray', [], {'Left','Right'});
+bar(mv); title('N voxels');%, sv, [], Labels, 'N voxels by area', 'Area', 'nVoxels', 'gray', [], {'Left','Right'});
 
  
 %% Correlations
@@ -112,7 +118,11 @@ PFave = (DistByArea (:,3)+DistByArea (:,4))./2;
 STave = (DistByArea(:,81)+DistByArea(:,82))./2;
 [RHO,PVAL] = corr([M1ave V1ave PFave STave CDave]);
 L = {'M1','V1','PFC','STG','CDN'};
-tmpcorrtbl(RHO,PVAL,L); % TEMP - make prettier and incorporate
+%tmpcorrtbl(RHO,PVAL,L); % TEMP - make prettier and incorporate
+disp(L)
+disp(RHO)
+disp(PVAL)
+
 
 %% Shameful junk
 
