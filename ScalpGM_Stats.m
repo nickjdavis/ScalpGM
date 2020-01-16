@@ -4,23 +4,64 @@ function DistByArea = ScalpGM_Stats (statsimage)
 
 % nImages = length(imagelist)
 
-%% Load atlas
+%% Load atlas and image data
 Atlas = spm_read_vols(spm_vol('rROI_MNI_V4.nii')); % resliced version
 fid = fopen('ROI_MNI_V4.txt');
 Labels = textscan(fid,'%s\t%s\t%d');
 fclose (fid);
-nLabels = length(Labels{1})
+nLabels = length(Labels{1});
+V = spm_vol(statsimage);
+IMGDATA = spm_read_vols(V);
+
 
 % Array for output
 nFiles = 1;
 DistByArea = zeros (nFiles,nLabels);
 ROIsizes = zeros (nFiles,nLabels);
 
+%% create ROIs
+ROIs = {...
+    [1 19 59],[2 20 60];... % sensorimotor
+    [3 7 9 11 13 15],[4 8 10 12 14 16];... % PFC
+    %[71],[72];... % caudate
+    [49 51 53],[50 52 54];... % occipital
+    [59 61 63 65],[60 61 64 66];... % parietal
+    [81 83 85],[82 84 86];... % temporal
+};
+img = IMGDATA;
+img(find(isnan(img)))=0;
+s = size(ROIs);
+ROIdata = cell(s);
+ROImeans= zeros(s);
+ROIstds = zeros(s);
+for i=1:s(1)
+    %
+    for side=1:2
+        m = ROIs{i,side};
+        Mask = ismember(Atlas,Labels{3}(m));
+        BrainInMask = Mask & img;
+        B = img(find(BrainInMask));
+        ROIdata{i,side} = B;
+        ROImeans(i,side) = nanmean(B);
+        ROIstds(i,side) = nanstd(B);
+        %nvoxels(m) = length(find(~isnan(B)));
+    end
+end
+% ROIdata
+% ROImeans
+% ROIstds
+
+% 
+% figure;
+L = {'SM','PFC','OCC','PAR','TEM'};
+% bar(ROImeans);
+% title('Depth'); set(gca,'XTickLabels',L); legend('L','R');
+figure;
+barweb(ROImeans,ROIstds, [], L, 'BWtitle', 'XL', 'YL', [], [], 'Legend', 1, 'axis');%,[],'GN','BWtitle','XL','YL',[],[],'Legend')
 
 %% extract info
 
-V = spm_vol(statsimage);
-IMGDATA = spm_read_vols(V);
+
 %     size(IMGDATA)
 %     isnan(IMGDATA)
 %
@@ -43,13 +84,13 @@ for i=1:1
 end
 
 %% get data    
-Indices = [1 2; 45 46; 3 4; 81 82; 71 72];
+Indices = [1 2; 45 46; 3 4; 81 82; 71 72; [1] [2]];
 m = []; % todo - preallocate with zeros
 s = [];
 c = [];
 mv= [];
 sv= [];
-for j=1:5
+for j=1:6
     m = [m; mean(DistByArea(:,Indices(j,1))) mean(DistByArea(:,Indices(j,2)))];
 %     s = [s; std(DistByArea(:,Indices(j,1))) std(DistByArea(:,Indices(j,2)))];
 %     c = [c; s(end,1)/m(end,1) s(end,2)/m(end,2)];
@@ -58,8 +99,9 @@ for j=1:5
 end
 % 
 % %% plot
-Labels= {'Precentral','Cuneus','DLPFC','Sup temp','Caudate'};
-bar(m); title('Depth');%, s, [], Labels, 'Depth by area', 'Area', 'Mean/std Depth (mm)', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
+figure;
+Labels= {'Precentral','Cuneus','DLPFC','Sup temp','Caudate','combSM'};
+bar(m); title('Depth'); set(gca,'XTickLabels',Labels); legend('L','R');%, s, [], Labels, 'Depth by area', 'Area', 'Mean/std Depth (mm)', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
 % figure
 % bar(c); title('CoV');%, zeros(size(c)), [], Labels, 'CoV by area', 'Area', 'CoV', 'gray', [], {'Left','Right'});%, error_sides, legend_type)
 % figure
