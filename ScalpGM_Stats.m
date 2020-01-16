@@ -57,11 +57,21 @@ L = {'SM','PFC','OCC','PAR','TEM'};
 % bar(ROImeans);
 % title('Depth'); set(gca,'XTickLabels',L); legend('L','R');
 figure;
-barweb(ROImeans,ROIstds, [], L, 'BWtitle', 'XL', 'YL', [], [], 'Legend', 1, 'axis');%,[],'GN','BWtitle','XL','YL',[],[],'Legend')
+barweb(ROImeans,ROIstds, [], L, 'BWtitle',...
+    'Brain region', 'Coefficient of variation',...
+    [], [], {'L','R'});%, 1, 'axis');
+
+
+[~,~,stats] = anova2(ROImeans)
+
+
+%% old code below
+
+
 
 %% extract info
 
-
+%{
 %     size(IMGDATA)
 %     isnan(IMGDATA)
 %
@@ -107,9 +117,8 @@ bar(m); title('Depth'); set(gca,'XTickLabels',Labels); legend('L','R');%, s, [],
 % figure
 % bar(mv); title('N voxels');%, sv, [], Labels, 'N voxels by area', 'Area', 'nVoxels', 'gray', [], {'Left','Right'});
 
+%}
 
-
-%% old code below
 
 
 %{

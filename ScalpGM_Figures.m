@@ -50,9 +50,9 @@ end
 
 % Draw one
 % mni2fs_auto('\\staffhome\staff_home0\55121576\Documents\MATLAB\mni2fs\examples/AudMean.nii','lh')
-if any(F==1)
-    mni2fs_auto(Cfile,'lh')
-end
+% if any(F==1)
+%     mni2fs_auto(Cfile,'lh')
+% end
 
 if any(F==3)
     S = [];
