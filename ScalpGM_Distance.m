@@ -18,18 +18,13 @@ GMimg = spm_read_vols (GMvol);
 
 
 %% Set up Distance image for output
-% TODO - filename!; fname in private data
 Dvol = GMvol;
 Dimg = GMimg;
 [pth,nam,ext,vol] = spm_fileparts( deblank (gmfile));
 outName = fullfile(pth,['d', nam, ext]);
-% outName = strcat('d',nam,ext);
 Dvol.fname = outName;
 Dvol.dt = [16 0]; % Default data type is uint8 ([2 0]). This makes it float32.
 distfile = strcat('d',nam,ext);
-% Dvol.fname = 'distance.nii';
-% GMvol.dim
-% % Dvol.dim = [256 256 1]
 S = size(Dimg);
 
 %% Calculate distances
@@ -38,7 +33,7 @@ D = zeros(length(I),2);
  for i=1:length(I)
     % convert back to coordinate x,y,z
     [x,y,z] = ind2sub(S,I(i));
-    % do distvec on it
+    % get euclidean distance
     distvec = sqrt( (scalp_points(:,1)-x).^2 + (scalp_points(:,2)-y).^2 + (scalp_points(:,3)-z).^2);
     [d,pos] = min( distvec );
     D(i,:) = [I(i) d];
@@ -53,9 +48,5 @@ Dimg(D(:,1))=D(:,2);
 % rmfield(Dvol,'pinfo'); %%% VERY HACKY!!! Relies on SPM figuring out scale.
 Dvol.pinfo = [1; 0; 352];
 spm_write_vol(Dvol,Dimg);
-% savefilename = strrep(outName,'.nii','.mat');
-% save ('outName','Dimg','I');
-% Dvol.pinfo
-% matname = fullfile(pth,['d', nam, '.mat']); %'d'istance
-% save (matname, 'gmfile','Dimg')
+
 
