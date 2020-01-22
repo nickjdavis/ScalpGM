@@ -38,12 +38,14 @@ nROIs = length(ROIcodes);
 %  For each ROI, open each image to get matching image data, then get mean
 %  at end.
 
-outData = zeros(nFiles,3);
+outData = [];%zeros(nFiles*nROIs,4);
+outtxt = [];
 
 for i=1:nROIs
     % get size of ROI in atlas
     Mask = ismember(ROIatlas,ROIcodes(i));
-    size(Mask>.5)
+    %size(Mask>.5)
+    %hist(Mask)
     for imgFile = 1:nFiles
         % open file
         fname = F{imgFile};
@@ -53,18 +55,20 @@ for i=1:nROIs
         img(find(isnan(img)))=0;
         %size(find(img>0))
         BrainInMask = Mask & img;
+        img(find(img<5))=nan; % THIS IS UGLY!
         B = img(find(BrainInMask>.5));
-        size(B)
-        B(1:30)
+        %size(B)
+        %B(1:30)
+        %if imgFile==5; hist(B,40); end
         m = nanmean(B);
         s = nanstd (B);
         c = s./m;
-        outData(imgFile,:) = [m s c];
+        %dataIndex = (i-1)*nROIs+imgFile
+        %         dataIndex = (nROIs-1)*i+imgFile
+        %outData(dataIndex,:) = [i m s c];
+        outData = [outData; i imgFile m s c]; % UGLY!!!
         
-        % create variable to hold the data
-        % go through images, extracting ROI into variable
     end
-    
-    outtxt = sprintf('%s mean depth: %3.3f',ROIlabels{i},0.0);
-    disp(outtxt)
+    outtxt = [outtxt sprintf('%s mean depth: %3.3f\n',ROIlabels{i},mean(outData(:,3)))];
 end
+disp(outtxt)
