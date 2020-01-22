@@ -38,7 +38,9 @@ nROIs = length(ROIcodes);
 %  For each ROI, open each image to get matching image data, then get mean
 %  at end.
 
-outData = [];%zeros(nFiles*nROIs,4);
+%%outData = [];%zeros(nFiles*nROIs,4);
+outData = zeros(nFiles,nROIs*3+1);
+outData(:,1) = (1:nFiles)';
 outtxt = [];
 
 for i=1:nROIs
@@ -66,9 +68,16 @@ for i=1:nROIs
         %dataIndex = (i-1)*nROIs+imgFile
         %         dataIndex = (nROIs-1)*i+imgFile
         %outData(dataIndex,:) = [i m s c];
-        outData = [outData; i imgFile m s c]; % UGLY!!!
-        
+        %%outData = [outData; i imgFile m s c]; % UGLY!!!
+        xxx = i*nROIs-(nROIs-1)+1;
+        outData(imgFile,[xxx xxx+1 xxx+2]) = [m s c];
     end
     outtxt = [outtxt sprintf('%s mean depth: %3.3f\n',ROIlabels{i},mean(outData(:,3)))];
 end
-disp(outtxt)
+% disp(outtxt)
+% 
+% dataTable = array2table(outData,...
+%     'VariableNames',{'ROI','Subj','MeanDepth','SDdepth','CoV'})
+% % wsVar = table((0:nROIs)','VariableNames',{'ROIx'})
+% rm = fitrm(dataTable,'MeanDepth~Subj') %,'WithinDesign',wsVar)
+% ranova (rm)
