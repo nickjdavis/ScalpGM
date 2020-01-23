@@ -17,7 +17,7 @@ nFiles = size(T,1);
 disp(sprintf('Found %d files.',nFiles))
 F = {};
 D = T.imgfolder;
-I = T.imgfile;
+% I = T.imgfile;
 M = T.MNI;
 for i=1:nFiles
     % get folder
@@ -41,7 +41,6 @@ nROIs = length(ROIcodes);
 %%outData = [];%zeros(nFiles*nROIs,4);
 outData = zeros(nFiles,nROIs*3+1);
 outData(:,1) = (1:nFiles)';
-outtxt = [];
 
 for i=1:nROIs
     % get size of ROI in atlas
@@ -72,12 +71,5 @@ for i=1:nROIs
         xxx = i*nROIs-(nROIs-1)+1;
         outData(imgFile,[xxx xxx+1 xxx+2]) = [m s c];
     end
-    outtxt = [outtxt sprintf('%s mean depth: %3.3f\n',ROIlabels{i},mean(outData(:,3)))];
+    disp(sprintf('%s mean depth: %3.3f',ROIlabels{i},mean(outData(:,xxx))))
 end
-% disp(outtxt)
-% 
-% dataTable = array2table(outData,...
-%     'VariableNames',{'ROI','Subj','MeanDepth','SDdepth','CoV'})
-% % wsVar = table((0:nROIs)','VariableNames',{'ROIx'})
-% rm = fitrm(dataTable,'MeanDepth~Subj') %,'WithinDesign',wsVar)
-% ranova (rm)
