@@ -14,7 +14,7 @@ end
 % assume table file
 T = readtable(filelist,'Delimiter',',');
 nFiles = size(T,1);
-disp(sprintf('Found %d files.',nFiles))
+%disp(sprintf('Found %d files and %d ROIs.',nFiles,))
 F = {};
 D = T.imgfolder;
 % I = T.imgfile;
@@ -36,6 +36,9 @@ ROIatlas = spm_read_vols(spm_vol(ROIimage));
 % ROIatlas = spm_read_vols(ROIimage);
 nROIs = length(ROIcodes);
 
+disp(sprintf('Found %d files and %d ROIs.',nFiles,nROIs))
+
+
 %% Extract ROI data
 %  For each ROI, open each image to get matching image data, then get mean
 %  at end.
@@ -43,6 +46,8 @@ nROIs = length(ROIcodes);
 %%outData = [];%zeros(nFiles*nROIs,4);
 outData = zeros(nFiles,nROIs*3+1);
 outData(:,1) = (1:nFiles)';
+
+xxx = 1;
 
 for i=1:nROIs
     % get size of ROI in atlas
@@ -70,8 +75,9 @@ for i=1:nROIs
         %         dataIndex = (nROIs-1)*i+imgFile
         %outData(dataIndex,:) = [i m s c];
         %%outData = [outData; i imgFile m s c]; % UGLY!!!
-        xxx = i*nROIs-(nROIs-1)+1;
+        %xxx = i*nROIs-(nROIs-1)+1
         outData(imgFile,[xxx xxx+1 xxx+2]) = [m s c];
     end
     disp(sprintf('%s mean depth: %3.3f',ROIlabels{i},mean(outData(:,xxx))))
+    xxx = xxx+3
 end
