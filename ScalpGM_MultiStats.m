@@ -30,6 +30,8 @@ for i=1:nFiles
 end
 
 %% Read ROI image
+% TODO - ROIcodes is currently the line in the text file that contains the
+% ROI. Need to make this an AAL code
 ROIatlas = spm_read_vols(spm_vol(ROIimage));
 % ROIatlas = spm_read_vols(ROIimage);
 nROIs = length(ROIcodes);
