@@ -38,15 +38,11 @@ The output from this is a series of extra columns in the input file, with the na
   * Latest version that passes tests
   * Not guaranteed to be robust across platforms
   * Not guaranteed to produce accurate data
-* CribGoch
+* working
   * Working version
   * Extract data from OASIS
   * Runs cleanly and efficiently
   * Shareable code
-* Elidir
-  * Later modifications/tweaks
-  * Parallel code
-  * Integrate with SPM
 
 
 ### TODO
@@ -68,9 +64,7 @@ The output from this is a series of extra columns in the input file, with the na
 
 
 ### To think about
-* Identify ROIs for stats (M1, V1, frontal pole?)
 * Smooth convex hull? Cap at nasion/inion?
 * Spatial smoothing?
 * Can I measure memory use at runtime?
 * What does a user want to know? -- How to adjust TMS output for given target
-* Is the output a sparse matrix?
