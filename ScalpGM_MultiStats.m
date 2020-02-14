@@ -30,10 +30,7 @@ for i=1:nFiles
 end
 
 %% Read ROI image
-% TODO - ROIcodes is currently the line in the text file that contains the
-% ROI. Need to make this an AAL code
 ROIatlas = spm_read_vols(spm_vol(ROIimage));
-% ROIatlas = spm_read_vols(ROIimage);
 nROIs = length(ROIcodes);
 
 disp(sprintf('Found %d files and %d ROIs.',nFiles,nROIs))
@@ -49,17 +46,22 @@ outData(:,1) = (1:nFiles)';
 
 xxx = 1;
 
+wb = waitbar(0,'Initialising...');
+
 for i=1:nROIs
+    waitbar(0,wb,sprintf('Area %d of %d',i,nROIs));
     % get size of ROI in atlas
     Mask = ismember(ROIatlas,ROIcodes(i));
     %size(Mask>.5)
     %hist(Mask)
     for imgFile = 1:nFiles
+        waitbar(imgFile/nFiles,wb);
         % open file
         fname = F{imgFile};
         mnifile = spm_vol(fname);
         img = spm_read_vols(mnifile);
-        %size(find(isnan(img)))
+        img = imresize3 (img,.5);
+        %size(img)
         img(find(isnan(img)))=0;
         %size(find(img>0))
         BrainInMask = Mask & img;
@@ -79,5 +81,5 @@ for i=1:nROIs
         outData(imgFile,[xxx xxx+1 xxx+2]) = [m s c];
     end
     disp(sprintf('%s mean depth: %3.3f',ROIlabels{i},mean(outData(:,xxx))))
-    xxx = xxx+3
+    xxx = xxx+3;
 end

@@ -22,7 +22,7 @@ T1file = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM/single_subj_
 Mfile = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ALLPOSTFIX_M.nii';
 Sfile = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ALLPOSTFIX_SD.nii';
 Cfile = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ALLPOSTFIX_COV.nii';
-ROIfile='\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ROIIMAGE.nii';
+ROIfile='\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\newROIIMAGE.nii';
 Afile = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ROI_MNI_V4.nii';
 tablefile = 'OASIS-All.txt';
 
