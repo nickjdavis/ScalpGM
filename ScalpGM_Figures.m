@@ -147,7 +147,27 @@ if any(F==99)
 end
 
 
-if any(F==999)
+
+
+if any(F==1111)
+    T = readtable(tablefile,'delimiter',',');
+    figure
+    yyaxis left
+    plot(T.Age,T.eTIV,'o')
+    ylabel('eTIV (mL)')
+    set(gca,'YLim',[500 2000])
+    yyaxis right
+    plot(T.Age,T.nWBV,'s')
+    ylabel('nWBV')
+    set(gca,'YLim',[.70 1.2])
+    xlabel('Age (years)')
+    set(gca,'XLim',[23 62])
+end
+
+%% POSTER IMAGES
+
+% POSTER FIGURE 1B - Map of ROIs
+if any(F==1002)
     % plots ROIS straight from atlas image.
     figure('Color','w','position',[20 72 600 500])
     % Load and Render the FreeSurfer surface
@@ -182,15 +202,16 @@ if any(F==999)
     S.mnivol
 end
 
-
-if any(F==9999)
-    cov= [.4188 .4118; .3564 .3495; .4473 .4462; .3790 .3869; .3936 .3864];
-    sd = [.0179 .0194; .0173 .0159; .0271 .0267; .0185 .0199; .0186 .0197];
+% POSTER FIGURE 1C - CoV bars graph
+if any(F==1003)
+    cov= [.4230 .4378; .4016 .3992; .4671 .4428; .4127 .4129; .4403 .4404];
+    sd = [.0134 .0155; .0135 .0143; .0221 .0197; .0194 .0164; .0161 .0122];
     barweb(cov,sd,[],{'PreC','PreF','Occ','Ang','Tem'},[],'Area','CoV (+/-1SD)')
 end
 
 
-if any(F==44)
+% POSTER FIGURE 1A - CoV map
+if any(F==1001)
     figure('Color','w','position',[20 72 600 500])
     % Load and Render the FreeSurfer surface
     S = [];
@@ -200,46 +221,18 @@ if any(F==44)
     S.plotsurf = 'inflated';
     S.lookupsurf = 'pial';
     S = mni2fs_brain(S);
-
+    
     % Add overlay, theshold to 98th percentile
     NIFTI = mni2fs_load_nii(Cfile); % mnivol can be a NIFTI structure
     S.mnivol = NIFTI;
-%         % faff with data
-%     I = S.mnivol.img;
-%     s = size(I);
-%     X = zeros(s);
-% %     m = nanmean(nanmean(nanmean(I)))
-%     X(find(I>.9))=.9;
-% %     X(find(I<0))=nan; %
-%     S.mnivol.img = X;
-
     
-S.climstype = 'pos';    
+    S.climstype = 'pos';
     S.clims = [0 .4];
-S.clims_perc = 0.00001; % overlay masking below 98th percentile
+    S.clims_perc = 0.00001; % overlay masking below 98th percentile
     S = mni2fs_overlay(S);
     view([-90 0]); % change camera angle
     mni2fs_lights; % Dont forget to turn on the lights!
     S
-    
-%     Y = reshape(
-%     figure(hist
 end
 
 
-
-
-if any(F==1111)
-    T = readtable(tablefile,'delimiter',',');
-    figure
-    yyaxis left
-    plot(T.Age,T.eTIV,'o')
-    ylabel('eTIV (mL)')
-    set(gca,'YLim',[500 2000])
-    yyaxis right
-    plot(T.Age,T.nWBV,'s')
-    ylabel('nWBV')
-    set(gca,'YLim',[.70 1.2])
-    xlabel('Age (years)')
-    set(gca,'XLim',[23 62])
-end
