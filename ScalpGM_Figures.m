@@ -26,8 +26,55 @@ ROIfile='\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\newROIIMAGE.n
 Afile = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ROI_MNI_V4.nii';
 tablefile = 'OASIS-All.txt';
 
-% CoV image
+
+%% ---- NEW
+
+% PAPER FIGURE 1 - process image
 if any(F==1)
+end
+
+
+% PAPER FIGURE 2 - scatterplots
+if any(F==2)
+    T = readtable(tablefile,'delimiter',',');
+    figure
+    yyaxis left
+    plot(T.Age,T.eTIV,'o')
+    ylabel('Estimated total intracranial volume (mL)')
+    set(gca,'YLim',[500 2000])
+    yyaxis right
+    plot(T.Age,T.nWBV,'s')
+    ylabel('Normalised whole-brain volume (percent)')
+    set(gca,'YLim',[.70 1.2])
+    xlabel('Age (years)')
+    set(gca,'XLim',[23 62])
+end
+
+
+% PAPER FIGURE 3 - CoV bars graph
+if any(F==3)
+    figure;
+    cov= [.4230 .4378; .4016 .3992; .4671 .4428; .4127 .4129; .4403 .4404];
+    sd = [.0134 .0155; .0135 .0143; .0221 .0197; .0194 .0164; .0161 .0122];
+    barweb(cov,sd,[],{'PreC','PreF','Occ','Ang','Tem'},[],'Area','CoV (+/-1SD)')
+    hold on;
+    TXT = {'**','*','**','ns','ns'};
+    y = .5;
+    for i=1:5
+        text (i,y,TXT{i},'FontSize',14,'HorizontalAlignment','center',...
+            'VerticalAlignment','middle');
+    end
+end
+
+
+
+
+
+
+%% ---- OLD
+
+% CoV image
+if any(F==11111111)
     figure('Color','k','position',[200 72 600 400])
     % Load and Render the FreeSurfer surface
     S = [];
@@ -55,7 +102,7 @@ end
 %     mni2fs_auto(Cfile,'lh')
 % end
 
-if any(F==3)
+if any(F==3111111)
     S = [];
     S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
     S.inflationstep = 5; % 1 no inflation, 6 fully inflated
@@ -74,7 +121,7 @@ end
 
 
 % CV figure
-if any(F==2)
+if any(F==2111111)
     figure('Color','k','position',[20 72 600 500])
     % Load and Render the FreeSurfer surface
     S = [];
@@ -99,7 +146,7 @@ end
 
 
 % CV figure - copied from other laptop
-if any(F==4)
+if any(F==4111111)
     figure('Color','w','position',[20 72 600 500])
     % Load and Render the FreeSurfer surface
     S = [];
@@ -121,7 +168,7 @@ end
 
 
 
-if any(F==99)
+if any(F==9911111)
     % plot CoV on inflated figure
     % add chosen AAL ROIs as patches
     
@@ -149,20 +196,6 @@ end
 
 
 
-if any(F==1111)
-    T = readtable(tablefile,'delimiter',',');
-    figure
-    yyaxis left
-    plot(T.Age,T.eTIV,'o')
-    ylabel('eTIV (mL)')
-    set(gca,'YLim',[500 2000])
-    yyaxis right
-    plot(T.Age,T.nWBV,'s')
-    ylabel('nWBV')
-    set(gca,'YLim',[.70 1.2])
-    xlabel('Age (years)')
-    set(gca,'XLim',[23 62])
-end
 
 %% POSTER IMAGES
 
