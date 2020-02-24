@@ -51,8 +51,130 @@ if any(F==2)
 end
 
 
-% PAPER FIGURE 3 - CoV bars graph
+% PAPER FIGURE 3 - Mean/SD/CoV projected onto flattened surface
 if any(F==3)
+    % Mean LH
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(Mfile); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    S.climstype = 'pos';
+    %S.clims = [0 .4];
+    S.clims_perc = 0.00001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([-90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+    % Mean RH
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'rh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(Mfile); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    S.climstype = 'pos';
+    %S.clims = [0 .4];
+    S.clims_perc = 0.00001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([-90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+
+    % SD LH
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(Sfile); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    S.climstype = 'pos';
+    %S.clims = [0 .4];
+    S.clims_perc = 0.00001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([-90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+    % SD RH
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'rh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(Sfile); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    S.climstype = 'pos';
+    %S.clims = [0 .4];
+    S.clims_perc = 0.00001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([-90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+
+    % CoV LH
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(Cfile); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    S.climstype = 'pos';
+    S.clims = [0 .4];
+    S.clims_perc = 0.00001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([-90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+    % CoV RH
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'rh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(Cfile); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    S.climstype = 'pos';
+    S.clims = [0 .4];
+    S.clims_perc = 0.00001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([-90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+end
+    
+    
+
+% PAPER FIGURE 4 - CoV bars graph
+if any(F==4)
     figure;
     cov= [.4230 .4378; .4016 .3992; .4671 .4428; .4127 .4129; .4403 .4404];
     sd = [.0134 .0155; .0135 .0143; .0221 .0197; .0194 .0164; .0161 .0122];
@@ -73,8 +195,8 @@ end
 
 %% ---- OLD
 
-% CoV image
-if any(F==11111111)
+% CoV image 
+if any(F==11111111) % NO
     figure('Color','k','position',[200 72 600 400])
     % Load and Render the FreeSurfer surface
     S = [];
@@ -102,7 +224,7 @@ end
 %     mni2fs_auto(Cfile,'lh')
 % end
 
-if any(F==3111111)
+if any(F==3111111) % NO
     S = [];
     S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
     S.inflationstep = 5; % 1 no inflation, 6 fully inflated
@@ -121,7 +243,7 @@ end
 
 
 % CV figure
-if any(F==2111111)
+if any(F==2111111) % NO
     figure('Color','k','position',[20 72 600 500])
     % Load and Render the FreeSurfer surface
     S = [];
@@ -146,11 +268,11 @@ end
 
 
 % CV figure - copied from other laptop
-if any(F==4111111)
+if any(F==4111111) % CLOSER
     figure('Color','w','position',[20 72 600 500])
     % Load and Render the FreeSurfer surface
     S = [];
-    S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
+    S.hem = 'both'; % choose the hemesphere 'lh' or 'rh'
     S.inflationstep = 5; % 1 no inflation, 6 fully inflated
     S.decimation = 0;
     S.plotsurf = 'inflated';
