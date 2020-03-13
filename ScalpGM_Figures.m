@@ -53,13 +53,13 @@ end
 
 % PAPER FIGURE 3 - Mean/SD/CoV projected onto flattened surface
 if any(F==3)
-    % Mean LH
-    figure('Color','w','position',[20 72 600 500])
     NIFTI = mni2fs_load_nii(Mfile); % mnivol can be a NIFTI structure
     X = find(isnan(NIFTI.img));
     m = nanmean(nanmean(nanmean(NIFTI.img)));
     NIFTI.img(X) = m; % zero here smooths the nans
     % Load and Render the FreeSurfer surface
+    % Mean LH
+    figure('Color','w','position',[20 72 600 500])
     S = [];
     S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
     S.inflationstep = 5; % 1 no inflation, 6 fully inflated
@@ -72,34 +72,42 @@ if any(F==3)
     S.mnivol = NIFTI;
     S.climstype = 'pos';
     S.smoothdata = 2; % 1, 3 worse than zero - propagating nans?
-    %S.clims = [0 1];
+    S.clims = [10 45];
     S.clims_perc = .00001; % overlay masking below 98th percentile
     S.interpmethod = 'nearest'; % 'spline' crashes; 'linear', 'cubic' worse
     S = mni2fs_overlay(S);
     view([-90 0]); % change camera angle
     mni2fs_lights; % Dont forget to turn on the lights!
+    colorbar;
     % Mean RH
-    %{
     figure('Color','w','position',[20 72 600 500])
     % Load and Render the FreeSurfer surface
     S = [];
     S.hem = 'rh'; % choose the hemesphere 'lh' or 'rh'
+    %S
     S.inflationstep = 5; % 1 no inflation, 6 fully inflated
     S.decimation = 0;
     S.plotsurf = 'inflated';
-    S.lookupsurf = 'pial';
+    S.lookupsurf = 'mid';
     S = mni2fs_brain(S);
     % Add overlay, theshold to 98th percentile
-    NIFTI = mni2fs_load_nii(Mfile); % mnivol can be a NIFTI structure
+    %NIFTI = mni2fs_load_nii(Mfile); % mnivol can be a NIFTI structure
     S.mnivol = NIFTI;
     S.climstype = 'pos';
-    %S.clims = [0 .4];
+    S.smoothdata = 2; % 1, 3 worse than zero - propagating nans?
+    S.clims = [10 45];
     S.clims_perc = 0.00001; % overlay masking below 98th percentile
+    %S
     S = mni2fs_overlay(S);
-    view([-90 0]); % change camera angle
+    view([90 0]); % change camera angle
     mni2fs_lights; % Dont forget to turn on the lights!
-
-    % SD LH
+    colorbar
+    
+   % SD LH
+    NIFTI = mni2fs_load_nii(Sfile); % mnivol can be a NIFTI structure
+    X = find(isnan(NIFTI.img));
+    m = nanmean(nanmean(nanmean(NIFTI.img)));
+    NIFTI.img(X) = m; % zero here smooths the nans
     figure('Color','w','position',[20 72 600 500])
     % Load and Render the FreeSurfer surface
     S = [];
@@ -107,17 +115,18 @@ if any(F==3)
     S.inflationstep = 5; % 1 no inflation, 6 fully inflated
     S.decimation = 0;
     S.plotsurf = 'inflated';
-    S.lookupsurf = 'pial';
+    S.lookupsurf = 'mid';
+    S.smoothdata = 2;
     S = mni2fs_brain(S);
     % Add overlay, theshold to 98th percentile
-    NIFTI = mni2fs_load_nii(Sfile); % mnivol can be a NIFTI structure
     S.mnivol = NIFTI;
     S.climstype = 'pos';
-    %S.clims = [0 .4];
+    S.clims = [0 15];
     S.clims_perc = 0.00001; % overlay masking below 98th percentile
     S = mni2fs_overlay(S);
     view([-90 0]); % change camera angle
     mni2fs_lights; % Dont forget to turn on the lights!
+    colorbar
     % SD RH
     figure('Color','w','position',[20 72 600 500])
     % Load and Render the FreeSurfer surface
@@ -126,30 +135,36 @@ if any(F==3)
     S.inflationstep = 5; % 1 no inflation, 6 fully inflated
     S.decimation = 0;
     S.plotsurf = 'inflated';
-    S.lookupsurf = 'pial';
+    S.lookupsurf = 'mid';
+    S.smoothdata = 2;
     S = mni2fs_brain(S);
     % Add overlay, theshold to 98th percentile
-    NIFTI = mni2fs_load_nii(Sfile); % mnivol can be a NIFTI structure
+    %NIFTI = mni2fs_load_nii(Sfile); % mnivol can be a NIFTI structure
     S.mnivol = NIFTI;
     S.climstype = 'pos';
-    %S.clims = [0 .4];
+    S.clims = [0 15];
     S.clims_perc = 0.00001; % overlay masking below 98th percentile
     S = mni2fs_overlay(S);
-    view([-90 0]); % change camera angle
+    view([90 0]); % change camera angle
     mni2fs_lights; % Dont forget to turn on the lights!
-
+    colorbar
+    
     % CoV LH
     figure('Color','w','position',[20 72 600 500])
+    NIFTI = mni2fs_load_nii(Cfile); % mnivol can be a NIFTI structure
+    X = find(isnan(NIFTI.img));
+    m = nanmean(nanmean(nanmean(NIFTI.img)));
+    NIFTI.img(X) = m; % zero here smooths the nans
     % Load and Render the FreeSurfer surface
     S = [];
     S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
     S.inflationstep = 5; % 1 no inflation, 6 fully inflated
     S.decimation = 0;
     S.plotsurf = 'inflated';
-    S.lookupsurf = 'pial';
+    S.lookupsurf = 'mid';
+    S.smoothdata = 2;
     S = mni2fs_brain(S);
     % Add overlay, theshold to 98th percentile
-    NIFTI = mni2fs_load_nii(Cfile); % mnivol can be a NIFTI structure
     S.mnivol = NIFTI;
     S.climstype = 'pos';
     S.clims = [0 .4];
@@ -157,6 +172,8 @@ if any(F==3)
     S = mni2fs_overlay(S);
     view([-90 0]); % change camera angle
     mni2fs_lights; % Dont forget to turn on the lights!
+    colorbar
+    
     % CoV RH
     figure('Color','w','position',[20 72 600 500])
     % Load and Render the FreeSurfer surface
@@ -165,18 +182,19 @@ if any(F==3)
     S.inflationstep = 5; % 1 no inflation, 6 fully inflated
     S.decimation = 0;
     S.plotsurf = 'inflated';
-    S.lookupsurf = 'pial';
+    S.lookupsurf = 'mid';
+    S.smoothdata = 2;
     S = mni2fs_brain(S);
     % Add overlay, theshold to 98th percentile
-    NIFTI = mni2fs_load_nii(Cfile); % mnivol can be a NIFTI structure
+    %NIFTI = mni2fs_load_nii(Cfile); % mnivol can be a NIFTI structure
     S.mnivol = NIFTI;
     S.climstype = 'pos';
     S.clims = [0 .4];
     S.clims_perc = 0.00001; % overlay masking below 98th percentile
     S = mni2fs_overlay(S);
-    view([-90 0]); % change camera angle
+    view([90 0]); % change camera angle
     mni2fs_lights; % Dont forget to turn on the lights!
-    %}
+    colorbar
 end
     
     
