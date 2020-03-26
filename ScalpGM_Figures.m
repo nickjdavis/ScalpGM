@@ -39,15 +39,27 @@ if any(F==2)
     T = readtable(tablefile,'delimiter',',');
     figure
     yyaxis left
-    plot(T.Age,T.eTIV,'o')
-    ylabel('Estimated total intracranial volume (mL)')
+    plot(T.Age,T.eTIV,'ko','MarkerFaceColor',[0 0 0])
+    %ylabel('Estimated total intracranial volume ($\bullet$, mL)',...
+    %    'Interpreter','latex','Color','k') 
+    ylabel('Estimated total intracranial volume (   , mL)',...
+        'Interpreter','tex','Color','k') % NB wrong symbol - edit later
     set(gca,'YLim',[500 2000])
+    set(gca,'YColor','k')
     yyaxis right
-    plot(T.Age,T.nWBV,'s')
-    ylabel('Normalised whole-brain volume (percent)')
+    % add trendline
+    A = [25 60]; V = A*-.001+.871;
+    line (A,V,'Color','k','LineWidth',2)
+    hold on
+    plot(T.Age,T.nWBV,'kv','MarkerFaceColor',[.6 .6 .6])
+    ylabel('Normalised whole-brain volume (\nabla, proportion)',...
+       'Interpreter','tex','Color','k')
+    %ylabel('Normalised whole-brain volume (   , proportion)',...
+    %    'Interpreter','tex','Color','k')
     set(gca,'YLim',[.70 1.2])
     xlabel('Age (years)')
     set(gca,'XLim',[23 62])
+    set(gca,'YColor','k')
 end
 
 
