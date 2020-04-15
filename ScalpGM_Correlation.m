@@ -14,8 +14,9 @@ function ScalpGM_Correlation (filelist,ROIinfo)
 % NB - this is a cheat to (effectively) get the brain mask - need to fix!
 Mfile = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ALLPOSTFIX_M.nii';
 V = spm_vol(Mfile);
+MEANIMG = spm_read_vols(V);
 % TODO - create new
-CORRIMG = spm_read_vols(V);
+% CORRIMG = spm_read_vols(V);
 ROI = int_MNI2Index(ROIinfo(1:3),V.mat);
 Vlist = int_getVoxelCoords( ROI,ROIinfo(4) );
 
@@ -55,7 +56,9 @@ end
 
 
 %% Get each file, and build correlation map
-CORRIMG = spm_read_vols(V);
+CORRIMG = nan(size(MEANIMG));
+NIMG = nan(size(MEANIMG));
+PIMG = nan(size(MEANIMG));
 mxX = size(CORRIMG,1);
 mxY = size(CORRIMG,2);
 mxZ = size(CORRIMG,3);
@@ -77,10 +80,13 @@ for plane=1:nplanes
     % TODO: use corrcoef? handle nans better
     for y=1:mxY
         for x=1:mxX
-            if ~isnan(CORRIMG(x,y,plane))
+            if ~isnan(MEANIMG(x,y,plane))
                 PointDepths = Pstack(x,y,:);
-                c = corr(squeeze(PointDepths),Depths);
+                [c,pval] = corr(squeeze(PointDepths),Depths);
                 CORRIMG(x,y,plane) = c;
+                PIMG(x,y,plane) = pval;
+            else
+                NIMG(x,y,plane) = 0;
             end
         end
     end
@@ -88,11 +94,19 @@ for plane=1:nplanes
 end
 close(wb)
 
-%% write output image
-outV = V;
-outV.fname = sprintf('ScalpGM [%d %d %d] corr.nii',...
+%% write output images
+outVr = V;
+outVr.fname = sprintf('ScalpGM [%d %d %d] corr r.nii',...
     ROIinfo(1),ROIinfo(2),ROIinfo(3));
-spm_write_vol(outV,CORRIMG);
+spm_write_vol(outVr,CORRIMG);
+outVp = V;
+outVp.fname = sprintf('ScalpGM [%d %d %d] corr p.nii',...
+    ROIinfo(1),ROIinfo(2),ROIinfo(3));
+spm_write_vol(outVp,PIMG);
+outVn = V;
+outVn.fname = sprintf('ScalpGM [%d %d %d] corr n.nii',...
+    ROIinfo(1),ROIinfo(2),ROIinfo(3));
+spm_write_vol(outVn,NIMG);
 
 
 
