@@ -17,8 +17,8 @@ V = spm_vol(Mfile);
 MEANIMG = spm_read_vols(V);
 % TODO - create new
 % CORRIMG = spm_read_vols(V);
-ROI = int_MNI2Index(ROIinfo(1:3),V.mat)
-Vlist = int_getVoxelCoords( ROI,ROIinfo(4) )
+ROI = int_MNI2Index(ROIinfo(1:3),V.mat);
+Vlist = int_getVoxelCoords( ROI,ROIinfo(4) );
 
 
 %% Get data
@@ -28,7 +28,7 @@ nFiles = size(T,1);
 fprintf('Found %d files.\n',nFiles)
 F = {};
 D = T.imgfolder;
-I = T.imgfile;
+% I = T.imgfile;
 M = T.MNI;
 for i=1:nFiles
     p = D{i};
@@ -60,7 +60,7 @@ for i=1:nFiles
     Depths(i) = nanmean(d);
 end
 
-size(find(NIMG>10))
+% size(find(NIMG>10))
 
 
 %% Get each file, and build correlation map
@@ -91,7 +91,7 @@ for plane=1:nplanes
                 [c,pval] = corr(PointDepths(I),Depths(I));
                 CORRIMG(x,y,plane) = c;
                 PIMG(x,y,plane) = pval;
-                NIMG(x,y,plane) = length(I);
+                NIMG(x,y,plane) = max([NIMG(x,y,plane) length(I)]);
             else
                 %NIMG(x,y,plane) = 0;
             end
@@ -114,7 +114,7 @@ outVn = V;
 outVn.fname = sprintf('ScalpGM [%d %d %d] corr n.nii',...
     ROIinfo(1),ROIinfo(2),ROIinfo(3));
 % NIMG(Vlist) = 100;
-size(find(NIMG>10))
+%size(find(NIMG>10))
 spm_write_vol(outVn,NIMG);
 
 
