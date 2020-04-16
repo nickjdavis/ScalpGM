@@ -81,10 +81,12 @@ for plane=1:nplanes
     for y=1:mxY
         for x=1:mxX
             if ~isnan(MEANIMG(x,y,plane))
-                PointDepths = Pstack(x,y,:);
-                [c,pval] = corr(squeeze(PointDepths),Depths);
+                PointDepths = squeeze(Pstack(x,y,:));
+                I = find(~isnan(PointDepths));
+                [c,pval] = corr(PointDepths(I),Depths(I));
                 CORRIMG(x,y,plane) = c;
                 PIMG(x,y,plane) = pval;
+                NIMG(x,y,plane) = length(I);
             else
                 NIMG(x,y,plane) = 0;
             end
