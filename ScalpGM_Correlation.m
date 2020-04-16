@@ -17,8 +17,8 @@ V = spm_vol(Mfile);
 MEANIMG = spm_read_vols(V);
 % TODO - create new
 % CORRIMG = spm_read_vols(V);
-ROI = int_MNI2Index(ROIinfo(1:3),V.mat);
-Vlist = int_getVoxelCoords( ROI,ROIinfo(4) );
+ROI = int_MNI2Index(ROIinfo(1:3),V.mat)
+Vlist = int_getVoxelCoords( ROI,ROIinfo(4) )
 
 
 %% Get data
@@ -38,6 +38,11 @@ for i=1:nFiles
     F=[F;f];
 end
 
+
+CORRIMG = nan(size(MEANIMG));
+NIMG = nan(size(MEANIMG));
+PIMG = nan(size(MEANIMG));
+
 %% Get depth of specified region
 Depths = zeros(nFiles,1);
 for i=1:nFiles
@@ -48,17 +53,17 @@ for i=1:nFiles
         x = Vlist(j,1);
         y = Vlist(j,2);
         z = Vlist(j,3);
+        %id = IMGDATA(x,y,z);
         d = [d; IMGDATA(x,y,z)];
+        NIMG(x,y,z) = 100;
     end
     Depths(i) = nanmean(d);
 end
 
+size(find(NIMG>10))
 
 
 %% Get each file, and build correlation map
-CORRIMG = nan(size(MEANIMG));
-NIMG = nan(size(MEANIMG));
-PIMG = nan(size(MEANIMG));
 mxX = size(CORRIMG,1);
 mxY = size(CORRIMG,2);
 mxZ = size(CORRIMG,3);
@@ -88,7 +93,7 @@ for plane=1:nplanes
                 PIMG(x,y,plane) = pval;
                 NIMG(x,y,plane) = length(I);
             else
-                NIMG(x,y,plane) = 0;
+                %NIMG(x,y,plane) = 0;
             end
         end
     end
@@ -108,7 +113,13 @@ spm_write_vol(outVp,PIMG);
 outVn = V;
 outVn.fname = sprintf('ScalpGM [%d %d %d] corr n.nii',...
     ROIinfo(1),ROIinfo(2),ROIinfo(3));
+% NIMG(Vlist) = 100;
+size(find(NIMG>10))
 spm_write_vol(outVn,NIMG);
+
+
+
+
 
 
 
