@@ -18,7 +18,7 @@ MEANIMG = spm_read_vols(V);
 % TODO - create new
 % CORRIMG = spm_read_vols(V);
 ROI = int_MNI2Index(ROIinfo(1:3),V.mat);
-Vlist = int_getVoxelCoords( ROI,ROIinfo(4) );
+Vlist = int_getVoxelCoords( ROI,ROIinfo(4),MEANIMG );
 
 
 %% Get data
@@ -131,14 +131,26 @@ y = MNIcoords(2)-affmat(2,4);
 z = MNIcoords(3)-affmat(3,4);
 newCoords = [x y z];
 
-function Vlist = int_getVoxelCoords (c,r)
-% UGLY!!! start with cube...
+function Vlist = int_getVoxelCoords (c,r,img)
+% UGLY!!! Try sphere...
 Vlist = [];
-d = 2*r+1;
-for z=(c(3)-r):(c(3)+r)
-    for y=(c(2)-r):(c(2)+r)
-        for x=(c(1)-r):(c(1)+r)
-            Vlist = [Vlist; x y z];
+S = size(img)
+for z=1:S(3)
+    for y=1:S(2)
+        for x=1:S(1)
+            d = sqrt( (c(1)-x)^2 + (c(2)-y)^2 + (c(3)-z)^2 );
+            if d<=r
+                Vlist = [Vlist; x y z];
+            end
         end
     end
 end
+% this does a cube...
+% d = 2*r+1;
+% for z=(c(3)-r):(c(3)+r)
+%     for y=(c(2)-r):(c(2)+r)
+%         for x=(c(1)-r):(c(1)+r)
+%             Vlist = [Vlist; x y z];
+%         end
+%     end
+% end
