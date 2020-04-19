@@ -14,7 +14,7 @@ if isempty(strfind(pathstring,'mni2fs'))
     addpath('\\staffhome\staff_home0\55121576\Documents\MATLAB\mni2fs\misc');
     addpath('\\staffhome\staff_home0\55121576\Documents\MATLAB\mni2fs\myaa');
     addpath('\\staffhome\staff_home0\55121576\Documents\MATLAB\mni2fs\nifti_tools');
-    addpath('\\staffhome\staff_home0\55121576\Documents\MATLAB\mni2fs\private');
+    %addpath('\\staffhome\staff_home0\55121576\Documents\MATLAB\mni2fs\private');
     addpath('\\staffhome\staff_home0\55121576\Documents\MATLAB\mni2fs\surf');
 end
 
@@ -428,4 +428,35 @@ if any(F==1001)
     S
 end
 
+
+%% DRAFT IMAGES
+
+if any(F==222)
+    M1corr =...
+        '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ScalpGM [-22 -22 73] corr r.nii';
+    M1pval =...
+        '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ScalpGM [-22 -22 73] corr p.nii';
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(M1pval); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    
+    S.climstype = 'pos';
+    %S.clims = [0.4 1];
+    %S.clims_perc = 0.00001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([-90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+    S
+    colorbar
+end
 
