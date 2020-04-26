@@ -7,7 +7,11 @@
 % ROIinfo : [x y z r] is MNI coord of point, plus radius
 %
 
-function ScalpGM_Correlation (filelist,ROIinfo)
+function ScalpGM_Correlation (filelist,ROIinfo,id)
+
+if nargin<3
+    id = '';
+end
 
 
 %% Load mean image to get dims and to create new
@@ -103,18 +107,25 @@ close(wb)
 
 %% write output images
 outVr = V;
-outVr.fname = sprintf('ScalpGM [%d %d %d] corr r.nii',...
-    ROIinfo(1),ROIinfo(2),ROIinfo(3));
-spm_write_vol(outVr,CORRIMG);
 outVp = V;
-outVp.fname = sprintf('ScalpGM [%d %d %d] corr p.nii',...
-    ROIinfo(1),ROIinfo(2),ROIinfo(3));
-spm_write_vol(outVp,PIMG);
 outVn = V;
-outVn.fname = sprintf('ScalpGM [%d %d %d] corr n.nii',...
-    ROIinfo(1),ROIinfo(2),ROIinfo(3));
-% NIMG(Vlist) = 100;
-%size(find(NIMG>10))
+if isempty(id)
+    outVr.fname = sprintf('ScalpGM [%d %d %d] corr r.nii',...
+        ROIinfo(1),ROIinfo(2),ROIinfo(3));
+    outVp.fname = sprintf('ScalpGM [%d %d %d] corr p.nii',...
+        ROIinfo(1),ROIinfo(2),ROIinfo(3));
+    outVn.fname = sprintf('ScalpGM [%d %d %d] corr n.nii',...
+        ROIinfo(1),ROIinfo(2),ROIinfo(3));
+else
+    outVr.fname = sprintf('ScalpGM %s [%d %d %d] corr r.nii',...
+        id,ROIinfo(1),ROIinfo(2),ROIinfo(3));
+    outVp.fname = sprintf('ScalpGM %s [%d %d %d] corr p.nii',...
+        id,ROIinfo(1),ROIinfo(2),ROIinfo(3));
+    outVn.fname = sprintf('ScalpGM %s [%d %d %d] corr n.nii',...
+        id,ROIinfo(1),ROIinfo(2),ROIinfo(3));
+end
+spm_write_vol(outVr,CORRIMG);
+spm_write_vol(outVp,PIMG);
 spm_write_vol(outVn,NIMG);
 
 

@@ -4,7 +4,7 @@ function ScalpGM_Figures(F)
 
 % test for mni2fs
 pathstring = path();
-if isempty(strfind(pathstring,'mni2fs'))
+if ~contains(pathstring,'mni2fs')
     % No SPM in path. Need to add
     disp('Adding mni2fs to path')
     addpath('\\staffhome\staff_home0\55121576\Documents\MATLAB\mni2fs');
@@ -228,10 +228,24 @@ end
 
 
 
+% PAPER FIGURE 5 - Correlation maps
+if any(F==5)
+    
+end
+
+
+% PAPER FIGURE 6 - M1-V1 corr scatter
+if any(F==6)
+    
+end
+
+
 
 
 
 %% ---- OLD
+
+%{
 
 % CoV image 
 if any(F==11111111) % NO
@@ -353,7 +367,7 @@ if any(F==9911111)
 
 end
 
-
+%}
 
 
 
@@ -433,7 +447,7 @@ end
 
 if any(F==222)
     M1corr =...
-        '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ScalpGM [-22 -22 73] corr r.nii';
+        '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ScalpGM M1 [-22 -22 73] corr r.nii';
     M1pval =...
         '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ScalpGM [-22 -22 73] corr p.nii';
     figure('Color','w','position',[20 72 600 500])
@@ -447,10 +461,14 @@ if any(F==222)
     S = mni2fs_brain(S);
     
     % Add overlay, theshold to 98th percentile
-    NIFTI = mni2fs_load_nii(M1pval); % mnivol can be a NIFTI structure
+    NIFTI = mni2fs_load_nii(M1corr); % mnivol can be a NIFTI structure
     S.mnivol = NIFTI;
     
-    S.climstype = 'pos';
+    I = S.mnivol.img;
+    Is= smooth3(I,'gaussian',3);
+    S.mnivol.img = Is;
+    
+%     S.climstype = 'pos';
     %S.clims = [0.4 1];
     %S.clims_perc = 0.00001; % overlay masking below 98th percentile
     S = mni2fs_overlay(S);
