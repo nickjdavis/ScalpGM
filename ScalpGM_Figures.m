@@ -478,3 +478,17 @@ if any(F==222)
     colorbar
 end
 
+
+% raincloud plot to replace figure 4
+if any(F==333)
+    T = readtable('tempC.csv');
+    %Cols = [.2 .2 .2; .8 .8 .8];
+    Cols = [.1 .1 .1; .3 .3 .3; .5 .5 .5; .7 .7 .7; .9 .9 .9];
+    C = cell(2,5);
+    C{1,1} = T.PreLC; C{2,1} = T.PreRC;
+    C{1,2} = T.PFCLC; C{2,2} = T.PFCRC;
+    C{1,3} = T.OccLC; C{2,3} = T.OccRC;
+    C{1,4} = T.AngLC; C{2,4} = T.AngRC;
+    C{1,5} = T.TemLC; C{2,5} = T.TemRC;
+    rm_raincloud(C,Cols)
+end
