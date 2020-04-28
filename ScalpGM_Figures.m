@@ -18,7 +18,7 @@ if ~contains(pathstring,'mni2fs')
     addpath('\\staffhome\staff_home0\55121576\Documents\MATLAB\mni2fs\surf');
 end
 
-T1file = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM/single_subj_T1.nii';
+T1file= '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM/single_subj_T1.nii';
 Mfile = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ALLPOSTFIX_M.nii';
 Sfile = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ALLPOSTFIX_SD.nii';
 Cfile = '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ALLPOSTFIX_COV.nii';
@@ -210,22 +210,43 @@ if any(F==3)
 end
     
     
-
-% PAPER FIGURE 4 - CoV bars graph
+% PAPER FIGURE 4 - Boxplot of CoV
 if any(F==4)
-    figure;
-    cov= [.4230 .4378; .4016 .3992; .4671 .4428; .4127 .4129; .4403 .4404];
-    sd = [.0134 .0155; .0135 .0143; .0221 .0197; .0194 .0164; .0161 .0122];
-    barweb(cov,sd,[],{'PreC','PreF','Occ','Ang','Tem'},[],'Area','CoV (+/-1SD)')
-    hold on;
+    T = readtable('tempC.csv');
+    figure; hold on;
+    allData = {T.PreLC; T.PreRC; T.PFCLC; T.PFCRC;...
+        T.OccLC; T.OccRC; T.AngLC; T.AngRC; T.TemLC; T.TemRC};
+    group = [ones(size(T.PreLC));
+        2 * ones(size(T.PreRC));
+        4 * ones(size(T.PFCLC));
+        5 * ones(size(T.PFCRC));
+        7 * ones(size(T.OccLC));
+        8 * ones(size(T.OccRC));
+        10* ones(size(T.AngLC));
+        11* ones(size(T.AngRC));
+        13* ones(size(T.TemLC));
+        14* ones(size(T.TemRC))];
+    xCenter = [1 2 4 5 7 8 10 11 13 14];
+    spread = 0.25; % 0=no spread; 0.5=random spread within box bounds (can be any value)
+    for i = 1:numel(allData)
+        plot(rand(size(allData{i}))*spread -(spread/2) + xCenter(i), allData{i}, 'k.','linewidth', 2)
+    end
+    h = boxplot(cell2mat(allData),group,'Notch','on','positions',xCenter,...
+        'Symbol','ko','OutlierSize',4);
+    set(h, 'linewidth' ,2,'Color','k')
+    txtCentres = [1.5 4.5 7.5 10.5 13.5];
+    set(gca,'XLim',[-.5 15.5])
+    set(gca,'YLim',[.33 .55])
+    set(gca,'YTick',.34:.02:.54)
+    set (gca,'XTick',txtCentres);
+    set(gca,'XTickLabel', {'Pre'; 'PFC'; 'Occ'; 'Ang'; 'Tem'})
     TXT = {'**','*','**','ns','ns'};
-    y = .5;
+    y = .54;
     for i=1:5
-        text (i,y,TXT{i},'FontSize',14,'HorizontalAlignment','center',...
+        text (txtCentres(i),y,TXT{i},'FontSize',14,'HorizontalAlignment','center',...
             'VerticalAlignment','middle');
     end
 end
-
 
 
 % PAPER FIGURE 5 - Correlation maps
@@ -246,6 +267,24 @@ end
 %% ---- OLD
 
 %{
+
+
+% PAPER FIGURE 4 - CoV bars graph
+if any(F==4)
+    figure;
+    cov= [.4230 .4378; .4016 .3992; .4671 .4428; .4127 .4129; .4403 .4404];
+    sd = [.0134 .0155; .0135 .0143; .0221 .0197; .0194 .0164; .0161 .0122];
+    barweb(cov,sd,[],{'PreC','PreF','Occ','Ang','Tem'},[],'Area','CoV (+/-1SD)')
+    hold on;
+    TXT = {'**','*','**','ns','ns'};
+    y = .5;
+    for i=1:5
+        text (i,y,TXT{i},'FontSize',14,'HorizontalAlignment','center',...
+            'VerticalAlignment','middle');
+    end
+end
+
+
 
 % CoV image 
 if any(F==11111111) % NO
@@ -479,16 +518,56 @@ if any(F==222)
 end
 
 
-% raincloud plot to replace figure 4
+% raincloud/box plot to replace figure 4
 if any(F==333)
     T = readtable('tempC.csv');
     %Cols = [.2 .2 .2; .8 .8 .8];
-    Cols = [.1 .1 .1; .3 .3 .3; .5 .5 .5; .7 .7 .7; .9 .9 .9];
-    C = cell(2,5);
-    C{1,1} = T.PreLC; C{2,1} = T.PreRC;
-    C{1,2} = T.PFCLC; C{2,2} = T.PFCRC;
-    C{1,3} = T.OccLC; C{2,3} = T.OccRC;
-    C{1,4} = T.AngLC; C{2,4} = T.AngRC;
-    C{1,5} = T.TemLC; C{2,5} = T.TemRC;
-    rm_raincloud(C,Cols)
+%     Cols = [.1 .1 .1; .3 .3 .3; .5 .5 .5; .7 .7 .7; .9 .9 .9];
+%     C = cell(2,5);
+%     C{1,1} = T.PreLC; C{2,1} = T.PreRC;
+%     C{1,2} = T.PFCLC; C{2,2} = T.PFCRC;
+%     C{1,3} = T.OccLC; C{2,3} = T.OccRC;
+%     C{1,4} = T.AngLC; C{2,4} = T.AngRC;
+%     C{1,5} = T.TemLC; C{2,5} = T.TemRC;
+    figure; hold on;
+    %rm_raincloud(C,Cols,[],'ks',.01) % Okay but all samples overlay
+    %raincloud_plot(C{1,1},'box_on',1) % Quite nice but only one sample
+    allData = {T.PreLC; T.PreRC; T.PFCLC; T.PFCRC;...
+        T.OccLC; T.OccRC; T.AngLC; T.AngRC; T.TemLC; T.TemRC}; 
+    group = [ones(size(T.PreLC));
+         2 * ones(size(T.PreRC));
+         4 * ones(size(T.PFCLC));
+         5 * ones(size(T.PFCRC));
+         7 * ones(size(T.OccLC));
+         8 * ones(size(T.OccRC));
+         10* ones(size(T.AngLC));
+         11* ones(size(T.AngRC));
+         13* ones(size(T.TemLC));
+         14* ones(size(T.TemRC))];
+%      xCenter = 1:numel(allData)
+     xCenter = [1 2 4 5 7 8 10 11 13 14];
+     spread = 0.25; % 0=no spread; 0.5=random spread within box bounds (can be any value)
+     for i = 1:numel(allData)
+         %plot(rand(size(allData{i}))*spread -(spread/2) + xCenter(i), allData{i}, 'm.','linewidth', 2)
+          plot(rand(size(allData{i}))*spread -(spread/2) + xCenter(i), allData{i}, 'k.','linewidth', 2)
+    end
+     %plot(1,.36,'ro')
+     h = boxplot(cell2mat(allData),group,'positions',xCenter,...
+        'Symbol','ko','OutlierSize',4);
+     set(h, 'linewidth' ,2,'Color','k')
+     txtCentres = [1.5 4.5 7.5 10.5 13.5];
+    set(gca,'YLim',[.33 .55])
+    set(gca,'YTick',.34:.02:.54)
+    set (gca,'XTick',txtCentres);
+      set(gca,'XTickLabel', {'Pre'; 'PFC'; 'Occ'; 'Ang'; 'Tem'})
+%     set(gca,'XTickLabel', {'PreLC'; 'PreRC'; 'PFCLC'; 'PFCRC';...
+%          'OccLC'; 'OccRC'; 'AngLC'; 'AngRC'; 'TemLC'; 'TemRC'})
+     %hold on
+         TXT = {'**','*','**','ns','ns'};
+    y = .54;
+    for i=1:5
+        text (txtCentres(i),y,TXT{i},'FontSize',14,'HorizontalAlignment','center',...
+            'VerticalAlignment','middle');
+    end
+
 end
