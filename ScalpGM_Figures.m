@@ -250,18 +250,197 @@ end
 
 
 % PAPER FIGURE 5 - Correlation maps
+% NB - this is unwiedly, so use comment blocks to select subfigures
 if any(F==5)
     
+    M1corr =...
+        '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ScalpGM M1 [-22 -22 73] corr r.nii';
+    V1corr =...
+        '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ScalpGM V1 [-16 -92 6] corr r.nii';
+    %{
+    % M1 Left - lateral
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(M1corr); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    %S.climstype = 'pos';
+    %S.clims = [0.4 1];
+    S.clims_perc = 0;%0.0000001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([-90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+    %S
+    colorbar
+    % M1 Left - medial
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(M1corr); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    %S.climstype = 'pos';
+    %S.clims = [0.4 1];
+    S.clims_perc = 0;%0.0000001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+    %S
+    colorbar
+    % M1 Right - medial
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'rh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(M1corr); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    %S.climstype = 'pos';
+    %S.clims = [0.4 1];
+    S.clims_perc = 0;%0.0000001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([-90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+    %S
+    colorbar
+    % M1 Right - lateral
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'rh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(M1corr); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    %S.climstype = 'pos';
+    %S.clims = [0.4 1];
+    S.clims_perc = 0;%0.0000001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+    %S
+    colorbar
+    %}
+
+    % V1 Left - lateral
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(V1corr); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    %S.climstype = 'pos';
+    %S.clims = [0.4 1];
+    S.clims_perc = 0;%0.0000001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([-90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+    %S
+    colorbar
+    % V1 Left - medial
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(V1corr); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    %S.climstype = 'pos';
+    %S.clims = [0.4 1];
+    S.clims_perc = 0;%0.0000001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+    %S
+    colorbar
+    % V1 Right - medial
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'rh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(V1corr); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    %S.climstype = 'pos';
+    %S.clims = [0.4 1];
+    S.clims_perc = 0;%0.0000001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([-90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+    %S
+    colorbar
+    % V1 Right - lateral
+    figure('Color','w','position',[20 72 600 500])
+    % Load and Render the FreeSurfer surface
+    S = [];
+    S.hem = 'rh'; % choose the hemesphere 'lh' or 'rh'
+    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
+    S.decimation = 0;
+    S.plotsurf = 'inflated';
+    S.lookupsurf = 'pial';
+    S = mni2fs_brain(S);
+    % Add overlay, theshold to 98th percentile
+    NIFTI = mni2fs_load_nii(V1corr); % mnivol can be a NIFTI structure
+    S.mnivol = NIFTI;
+    %S.climstype = 'pos';
+    %S.clims = [0.4 1];
+    S.clims_perc = 0;%0.0000001; % overlay masking below 98th percentile
+    S = mni2fs_overlay(S);
+    view([90 0]); % change camera angle
+    mni2fs_lights; % Dont forget to turn on the lights!
+    %S
+    colorbar
 end
 
 
 % PAPER FIGURE 6 - M1-V1 corr scatter
-if any(F==6)
-    
+if any(F==6)    
+    load('M1V1corrdata')
+    figure
+    plot(M1depth,V1depth,'ko','MarkerFaceColor',[0 0 0])
+    ylabel('Depth of V1 (mm)')
+    set(gca,'YLim',[12 35])
+    xlabel('Depth of M1 (mm)')
+    set(gca,'XLim',[12 35])
 end
-
-
-
 
 
 %% ---- OLD
@@ -406,6 +585,61 @@ if any(F==9911111)
 
 end
 
+
+% raincloud/box plot to replace figure 4
+if any(F==333)
+    T = readtable('tempC.csv');
+    %Cols = [.2 .2 .2; .8 .8 .8];
+%     Cols = [.1 .1 .1; .3 .3 .3; .5 .5 .5; .7 .7 .7; .9 .9 .9];
+%     C = cell(2,5);
+%     C{1,1} = T.PreLC; C{2,1} = T.PreRC;
+%     C{1,2} = T.PFCLC; C{2,2} = T.PFCRC;
+%     C{1,3} = T.OccLC; C{2,3} = T.OccRC;
+%     C{1,4} = T.AngLC; C{2,4} = T.AngRC;
+%     C{1,5} = T.TemLC; C{2,5} = T.TemRC;
+    figure; hold on;
+    %rm_raincloud(C,Cols,[],'ks',.01) % Okay but all samples overlay
+    %raincloud_plot(C{1,1},'box_on',1) % Quite nice but only one sample
+    allData = {T.PreLC; T.PreRC; T.PFCLC; T.PFCRC;...
+        T.OccLC; T.OccRC; T.AngLC; T.AngRC; T.TemLC; T.TemRC}; 
+    group = [ones(size(T.PreLC));
+         2 * ones(size(T.PreRC));
+         4 * ones(size(T.PFCLC));
+         5 * ones(size(T.PFCRC));
+         7 * ones(size(T.OccLC));
+         8 * ones(size(T.OccRC));
+         10* ones(size(T.AngLC));
+         11* ones(size(T.AngRC));
+         13* ones(size(T.TemLC));
+         14* ones(size(T.TemRC))];
+%      xCenter = 1:numel(allData)
+     xCenter = [1 2 4 5 7 8 10 11 13 14];
+     spread = 0.25; % 0=no spread; 0.5=random spread within box bounds (can be any value)
+     for i = 1:numel(allData)
+         %plot(rand(size(allData{i}))*spread -(spread/2) + xCenter(i), allData{i}, 'm.','linewidth', 2)
+          plot(rand(size(allData{i}))*spread -(spread/2) + xCenter(i), allData{i}, 'k.','linewidth', 2)
+    end
+     %plot(1,.36,'ro')
+     h = boxplot(cell2mat(allData),group,'positions',xCenter,...
+        'Symbol','ko','OutlierSize',4);
+     set(h, 'linewidth' ,2,'Color','k')
+     txtCentres = [1.5 4.5 7.5 10.5 13.5];
+    set(gca,'YLim',[.33 .55])
+    set(gca,'YTick',.34:.02:.54)
+    set (gca,'XTick',txtCentres);
+      set(gca,'XTickLabel', {'Pre'; 'PFC'; 'Occ'; 'Ang'; 'Tem'})
+%     set(gca,'XTickLabel', {'PreLC'; 'PreRC'; 'PFCLC'; 'PFCRC';...
+%          'OccLC'; 'OccRC'; 'AngLC'; 'AngRC'; 'TemLC'; 'TemRC'})
+     %hold on
+         TXT = {'**','*','**','ns','ns'};
+    y = .54;
+    for i=1:5
+        text (txtCentres(i),y,TXT{i},'FontSize',14,'HorizontalAlignment','center',...
+            'VerticalAlignment','middle');
+    end
+
+end
+
 %}
 
 
@@ -484,90 +718,9 @@ end
 
 %% DRAFT IMAGES
 
-if any(F==222)
-    M1corr =...
-        '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ScalpGM M1 [-22 -22 73] corr r.nii';
-    M1pval =...
-        '\\staffhome\staff_home0\55121576\Documents\MATLAB\ScalpGM\ScalpGM [-22 -22 73] corr p.nii';
-    figure('Color','w','position',[20 72 600 500])
-    % Load and Render the FreeSurfer surface
-    S = [];
-    S.hem = 'lh'; % choose the hemesphere 'lh' or 'rh'
-    S.inflationstep = 5; % 1 no inflation, 6 fully inflated
-    S.decimation = 0;
-    S.plotsurf = 'inflated';
-    S.lookupsurf = 'pial';
-    S = mni2fs_brain(S);
-    
-    % Add overlay, theshold to 98th percentile
-    NIFTI = mni2fs_load_nii(M1corr); % mnivol can be a NIFTI structure
-    S.mnivol = NIFTI;
-    
-    I = S.mnivol.img;
-    Is= smooth3(I,'gaussian',3);
-    S.mnivol.img = Is;
-    
-%     S.climstype = 'pos';
-    %S.clims = [0.4 1];
-    %S.clims_perc = 0.00001; % overlay masking below 98th percentile
-    S = mni2fs_overlay(S);
-    view([-90 0]); % change camera angle
-    mni2fs_lights; % Dont forget to turn on the lights!
-    S
-    colorbar
-end
 
 
-% raincloud/box plot to replace figure 4
-if any(F==333)
-    T = readtable('tempC.csv');
-    %Cols = [.2 .2 .2; .8 .8 .8];
-%     Cols = [.1 .1 .1; .3 .3 .3; .5 .5 .5; .7 .7 .7; .9 .9 .9];
-%     C = cell(2,5);
-%     C{1,1} = T.PreLC; C{2,1} = T.PreRC;
-%     C{1,2} = T.PFCLC; C{2,2} = T.PFCRC;
-%     C{1,3} = T.OccLC; C{2,3} = T.OccRC;
-%     C{1,4} = T.AngLC; C{2,4} = T.AngRC;
-%     C{1,5} = T.TemLC; C{2,5} = T.TemRC;
-    figure; hold on;
-    %rm_raincloud(C,Cols,[],'ks',.01) % Okay but all samples overlay
-    %raincloud_plot(C{1,1},'box_on',1) % Quite nice but only one sample
-    allData = {T.PreLC; T.PreRC; T.PFCLC; T.PFCRC;...
-        T.OccLC; T.OccRC; T.AngLC; T.AngRC; T.TemLC; T.TemRC}; 
-    group = [ones(size(T.PreLC));
-         2 * ones(size(T.PreRC));
-         4 * ones(size(T.PFCLC));
-         5 * ones(size(T.PFCRC));
-         7 * ones(size(T.OccLC));
-         8 * ones(size(T.OccRC));
-         10* ones(size(T.AngLC));
-         11* ones(size(T.AngRC));
-         13* ones(size(T.TemLC));
-         14* ones(size(T.TemRC))];
-%      xCenter = 1:numel(allData)
-     xCenter = [1 2 4 5 7 8 10 11 13 14];
-     spread = 0.25; % 0=no spread; 0.5=random spread within box bounds (can be any value)
-     for i = 1:numel(allData)
-         %plot(rand(size(allData{i}))*spread -(spread/2) + xCenter(i), allData{i}, 'm.','linewidth', 2)
-          plot(rand(size(allData{i}))*spread -(spread/2) + xCenter(i), allData{i}, 'k.','linewidth', 2)
-    end
-     %plot(1,.36,'ro')
-     h = boxplot(cell2mat(allData),group,'positions',xCenter,...
-        'Symbol','ko','OutlierSize',4);
-     set(h, 'linewidth' ,2,'Color','k')
-     txtCentres = [1.5 4.5 7.5 10.5 13.5];
-    set(gca,'YLim',[.33 .55])
-    set(gca,'YTick',.34:.02:.54)
-    set (gca,'XTick',txtCentres);
-      set(gca,'XTickLabel', {'Pre'; 'PFC'; 'Occ'; 'Ang'; 'Tem'})
-%     set(gca,'XTickLabel', {'PreLC'; 'PreRC'; 'PFCLC'; 'PFCRC';...
-%          'OccLC'; 'OccRC'; 'AngLC'; 'AngRC'; 'TemLC'; 'TemRC'})
-     %hold on
-         TXT = {'**','*','**','ns','ns'};
-    y = .54;
-    for i=1:5
-        text (txtCentres(i),y,TXT{i},'FontSize',14,'HorizontalAlignment','center',...
-            'VerticalAlignment','middle');
-    end
 
-end
+
+
+

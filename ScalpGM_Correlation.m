@@ -7,7 +7,7 @@
 % ROIinfo : [x y z r] is MNI coord of point, plus radius
 %
 
-function ScalpGM_Correlation (filelist,ROIinfo,id)
+function outdata = ScalpGM_Correlation (filelist,ROIinfo,id)
 
 if nargin<3
     id = '';
@@ -52,6 +52,8 @@ Depths = zeros(nFiles,1);
 for i=1:nFiles
     vol = spm_vol(F{i});
     IMGDATA = spm_read_vols(vol);
+    % mask out non-brain
+    IMGDATA(IMGDATA<5)=NaN;
     d = [];
     for j=1:size(Vlist,1)
         x = Vlist(j,1);
@@ -129,7 +131,9 @@ spm_write_vol(outVp,PIMG);
 spm_write_vol(outVn,NIMG);
 
 
-
+if nargout==1
+    outdata = Depths;
+end
 
 
 
