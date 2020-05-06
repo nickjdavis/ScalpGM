@@ -212,30 +212,66 @@ end
     
 % PAPER FIGURE 4 - Boxplot of CoV
 if any(F==4)
-    T = readtable('tempC.csv');
-    figure; hold on;
-    allData = {T.PreLC; T.PreRC; T.PFCLC; T.PFCRC;...
-        T.OccLC; T.OccRC; T.AngLC; T.AngRC; T.TemLC; T.TemRC};
-    group = [ones(size(T.PreLC));
-        2 * ones(size(T.PreRC));
-        4 * ones(size(T.PFCLC));
-        5 * ones(size(T.PFCRC));
-        7 * ones(size(T.OccLC));
-        8 * ones(size(T.OccRC));
-        10* ones(size(T.AngLC));
-        11* ones(size(T.AngRC));
-        13* ones(size(T.TemLC));
-        14* ones(size(T.TemRC))];
+    % A few common properties
     xCenter = [1 2 4 5 7 8 10 11 13 14];
     spread = 0.25; % 0=no spread; 0.5=random spread within box bounds (can be any value)
+    txtCentres = [1.5 4.5 7.5 10.5 13.5];
+
+    % Mean first
+    figure; hold on;
+    T = readtable('tempM.csv');
+    allData = {T.PreLM; T.PreRM; T.PFCLM; T.PFCRM;...
+        T.OccLM; T.OccRM; T.AngLM; T.AngRM; T.TemLM; T.TemRM};
+     group = [ones(size(T.PreLM));
+        2 * ones(size(T.PreRM));
+        4 * ones(size(T.PFCLM));
+        5 * ones(size(T.PFCRM));
+        7 * ones(size(T.OccLM));
+        8 * ones(size(T.OccRM));
+        10* ones(size(T.AngLM));
+        11* ones(size(T.AngRM));
+        13* ones(size(T.TemLM));
+        14* ones(size(T.TemRM))];
     for i = 1:numel(allData)
         plot(rand(size(allData{i}))*spread -(spread/2) + xCenter(i), allData{i}, 'k.','linewidth', 2)
     end
     h = boxplot(cell2mat(allData),group,'Notch','on','positions',xCenter,...
         'Symbol','ko','OutlierSize',4);
     set(h, 'linewidth' ,2,'Color','k')
-    txtCentres = [1.5 4.5 7.5 10.5 13.5];
     set(gca,'XLim',[-.5 15.5])
+     set(gca,'YLim',[13 30])
+    set(gca,'YTick',14:2:28)
+    set (gca,'XTick',txtCentres);
+    set(gca,'XTickLabel', {'Pre'; 'PFC'; 'Occ'; 'Ang'; 'Tem'})
+    TXT = {'**','**','ns','**','ns'};
+    y = 29;
+    for i=1:5
+        text (txtCentres(i),y,TXT{i},'FontSize',18,'HorizontalAlignment','center',...
+            'VerticalAlignment','middle');
+    end
+    ylabel('Mean depth (mm)')
+
+% CoV image
+    figure; hold on;
+    T = readtable('tempC.csv');
+    allData = {T.PreLC; T.PreRC; T.PFCLC; T.PFCRC;...
+       T.OccLC; T.OccRC; T.AngLC; T.AngRC; T.TemLC; T.TemRC};
+    group = [ones(size(T.PreLC));
+       2 * ones(size(T.PreRC));
+       4 * ones(size(T.PFCLC));
+       5 * ones(size(T.PFCRC));
+       7 * ones(size(T.OccLC));
+      8 * ones(size(T.OccRC));
+       10* ones(size(T.AngLC));
+       11* ones(size(T.AngRC));
+       13* ones(size(T.TemLC));
+       14* ones(size(T.TemRC))];
+    for i = 1:numel(allData)
+        plot(rand(size(allData{i}))*spread -(spread/2) + xCenter(i), allData{i}, 'k.','linewidth', 2)
+    end
+    h = boxplot(cell2mat(allData),group,'Notch','on','positions',xCenter,...
+        'Symbol','ko','OutlierSize',4);
+    set(h, 'linewidth' ,2,'Color','k')
     set(gca,'YLim',[.33 .55])
     set(gca,'YTick',.34:.02:.54)
     set (gca,'XTick',txtCentres);
@@ -243,9 +279,11 @@ if any(F==4)
     TXT = {'**','*','**','ns','ns'};
     y = .54;
     for i=1:5
-        text (txtCentres(i),y,TXT{i},'FontSize',14,'HorizontalAlignment','center',...
+        text (txtCentres(i),y,TXT{i},'FontSize',18,'HorizontalAlignment','center',...
             'VerticalAlignment','middle');
     end
+    xlabel('Region of interest')
+    ylabel('Coefficient of variation')
 end
 
 
