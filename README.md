@@ -6,9 +6,9 @@ ScalpGM
 The effect of transcranial magnetic stimulation on the brain depends on many factors. One factor is the distance from the scalp to the surface of the brain (the grey matter). This project uses code from SPM12b to segment a T1 image, calculate scalp-grey matter distance, and to additionally return an MNI-space image for comparison with other images.
 
 
-## BrainStim2020 - disclaimer
+## Current status
 
-This is a branch of the main, 'working' (i.e. development) branch of ScalpGM. It contain the code used to generate the analyses and imges discussed in my talk given at he virtual BrainSTIM2020 meeting.
+This is a working (i.e. development) branch of ScalpGM. 
 This version is not guaranteed to work perfectly on all systems, and may additionally contain code that is copyrighted to other authors. It therefore represents a snapshot of the developer's Matlab folder. Code in this branch may be poorly commented, and may have dependencies that are not contained in the branch.
 Future versions of this code will be released in the working or master branches.
 

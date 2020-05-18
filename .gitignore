@@ -9,6 +9,7 @@ meanimage*.*
 *.img
 *.hdr
 *.nii
+*.tif
 HIVE/
 data/
 data3/
