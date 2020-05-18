@@ -6,9 +6,9 @@ ScalpGM
 The effect of transcranial magnetic stimulation on the brain depends on many factors. One factor is the distance from the scalp to the surface of the brain (the grey matter). This project uses code from SPM12b to segment a T1 image, calculate scalp-grey matter distance, and to additionally return an MNI-space image for comparison with other images.
 
 
-## BrainStim2020 - disclaimer
+## Current version
 
-This is a branch of the main, 'working' (i.e. development) branch of ScalpGM. It contain the code used to generate the analyses and imges discussed in my talk given at he virtual BrainSTIM2020 meeting.
+This master branch is a branch of the main, 'working' (i.e. development) branch of ScalpGM. It contain the code used to generate the analyses and imges discussed in my talk given at the virtual BrainSTIM2020 meeting, andwhich is contained in the 'BrainSTIM2020' branch.
 This version is not guaranteed to work perfectly on all systems, and may additionally contain code that is copyrighted to other authors. It therefore represents a snapshot of the developer's Matlab folder. Code in this branch may be poorly commented, and may have dependencies that are not contained in the branch.
 Future versions of this code will be released in the working or master branches.
 
@@ -44,6 +44,7 @@ The output from this is a series of extra columns in the input file, with the na
   * Latest version that passes tests
   * Should be robust across platforms
   * Should produce accurate data
+  * May have dependencies on code outside the repository
 * working
   * Working version
   * Extract data from OASIS
@@ -56,6 +57,7 @@ The output from this is a series of extra columns in the input file, with the na
 
 
 ### TODO
+* Check dependencies
 * Warp back to native
 * Add mask back to _MeanImage - should clean up and reduce memory
 * Helper functions for OASIS data
