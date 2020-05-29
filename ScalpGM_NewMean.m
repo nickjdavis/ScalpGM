@@ -25,16 +25,19 @@ v.fname = strrep(outFileName,'.nii','_SD.nii');
 outFileSD = spm_create_vol(v);
 v.fname = strrep(outFileName,'.nii','_CoV.nii');
 outFileCoV = spm_create_vol(v);
+v.fname = strrep(outFileName,'.nii','_N.nii');
+outFileN = spm_create_vol(v);
 
 % read fileslist
 if iscell(filelist)
     % this is what we expect
     F = filelist;
     nFiles = length(F);
-    disp(strcat('Found  ',num2str(nFiles),' files.'))
+    %disp(strcat('Found  ',num2str(nFiles),' files.'))
+    disp(sprintf('Found %d files.',nFiles))
 else
     % assume table file
-    T = readtable(filelist,'Delimiter',',')
+    T = readtable(filelist,'Delimiter',',');
     nFiles = size(T,1);
     disp(strcat('Found ',num2str(nFiles),' files.'))
     F = {};
@@ -76,10 +79,13 @@ for plane=1:mxZ
     SliceSD = nanstd(Pstack,[],3);
     SliceCoV= SliceSD./SliceMean;
     %size(SliceMean)
+    % TODO - get no of slices without nans
+    SliceN = nFiles-sum(isnan(Pstack),3);
     % write to outfile
     outFileM  = spm_write_plane(outFileM,SliceMean,plane);
     outFileSD = spm_write_plane(outFileSD,SliceSD,plane);
     outFileCoV= spm_write_plane(outFileCoV,SliceCoV,plane);
+    outFileN  = spm_write_plane(outFileN,SliceN,plane);
     % update waitbar
     waitbar(plane*wbstep,wb);
 end
