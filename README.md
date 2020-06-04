@@ -53,6 +53,9 @@ The output from this is a series of extra columns in the input file, with the na
   * Snapshot of working branch
   * Complements a talk given at BrainSTIM2020 in May 2020
   * All code and (Matlab-based) analyses were run from this code 
+* Preprint
+  * Snapshot of working branch
+  * Complements a preprint of the accompanying paper
 
 
 ### TODO
