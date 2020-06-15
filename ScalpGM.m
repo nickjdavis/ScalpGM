@@ -23,15 +23,17 @@ logfile = '';
 if strcmp(varargin(1),'filelist')
     % already have a log file
     logfile = varargin(2);
-else
+elseif strcmp(varargin(1),'folder')
     % need to build a log file
+    % TODO = name for logfile?
+    logfile = int_createlogfile(varargin(2))
 end
 
 
-if nargin<2
-    benchmark=0;
-end
-
+% if nargin<2
+%     benchmark=0;
+% end
+benchmark = 0;
 
 % readtable
 T = readtable(logfile);
@@ -100,3 +102,22 @@ imgfolder = D;
 imgfile = I;
 outTable = table(imgfolder, imgfile, scalp, GM, dist, MNI);
 writetable (outTable,logfile); % NB default behaviour is to overwrite file
+
+
+
+
+function logfile = int_createlogfile(basedir)
+dirext = '\ScalpGM';
+D = dir(basedir);
+n = length(D);
+for i=1:n
+    if isdir(D(i))
+        N = D(i).name;
+        if isempty(dir(strcat(D,'\',N,dirext)))
+            disp ('no ScalpGM folder')
+        else
+            % bit dodgy - assume if folder exists, so do image files...
+        end
+    end
+end
+% create log file and return the name
