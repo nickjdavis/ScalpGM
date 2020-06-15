@@ -1,5 +1,5 @@
 
-function ScalpGM (logfile,benchmark)
+function ScalpGM (varargin)
 %ScalpGM - Calculate distance from scalp to each grey matter voxel in
 % a structural MRI
 %
@@ -12,6 +12,21 @@ function ScalpGM (logfile,benchmark)
 % - 6 June 2019
 %
 % - Approx 13 mins per image (26 Feb 2019)
+
+
+% TODO
+% 1. if argin(1)=='logfile', proceed as normal
+%     2. if nargin(1)=='dir', build logfile
+%         
+
+logfile = '';
+if strcmp(varargin(1),'filelist')
+    % already have a log file
+    logfile = varargin(2);
+else
+    % need to build a log file
+end
+
 
 if nargin<2
     benchmark=0;
