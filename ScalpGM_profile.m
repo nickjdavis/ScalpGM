@@ -7,7 +7,7 @@ d = 'C:\OASIS\X';
 profile on
 tic
 
-ScalpGM (d)
+ScalpGM ('folder',d)
 
 
 t = toc;

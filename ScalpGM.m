@@ -19,6 +19,8 @@ function ScalpGM (varargin)
 %     2. if nargin(1)=='dir', build logfile
 %         
 
+global MATLABBASE, MATLABBASE = '\\staffhome\staff_home0\55121576\Documents\MATLAB\spm12';
+
 logfile = '';
 if strcmp(varargin(1),'filelist')
     % already have a log file
@@ -26,7 +28,9 @@ if strcmp(varargin(1),'filelist')
 elseif strcmp(varargin(1),'folder')
     % need to build a log file
     % TODO = name for logfile?
-    logfile = int_createlogfile(varargin(2))
+    d = varargin{2}
+    logfile = int_createlogfile(d)
+    %logfile = 'testtable.txt'
 end
 
 
@@ -36,7 +40,7 @@ end
 benchmark = 0;
 
 % readtable
-T = readtable(logfile);
+T = readtable(logfile,'Delimiter',',')
 D = T.imgfolder;
 I = T.imgfile;
 n = length(I);
@@ -49,7 +53,9 @@ MNI = {};
 % Link to TPM file
 % TODO - get this rel to SPM path
 %TPMfile = 'C:\SPM\spm12\spm12\tpm\tpm.nii';
-TPMfile = 'C:\Program Files\MATLAB\spm12b\tpm\tpm.nii';
+% TPMfile = 'C:\Program Files\MATLAB\spm12b\tpm\tpm.nii';
+TPMfile = strcat(MATLABBASE,'\tpm\tpm.nii');
+
 
 disp (sprintf('Found %d files',n))
 
@@ -108,16 +114,29 @@ writetable (outTable,logfile); % NB default behaviour is to overwrite file
 
 function logfile = int_createlogfile(basedir)
 dirext = '\ScalpGM';
+imgfolder = {};
+imgfile = {};
 D = dir(basedir);
 n = length(D);
-for i=1:n
-    if isdir(D(i))
+% ugly - first two entries SHOULD BE current dir and parent
+for i=3:n
+    %D(i)
+    if D(i).isdir
         N = D(i).name;
-        if isempty(dir(strcat(D,'\',N,dirext)))
+        scalpgmdir = strcat(basedir,'\',N,dirext);
+        if isempty(dir(scalpgmdir))
             disp ('no ScalpGM folder')
         else
+            imgfolder = [imgfolder; scalpgmdir];
+            NII = dir(strcat(scalpgmdir,'\*.img'));
+            imgfile = [imgfile; NII(1).name];
             % bit dodgy - assume if folder exists, so do image files...
         end
     end
 end
+% disp(imgfolder)
+% disp(imgfile)
+T = table (imgfolder, imgfile);
+logfile = 'testtable.txt';
+writetable(T,logfile);
 % create log file and return the name
