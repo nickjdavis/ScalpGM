@@ -14,4 +14,7 @@ t = toc;
 profile viewer
 
 
-sprintf('Elapsed time : %f sec',t)
+m = floor(t/60);
+s = floor(rem(t,60));
+
+sprintf('Elapsed time : %dm%ds',m,s)

@@ -61,7 +61,7 @@ disp (sprintf('Found %d files',n))
 
 
 for i=1:n
-    tic
+    %tic
     T1folder=D{i};
     T1file = I{i}; %d(i).name;
     fprintf('Processing file %d of %d : %s',i,n,T1file)
@@ -69,17 +69,17 @@ for i=1:n
         [scalpfile, gmfile] = ScalpGM_segmentImage (strcat(T1folder,'\',T1file),TPMfile);
         disp(['-- Scalp file : ' scalpfile])
         disp(['-- Grey matter: ' gmfile])
-        toc1 = toc;
+        %toc1 = toc;
         % Get convex hull
         scalp_points = ScalpGM_getCH3d (strcat(T1folder,'\',scalpfile));
-        toc2=toc;
+        %toc2=toc;
         % Compute distance from each point in brain to scalp
         distfile = ScalpGM_Distance (scalp_points,strcat(T1folder,'\',gmfile));
-        toc3=toc;
+        %toc3=toc;
         disp(['-- Dist file  : ' distfile])
         % warp file
         [mnifile,yfile] = ScalpGM_warpMNI (strcat(T1folder,'\',T1file),strcat(T1folder,'\',distfile),TPMfile);
-        toc4=toc;
+        %toc4=toc;
         disp(['-- MNI file   : ' mnifile])
         
         scalp = [scalp; scalpfile];
@@ -88,10 +88,10 @@ for i=1:n
         MNI = [MNI; mnifile];
         
         % Output from benchmark
-        if benchmark==1
-            fprintf('Total elapsed time: %4.2f\nSegment  : %4.2f sec\nConvHull : %4.2f\nDistance : %4.2f\nMNI warp : %4.2f\n\n',...
-                toc4,toc1,toc2-toc1,toc3-toc2,toc4-toc3)
-        end
+%         if benchmark==1
+%             fprintf('Total elapsed time: %4.2f\nSegment  : %4.2f sec\nConvHull : %4.2f\nDistance : %4.2f\nMNI warp : %4.2f\n\n',...
+%                 toc4,toc1,toc2-toc1,toc3-toc2,toc4-toc3)
+%         end
         
     catch
         % Writes 'fail' to table for output
