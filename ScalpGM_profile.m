@@ -1,7 +1,7 @@
 
 function ScalpGM_profile ()
 
-d = 'C:\OASIS\X';
+d = 'C:\OASIS\Z';
 
 
 profile on
