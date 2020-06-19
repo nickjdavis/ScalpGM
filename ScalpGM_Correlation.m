@@ -149,7 +149,7 @@ newCoords = [x y z];
 function Vlist = int_getVoxelCoords (c,r,img)
 % UGLY!!! Try sphere...
 Vlist = [];
-S = size(img)
+S = size(img);
 for z=1:S(3)
     for y=1:S(2)
         for x=1:S(1)

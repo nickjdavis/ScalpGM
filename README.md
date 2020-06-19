@@ -8,7 +8,7 @@ The effect of transcranial magnetic stimulation on the brain depends on many fac
 
 ## Current status
 
-This is a working (i.e. development) branch of ScalpGM. 
+This is a working (i.e. development) branch of ScalpGM, that complements a preprint of an acompanying paper. 
 This version is not guaranteed to work perfectly on all systems, and may additionally contain code that is copyrighted to other authors. It therefore represents a snapshot of the developer's Matlab folder. Code in this branch may be poorly commented, and may have dependencies that are not contained in the branch.
 Future versions of this code will be released in the working or master branches.
 

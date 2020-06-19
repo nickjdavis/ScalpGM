@@ -34,9 +34,9 @@ D = zeros(length(I),2);
     % convert back to coordinate x,y,z
     [x,y,z] = ind2sub(S,I(i));
     % get euclidean distance
-    distvec = sqrt( (scalp_points(:,1)-x).^2 + (scalp_points(:,2)-y).^2 + (scalp_points(:,3)-z).^2);
+    distvec = ( (scalp_points(:,1)-x).^2 + (scalp_points(:,2)-y).^2 + (scalp_points(:,3)-z).^2);
     [d,pos] = min( distvec );
-    D(i,:) = [I(i) d];
+    D(i,:) = [I(i) sqrt(d)];
 end
 
 Dimg(D(:,1))=D(:,2);
