@@ -3,44 +3,48 @@ function ScalpGM (varargin)
 %ScalpGM - Calculate distance from scalp to each grey matter voxel in
 % a structural MRI
 %
-% ScalpGM(filetable, benchmark)
+% ScalpGM(options, values)
 %
 % Inputs:
 %   filetable : CSV file (opened as table) with images for processing
-%   benchmark : 1=yes, 0=no
+%   folder : points to folder containing files for processing
+%   useExisting : (true)/false - if true will skip completed stages
 
 % - 6 June 2019
 %
 % - Approx 13 mins per image (26 Feb 2019)
 
 
-% TODO
-% 1. if argin(1)=='logfile', proceed as normal
-%     2. if nargin(1)=='dir', build logfile
-%         
+       
+
+% Use an inputParser to handle options
+% TODO - check validity of inputs
+P = inputParser;
+P.KeepUnmatched = true;
+addParameter(P,'filelist','');
+addParameter(P,'folder','');
+addParameter(P,'useExisting',true);
+addParameter(P,'logfile','ScalpGM_Log.txt');
+P.parse(varargin{:});
+P.Results
 
 global MATLABBASE, MATLABBASE = '\\staffhome\staff_home0\55121576\Documents\MATLAB\spm12';
 
-logfile = '';
-if strcmp(varargin(1),'filelist')
+logfile = P.Results.logfile; % TODO - append .txt if it's not there
+if ~isempty(P.Results.filelist)
     % already have a log file
-    logfile = varargin(2);
-elseif strcmp(varargin(1),'folder')
+    logfile = P.Results.filelist;
+end
+
+if ~isempty(P.Results.folder)
     % need to build a log file
-    % TODO = name for logfile?
-    d = varargin{2}
-    logfile = int_createlogfile(d)
-    %logfile = 'testtable.txt'
+    d = P.Results.folder;
+    int_createlogfile(d,logfile)
 end
 
 
-% if nargin<2
-%     benchmark=0;
-% end
-benchmark = 0;
-
 % readtable
-T = readtable(logfile,'Delimiter',',')
+T = readtable(logfile,'Delimiter',',');
 D = T.imgfolder;
 I = T.imgfile;
 n = length(I);
@@ -64,22 +68,39 @@ for i=1:n
     %tic
     T1folder=D{i};
     T1file = I{i}; %d(i).name;
-    fprintf('Processing file %d of %d : %s',i,n,T1file)
+    fprintf('Processing file %d of %d : %s\n',i,n,T1file)
     try
-        [scalpfile, gmfile] = ScalpGM_segmentImage (strcat(T1folder,'\',T1file),TPMfile);
+        % check here for exists(c1,c5) P.useExisting
+        c1file = dir(strcat(T1folder,'\c1*'));
+        c5file = dir(strcat(T1folder,'\c5*'));
+        if (P.Results.useExisting) && (~isempty(c1file)) && (~isempty(c5file))
+            disp('Skipping segment - already done')
+            scalpfile = c1file.name;
+            gmfile = c5file.name;
+        else
+            [scalpfile, gmfile] = ScalpGM_segmentImage (strcat(T1folder,'\',T1file),TPMfile);
+        end
         disp(['-- Scalp file : ' scalpfile])
         disp(['-- Grey matter: ' gmfile])
-        %toc1 = toc;
-        % Get convex hull
-        scalp_points = ScalpGM_getCH3d (strcat(T1folder,'\',scalpfile));
-        %toc2=toc;
         % Compute distance from each point in brain to scalp
-        distfile = ScalpGM_Distance (scalp_points,strcat(T1folder,'\',gmfile));
-        %toc3=toc;
+        dfile = dir(strcat(T1folder,'\dc1*'));
+        if (P.Results.useExisting) && (~isempty(dfile))
+             disp('Skipping distance - already done');
+             distfile = dfile.name;
+        else
+            % Get convex hull
+            scalp_points = ScalpGM_getCH3d (strcat(T1folder,'\',scalpfile));
+            distfile = ScalpGM_Distance (scalp_points,strcat(T1folder,'\',gmfile));
+        end
         disp(['-- Dist file  : ' distfile])
         % warp file
-        [mnifile,yfile] = ScalpGM_warpMNI (strcat(T1folder,'\',T1file),strcat(T1folder,'\',distfile),TPMfile);
-        %toc4=toc;
+        wfile = dir(strcat(T1folder,'\wdc1*'));
+        if (P.Results.useExisting) && (~isempty(wfile))
+             disp('Skipping warp - already done');
+             mnifile = wfile.name;
+        else
+            [mnifile,yfile] = ScalpGM_warpMNI (strcat(T1folder,'\',T1file),strcat(T1folder,'\',distfile),TPMfile);
+        end
         disp(['-- MNI file   : ' mnifile])
         
         scalp = [scalp; scalpfile];
@@ -87,11 +108,6 @@ for i=1:n
         dist = [dist; distfile];
         MNI = [MNI; mnifile];
         
-        % Output from benchmark
-%         if benchmark==1
-%             fprintf('Total elapsed time: %4.2f\nSegment  : %4.2f sec\nConvHull : %4.2f\nDistance : %4.2f\nMNI warp : %4.2f\n\n',...
-%                 toc4,toc1,toc2-toc1,toc3-toc2,toc4-toc3)
-%         end
         
     catch
         % Writes 'fail' to table for output
@@ -112,7 +128,7 @@ writetable (outTable,logfile); % NB default behaviour is to overwrite file
 
 
 
-function logfile = int_createlogfile(basedir)
+function int_createlogfile(basedir,logfile)
 dirext = '\ScalpGM';
 imgfolder = {};
 imgfile = {};
@@ -137,6 +153,6 @@ end
 % disp(imgfolder)
 % disp(imgfile)
 T = table (imgfolder, imgfile);
-logfile = 'testtable.txt';
+%logfile = 'testtable.txt';
 writetable(T,logfile);
 % create log file and return the name
