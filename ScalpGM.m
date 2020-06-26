@@ -75,8 +75,8 @@ for i=1:n
         c5file = dir(strcat(T1folder,'\c5*'));
         if (P.Results.useExisting) && (~isempty(c1file)) && (~isempty(c5file))
             disp('Skipping segment - already done')
-            scalpfile = c1file.name;
-            gmfile = c5file.name;
+            scalpfile = c5file.name;
+            gmfile = c1file.name;
         else
             [scalpfile, gmfile] = ScalpGM_segmentImage (strcat(T1folder,'\',T1file),TPMfile);
         end
