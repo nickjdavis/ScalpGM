@@ -26,7 +26,7 @@ addParameter(P,'folder','');
 addParameter(P,'useExisting',true);
 addParameter(P,'logfile','ScalpGM_Log.txt');
 P.parse(varargin{:});
-P.Results
+% P.Results
 
 global MATLABBASE, MATLABBASE = '\\staffhome\staff_home0\55121576\Documents\MATLAB\spm12';
 
