@@ -28,9 +28,10 @@ distfile = strcat('d',nam,ext);
 S = size(Dimg);
 
 %% Calculate distances
+% NB- converting this to a parallel loop (parfor) adds significant overhead
 I = find(GMimg>0.9);
 D = zeros(length(I),2);
- for i=1:length(I)
+for i=1:length(I)
     % convert back to coordinate x,y,z
     [x,y,z] = ind2sub(S,I(i));
     % get euclidean distance
