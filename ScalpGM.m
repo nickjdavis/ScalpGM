@@ -150,8 +150,6 @@ for i=3:n
         end
     end
 end
-% disp(imgfolder)
-% disp(imgfile)
 T = table (imgfolder, imgfile);
 %logfile = 'testtable.txt';
 writetable(T,logfile);
