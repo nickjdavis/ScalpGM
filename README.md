@@ -8,45 +8,51 @@ The effect of transcranial magnetic stimulation on the brain depends on many fac
 
 ## Current status
 
-This is a working (i.e. development) branch of ScalpGM, that complements a preprint of an acompanying paper. 
+This is a branch of ScalpGM, that complements a published paper. If you find the code useful, please cite the following publication:
+Davis, N. J. (2021). Variance in cortical depth across the brain surface: Implications for transcranial stimulation of the brain. *European Journal of Neuroscience*, 53(4), 996-1007. [https://doi.org/10.1111/ejn.14957](https://doi.org/10.1111/ejn.14957)
 This version is not guaranteed to work perfectly on all systems, and may additionally contain code that is copyrighted to other authors. It therefore represents a snapshot of the developer's Matlab folder. Code in this branch may be poorly commented, and may have dependencies that are not contained in the branch.
 Future versions of this code will be released in the working or master branches.
 
 ### Getting started
 
-ScalpGM is a collection of Matlab scripts. Matlab is a commercial programming language developed by [Mathworks Inc](https://uk.mathworks.com/products/matlab.html). The [Octave programming language](https://www.gnu.org/software/octave/) is free and largely compatible with Matlab, but these scripts have not been tested in Octave.
-ScalpGM requires SPM to be installed. The code was developed with SPM12b, but earlier (or later) versions of SPM may also work. SPM was developed by the Wellcome Centre for Human Neuroimaging, and can be downloaded [via this page](https://www.fil.ion.ucl.ac.uk/spm/).
-ScalpGM needs data to work with. The data for testing this package came from the [Open Access Series of Imaging Studies, or OASIS](https://www.oasis-brains.org/). The images of non-demented participants from OASIS-1 was used in development.
+ScalpGM is a collection of Matlab scripts. Matlab is a commercial programming language developed by [Mathworks Inc](https://uk.mathworks.com/products/matlab.html). The [Octave programming language](https://www.gnu.org/software/octave/) is free and largely compatible with Matlab, but these scripts have not been tested in Octave.  
+ScalpGM requires SPM to be installed. The code was developed with SPM12b, but earlier (or later) versions of SPM may also work. SPM was developed by the Wellcome Centre for Human Neuroimaging, and can be downloaded [via this page](https://www.fil.ion.ucl.ac.uk/spm/).  
+ScalpGM needs data to work with. The data for testing this package came from the [Open Access Series of Imaging Studies, or OASIS](https://www.oasis-brains.org/). The images of non-demented participants from OASIS-1 was used in development.  
 
 
 ### Running ScalpGM
 
-ScalpGM takes as input a CSV-format file with a single column labelled 'imgfile', containing a list of T1 images. For example...
+
+ScalpGM can be run with two options, either with a pointer to a folder for processing, or (better), with a pre-prepared log file.  
+
+The log file format is a comma-separated file with a two columns labelled 'imgfolder' and 'imgfile', containing a list of T1 images. Use the 'filelist' option to load this. For example...
 
 ```Matlab
 >> type T1files.txt
 
-XXX
+imgfolder,imgfile
+C:\Users\Nick\Data\Subject1\ScalpGM,Subject1_T1.nii
+C:\Users\Nick\Data\Subject2\ScalpGM,Subject2_T1.nii
+C:\Users\Nick\Data\Subject3\ScalpGM,Subject3_T1.nii
+C:\Users\Nick\Data\Subject4\ScalpGM,Subject4_T1.nii
 
->> ScalpGM('T1files.txt')
+>> ScalpGM('filelist','T1files.txt')
 ```
-The output from this is a series of extra columns in the input file, with the names of the processed files.
+This will generate a lot of text in the command window, mainly from SPM's functions.  
+The output from this is a series of extra columns in the input file, with the names of the processed files.  
+The second form, with a pointer to a folder, is not stable and will generate a warning (if not an error).
 
+```Matlab
+>> ScalpGM('folder','C:\Users\Nick\Data')
+```
 
-### Current state:
-
-* Segment and warp use SPM's job manager, which may be too slow
-* Finding the convex hull of the scalp is very slow (60sec) and uses the image processing toolbox
-
-
-### Branches
+### Main branches
 * master
   * Latest version that passes tests
   * Should be robust across platforms
   * Should produce accurate data
 * working
   * Working version
-  * Extract data from OASIS
   * Runs cleanly and efficiently
   * Shareable code
 * BrainSTIM2020
@@ -65,13 +71,8 @@ The output from this is a series of extra columns in the input file, with the na
   * Extract demographic data
   * Convert OASIS images for SPM
   * Go through folder structure and flatten
-* Smarter routine to identify outer scalp layer
-  * See Line 86 of _getCH3d - re-add biggest region?
-* Use SPM environment variables to:
-  * set folders  (e.g. TPM.nii)
-  * check for presence of SPM
-  * check SPM version?
-* Profile! 20 mins per image - must get this down.
+* Profile! 
+  * Some function use for loops which could be streamlined
 
 
 ### To think about

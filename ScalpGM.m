@@ -10,11 +10,6 @@ function ScalpGM (varargin)
 %   folder : points to folder containing files for processing
 %   useExisting : (true)/false - if true will skip completed stages
 
-% - 6 June 2019
-%
-% - Approx 13 mins per image (26 Feb 2019)
-
-
        
 
 % Use an inputParser to handle options
@@ -29,7 +24,17 @@ P.parse(varargin{:});
 % P.Results
 
 % global MATLABBASE, MATLABBASE = '\\staffhome\staff_home0\55121576\Documents\MATLAB\spm12';
-global MATLABBASE, MATLABBASE = 'C:\Users\Nick\Documents\MATLAB\spm12'
+% global MATLABBASE, MATLABBASE = 'C:\Users\Nick\Documents\MATLAB\spm12';
+
+w = what('spm12');
+if isempty(w)
+    disp('WARNING - SPM12 not detected on the Matlab path')
+    disp('--- This program will most likely fail')
+    disp('--- Please either install SPM12 or update the path')
+end
+global MATLABBASE, MATLABBASE = w.path
+
+
 logfile = P.Results.logfile; % TODO - append .txt if it's not there
 if ~isempty(P.Results.filelist)
     % already have a log file
