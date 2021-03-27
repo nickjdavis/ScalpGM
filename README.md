@@ -9,7 +9,7 @@ The effect of transcranial magnetic stimulation on the brain depends on many fac
 ## Current status
 
 This is a branch of ScalpGM, that complements a published paper. If you find the code useful, please cite the following publication:  
-Davis, N. J. (2021). Variance in cortical depth across the brain surface: Implications for transcranial stimulation of the brain. *European Journal of Neuroscience*, 53(4), 996-1007. [https://doi.org/10.1111/ejn.14957](https://doi.org/10.1111/ejn.14957)  
+> Davis, N. J. (2021). Variance in cortical depth across the brain surface: Implications for transcranial stimulation of the brain. *European Journal of Neuroscience*, 53(4), 996-1007. [https://doi.org/10.1111/ejn.14957](https://doi.org/10.1111/ejn.14957)  
 This version is not guaranteed to work perfectly on all systems, and may additionally contain code that is copyrighted to other authors. It therefore represents a snapshot of the developer's Matlab folder. Code in this branch may be poorly commented, and may have dependencies that are not contained in the branch.  
 Future versions of this code will be released in the working or master branches.
 

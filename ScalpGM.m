@@ -32,7 +32,7 @@ if isempty(w)
     disp('--- This program will most likely fail')
     disp('--- Please either install SPM12 or update the path')
 end
-global MATLABBASE, MATLABBASE = w.path
+global MATLABBASE, MATLABBASE = w.path;
 
 
 logfile = P.Results.logfile; % TODO - append .txt if it's not there
@@ -43,6 +43,9 @@ end
 
 if ~isempty(P.Results.folder)
     % need to build a log file
+    disp('WARNING - This option is not recommended')
+    disp('--- This option may not work on all systems')
+    disp('--- A pre-built file list is recommended')
     d = P.Results.folder;
     int_createlogfile(d,logfile)
 end
