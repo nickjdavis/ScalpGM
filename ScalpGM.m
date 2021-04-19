@@ -61,6 +61,7 @@ scalp = {};
 GM = {};
 dist = {};
 MNI = {};
+CH = {};
 
 % Link to TPM file
 % TODO - get this rel to SPM path
@@ -76,7 +77,7 @@ for i=1:n
     %tic
     T1folder=D{i};
     T1file = I{i}; %d(i).name;
-    fprintf('Processing file %d of %d : %s\n',i,n,T1file)
+    fprintf('\n\nProcessing file %d of %d : %s\n',i,n,T1file)
     try
         % check here for exists(c1,c5) P.useExisting
         c1file = dir(strcat(T1folder,'\c1*'));
@@ -98,8 +99,12 @@ for i=1:n
         else
             % Get convex hull
             scalp_points = ScalpGM_getCH3d (strcat(T1folder,'\',scalpfile));
+            % save convex hull to .mat file
+            convhullfile = strrep(scalpfile,'.nii','_ch.mat');
+            save (strcat(T1folder,'\',convhullfile),'scalp_points')
             distfile = ScalpGM_Distance (scalp_points,strcat(T1folder,'\',gmfile));
         end
+        disp(['-- CH file    : ' convhullfile])
         disp(['-- Dist file  : ' distfile])
         % warp file
         wfile = dir(strcat(T1folder,'\wdc1*'));
@@ -115,6 +120,7 @@ for i=1:n
         GM = [GM; gmfile];
         dist = [dist; distfile];
         MNI = [MNI; mnifile];
+        CH = [CH; convhullfile];
         
         
     catch
@@ -130,7 +136,7 @@ end
 
 imgfolder = D;
 imgfile = I;
-outTable = table(imgfolder, imgfile, scalp, GM, dist, MNI);
+outTable = table(imgfolder, imgfile, scalp, CH, GM, dist, MNI);
 writetable (outTable,logfile); % NB default behaviour is to overwrite file
 
 
