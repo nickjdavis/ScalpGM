@@ -88,6 +88,7 @@ for i=1:n
             gmfile = c1file.name;
         else
             [scalpfile, gmfile] = ScalpGM_segmentImage (strcat(T1folder,'\',T1file),TPMfile);
+            tempCleanC5(strcat(T1folder,'\',scalpfile));
         end
         disp(['-- Scalp file : ' scalpfile])
         disp(['-- Grey matter: ' gmfile])
