@@ -21,10 +21,7 @@ addParameter(P,'folder','');
 addParameter(P,'useExisting',true);
 addParameter(P,'logfile','ScalpGM_Log.txt');
 P.parse(varargin{:});
-% P.Results
 
-% global MATLABBASE, MATLABBASE = '\\staffhome\staff_home0\55121576\Documents\MATLAB\spm12';
-% global MATLABBASE, MATLABBASE = 'C:\Users\Nick\Documents\MATLAB\spm12';
 
 w = what('spm12');
 if isempty(w)
@@ -64,9 +61,6 @@ MNI = {};
 CH = {};
 
 % Link to TPM file
-% TODO - get this rel to SPM path
-%TPMfile = 'C:\SPM\spm12\spm12\tpm\tpm.nii';
-% TPMfile = 'C:\Program Files\MATLAB\spm12b\tpm\tpm.nii';
 TPMfile = strcat(MATLABBASE,'\tpm\tpm.nii');
 
 
@@ -76,7 +70,22 @@ disp (sprintf('Found %d files',n))
 for i=1:n
     %tic
     T1folder=D{i};
-    T1file = I{i}; %d(i).name;
+    T1file = I{i}; 
+    % Check here for .nii.gz instead of .nii
+    if isempty(dir(strcat(T1folder,'\',T1file)))
+        disp(sprintf('T1 file %s not found',T1file))
+        T1gz = [T1file '.gz'];
+        if ~isempty(dir(strcat(T1folder,'\',T1gz)))
+            disp(sprintf('Found GZip file %s. Attempting to extract.',T1gz))
+            gunzip(strcat(T1folder,'\',T1gz));
+            if isempty(dir(strcat(T1folder,'\',T1file)))
+                disp(sprintf('File %s still not present.',T1file))
+            else
+                disp(sprintf('File %s successfully extracted.',T1file))
+            end
+        end
+    end
+    
     fprintf('\n\nProcessing file %d of %d : %s\n',i,n,T1file)
     try
         % check here for exists(c1,c5) P.useExisting
