@@ -9,6 +9,7 @@ function ScalpGM (varargin)
 %   filetable : CSV file (opened as table) with images for processing
 %   folder : points to folder containing files for processing
 %   useExisting : (true)/false - if true will skip completed stages
+%   logfile : Name of log file (default ScalpGM_Log.txt')
 
        
 
