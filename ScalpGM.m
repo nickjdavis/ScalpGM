@@ -107,6 +107,7 @@ for i=1:n
         if (P.Results.useExisting) && (~isempty(dfile))
              disp('Skipping distance - already done');
              distfile = dfile.name;
+             convhullfile = strrep(scalpfile,'.nii','_ch.mat');
         else
             % Get convex hull
             scalp_points = ScalpGM_getCH3d (strcat(T1folder,'\',scalpfile));

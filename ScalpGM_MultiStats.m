@@ -1,4 +1,5 @@
-function outData = ScalpGM_MultiStats (filelist, ROIimage, ROIcodes, ROIlabels)
+function ScalpGM_MultiStats (filelist, ROIimage, ROIcodes, ROIlabels)
+% function outData = ScalpGM_MultiStats (filelist, ROIimage, ROIcodes, ROIlabels)
 
 %% Checking and setup
 pathstring = path();
@@ -83,3 +84,23 @@ for i=1:nROIs
     disp(sprintf('%s mean depth: %3.3f',ROIlabels{i},mean(outData(:,xxx))))
     xxx = xxx+3;
 end
+close(wb)
+
+outTxt = sprintf('\nVariable order:');
+for i=1:nROIs
+    outTxt = strcat(outTxt,sprintf('[%s.M, %s.S, %s.C]\t',ROIlabels{i},ROIlabels{i},ROIlabels{i}));
+end
+
+disp(outTxt)
+
+outTxt = sprintf('\n');
+for i=1:size(outData,1)
+    %outData(i,:)
+    outTxt = strcat(outTxt, sprintf('%2.3f\t',outData(i,1:end-1)));
+    disp(outTxt);
+    outTxt = '';
+    %strcat(outTxt, newline, newline);
+end
+% disp(outTxt)
+% sprintf('')
+
