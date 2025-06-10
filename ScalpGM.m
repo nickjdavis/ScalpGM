@@ -50,7 +50,7 @@ end
 
 
 % readtable
-T = readtable(logfile,'Delimiter',',');
+T = readtable(logfile,'Delimiter',',')
 D = T.imgfolder;
 I = T.imgfile;
 n = length(I);
@@ -71,22 +71,28 @@ disp (sprintf('Found %d files',n))
 for i=1:n
     %tic
     T1folder=D{i};
-    T1file = I{i}; 
+    T1file = I{i};
     % Check here for .nii.gz instead of .nii
-    if isempty(dir(strcat(T1folder,'\',T1file)))
-        disp(sprintf('WARNING - T1 file %s not found',T1file))
-        T1gz = [T1file '.gz'];
-        if ~isempty(dir(strcat(T1folder,'\',T1gz)))
-            disp(sprintf('-- Found GZip file %s. Attempting to extract.',T1gz))
-            gunzip(strcat(T1folder,'\',T1gz));
-            if isempty(dir(strcat(T1folder,'\',T1file)))
-                disp(sprintf('-- File %s still not present.',T1file))
-            else
-                disp(sprintf('-- File %s successfully extracted.',T1file))
-            end
-        end
+    %if isempty(dir(strcat(T1folder,'\',T1file)))
+    %disp(sprintf('WARNING - T1 file %s not found',T1file))
+    if contains(T1file,'.nii.gz')
+        T1gz = T1file;
+        disp(sprintf('-- Found GZip file %s. Attempting to extract.',T1gz))
+        gunzip(strcat(T1folder,'\',T1gz));
+        % TODO - test for success
+        T1file = strrep(T1gz,'.nii.gz','.nii');
+        %T1gz = [T1file '.gz'];
+        %if ~isempty(dir(strcat(T1folder,'\',T1gz)))
+        %    disp(sprintf('-- Found GZip file %s. Attempting to extract.',T1gz))
+        %    gunzip(strcat(T1folder,'\',T1gz));
+        %    if isempty(dir(strcat(T1folder,'\',T1file)))
+        %        disp(sprintf('-- File %s still not present.',T1file))
+        %    else
+        %        disp(sprintf('-- File %s successfully extracted.',T1file))
+        %    end
     end
-    
+    %end
+
     fprintf('\n\nProcessing file %d of %d : %s\n',i,n,T1file)
     try
         % check here for exists(c1,c5) P.useExisting
